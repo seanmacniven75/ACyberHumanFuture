@@ -1,0 +1,2576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>When the river runs dry</title>
+<style>
+:root{
+  --bg:#12171C; --panel:#171E25; --ink:#EAECEE; --ink-2:#A6B3BF; --ink-3:#6F7F8D;
+  --rule:#33414F; --company:#4AA3FF; --worker:#F0AB00; --flow:#5FD4A0; --anx:#C86B5A;
+  --a1:#C86B5A; --a2:#6FB8A8; --a3:#7E8FC7; --a4:#B08CC4;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:#0B0F13;color:var(--ink);
+  font-family:"72","Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;
+  display:flex;align-items:center;justify-content:center;padding:18px}
+.deck{width:100%;max-width:1280px;aspect-ratio:16/9;position:relative;background:var(--bg);overflow:hidden}
+.slide{position:absolute;inset:0;padding:34px 54px 86px;display:none;flex-direction:column}
+.slide.active{display:flex}
+
+.act{font-size:10.5px;color:var(--ink-3);margin-bottom:12px;display:flex;align-items:center;gap:8px;letter-spacing:.03em}
+.act .dot{width:7px;height:7px;border-radius:50%}
+.a1 .dot{background:var(--a1)} .a2 .dot{background:var(--a2)}
+.a3 .dot{background:var(--a3)} .a4 .dot{background:var(--a4)}
+
+h1{font-size:clamp(16px,1.85vw,25px);font-weight:600;letter-spacing:-.01em;
+  line-height:1.32;margin:0;max-width:66ch;color:var(--ink)}
+.sub{font-size:clamp(11px,1.02vw,13.5px);line-height:1.55;color:var(--ink-2);max-width:78ch;margin:9px 0 0}
+.body{flex:1;display:flex;flex-direction:column;justify-content:center;min-height:0;margin-top:14px}
+
+.big{font-size:clamp(20px,2.7vw,40px);font-weight:600;line-height:1.25;letter-spacing:-.015em;max-width:26ch}
+.huge{font-size:clamp(40px,6.5vw,96px);font-weight:600;letter-spacing:-.03em;line-height:1}
+
+.pts{display:flex;flex-direction:column;gap:15px;max-width:80ch}
+.pt{border-left:2px solid var(--rule);padding-left:15px}
+.pt .h{font-size:14px;font-weight:600;margin-bottom:4px}
+.pt .d{font-size:12.5px;line-height:1.55;color:var(--ink-2)}
+
+.cols{display:grid;gap:30px}
+.c2{grid-template-columns:1fr 1fr} .c3{grid-template-columns:1fr 1fr 1fr}
+.card{border:1px solid var(--rule);padding:16px 18px;background:var(--panel)}
+.card .h{font-size:14px;font-weight:600;margin-bottom:7px}
+.card .d{font-size:12.5px;line-height:1.6;color:var(--ink-2)}
+.card.blue{border-color:var(--company)} .card.blue .h{color:var(--company)}
+.card.amber{border-color:var(--worker)} .card.amber .h{color:var(--worker)}
+.card.green{border-color:var(--flow)} .card.green .h{color:var(--flow)}
+.card.red{border-color:var(--anx)} .card.red .h{color:var(--anx)}
+
+.stat{border-left:2px solid var(--rule);padding-left:14px}
+.stat .n{font-size:clamp(24px,3.1vw,44px);font-weight:600;line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.stat .l{font-size:11.5px;color:var(--ink-3);margin-top:7px;line-height:1.45}
+.stat.red{border-left-color:var(--anx)} .stat.red .n{color:var(--anx)}
+.stat.blue{border-left-color:var(--company)} .stat.blue .n{color:var(--company)}
+.stat.green{border-left-color:var(--flow)} .stat.green .n{color:var(--flow)}
+.stat.amber{border-left-color:var(--worker)} .stat.amber .n{color:var(--worker)}
+
+.land{border-top:1px solid var(--rule);margin-top:15px;padding-top:12px;
+  font-size:clamp(12px,1.25vw,16px);line-height:1.45;max-width:70ch}
+.muted{color:var(--ink-2)}
+.tiny{font-size:11px;color:var(--ink-3);line-height:1.5}
+
+svg{display:block;overflow:visible}
+.ln{fill:none;stroke:var(--rule);stroke-width:1.25}
+.lnc{fill:none;stroke:var(--company);stroke-width:1.25}
+.lnw{fill:none;stroke:var(--worker);stroke-width:1.25}
+.lng{fill:none;stroke:var(--flow);stroke-width:1.25}
+.lnr{fill:none;stroke:var(--anx);stroke-width:1.25}
+.lnd{fill:none;stroke:var(--ink-3);stroke-width:1.25;stroke-dasharray:3 5}
+.tx{font-family:inherit;font-size:12.5px;fill:var(--ink-2)}
+.txs{font-family:inherit;font-size:11px;fill:var(--ink-3)}
+.txc{font-family:inherit;font-size:12.5px;fill:var(--company)}
+.txw{font-family:inherit;font-size:12.5px;fill:var(--worker)}
+.txg{font-family:inherit;font-size:12.5px;fill:var(--flow)}
+.txr{font-family:inherit;font-size:12.5px;fill:var(--anx)}
+.txb{font-family:inherit;font-size:14px;font-weight:600;fill:var(--ink)}
+
+.timer{position:absolute;top:16px;right:54px;z-index:25;
+  font-size:12px;font-variant-numeric:tabular-nums;letter-spacing:.04em;
+  color:var(--ink-3);cursor:pointer;user-select:none;display:flex;align-items:baseline;gap:7px}
+.timer .dot{width:6px;height:6px;border-radius:50%;background:var(--ink-3);display:inline-block;
+  transform:translateY(-1px)}
+.timer.run .dot{background:var(--flow)}
+.timer.warn{color:var(--worker)} .timer.warn .dot{background:var(--worker)}
+.timer.over{color:var(--anx)} .timer.over .dot{background:var(--anx)}
+.timer .tgt{font-size:10px;opacity:.55}
+
+.rail{position:absolute;left:54px;right:54px;bottom:62px;display:flex;gap:2px;height:2px}
+.rail i{flex:1;background:var(--rule);opacity:.4}
+.rail i.on{opacity:1}
+.rail i.k1.on{background:var(--a1)} .rail i.k2.on{background:var(--a2)}
+.rail i.k3.on{background:var(--a3)} .rail i.k4.on{background:var(--a4)}
+.bar{position:absolute;left:54px;right:54px;bottom:40px;display:flex;
+  justify-content:space-between;gap:18px;font-size:10.5px;color:var(--ink-3)}
+.bar .mid{flex:1;text-align:center}
+
+.attrib{position:absolute;left:54px;right:54px;bottom:11px;z-index:5;
+  font-size:8px;line-height:1.5;color:var(--ink-3);opacity:.82;text-align:center;letter-spacing:.005em}
+.attrib a{color:var(--ink-3);text-decoration:underline;text-underline-offset:1px}
+.attrib a:hover{color:var(--worker)}
+.src{display:none}
+.ov{position:absolute;inset:0;background:#0D1317;padding:38px 54px;overflow:auto;
+  opacity:0;visibility:hidden;transition:opacity .16s ease,visibility .16s;z-index:30}
+.ov.open{opacity:1;visibility:visible}
+.ov h2{font-size:18px;font-weight:600;margin:0 0 6px}
+.ov .caveat{font-size:11.5px;line-height:1.55;color:var(--worker);max-width:80ch;margin:0 0 16px}
+.ov ol{margin:0;padding:0;list-style:none;columns:2;column-gap:40px}
+.ov li{font-size:11px;line-height:1.5;color:var(--ink-2);margin-bottom:11px;
+  break-inside:avoid;padding-left:18px;position:relative}
+.ov li span.k{position:absolute;left:0;color:var(--ink-3)}
+.ov li b{color:var(--ink);font-weight:600}
+.ov .none{font-size:12px;color:var(--ink-3)}
+.ov .hint{position:absolute;right:54px;bottom:24px;font-size:10.5px;color:var(--ink-3)}
+
+/* title */
+#t .wrap{flex:1;display:flex;flex-direction:column;justify-content:center}
+#t h1{font-size:clamp(26px,3.7vw,54px);font-weight:600;line-height:1.14;max-width:22ch;letter-spacing:-.02em}
+#t .who{margin-top:26px;font-size:clamp(12px,1.15vw,15px);line-height:1.6;color:var(--ink-2)}
+#t .who b{color:var(--ink);font-weight:600}
+#t .river{position:absolute;right:0;bottom:70px;width:46%;opacity:.5}
+
+/* bainbridge reveal */
+#s4 .qwrap{flex:1;display:flex;flex-direction:column;justify-content:center;max-width:60%;padding-right:20px}
+#s4 .q{font-size:clamp(17px,2.25vw,33px);font-weight:600;line-height:1.24;letter-spacing:-.015em;margin:0}
+#s4 .q q{quotes:none;color:var(--ink)}
+#s4 .pre{color:var(--ink-3)}
+#s4 .year{position:absolute;top:80px;right:54px;text-align:right}
+#s4 .year .y{font-size:clamp(42px,6.6vw,98px);font-weight:600;letter-spacing:-.04em;line-height:.9;color:var(--anx)}
+#s4 .year .ago{font-size:12.5px;color:var(--ink-3);margin-top:8px}
+#s4 .cite{margin-top:22px;border-left:2px solid var(--anx);padding-left:16px;max-width:58ch}
+#s4 .cite .n{font-size:15px;font-weight:600}
+#s4 .cite .d{font-size:12px;color:var(--ink-2);line-height:1.55;margin-top:5px}
+
+/* flow sim */
+#s3 .stage{flex:1;display:grid;grid-template-columns:1fr 306px;gap:28px;min-height:0;margin-top:10px}
+#s3 .plot{min-height:0}
+#s3 svg{width:100%;height:100%}
+#s3 .side{display:flex;flex-direction:column;justify-content:space-between;gap:10px;min-height:0}
+#s3 .phase{font-size:10px;color:var(--ink-3);letter-spacing:.04em;text-transform:uppercase}
+#s3 label{display:flex;justify-content:space-between;align-items:baseline;font-size:11.5px;
+  color:var(--ink-2);margin:6px 0;gap:10px}
+#s3 label .v{color:var(--ink);font-weight:600}
+#s3 input[type=range]{width:100%;height:3px;appearance:none;background:var(--rule);border-radius:2px;outline:none;margin:0}
+#s3 input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;border-radius:50%;background:var(--a1);cursor:pointer;border:none}
+#s3 input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--a1);cursor:pointer;border:none}
+#s3 .row{display:flex;gap:8px;margin-top:9px}
+#s3 .st{border-left:2px solid var(--rule);padding-left:12px}
+#s3 .st .l{font-size:10px;color:var(--ink-3);margin-bottom:3px}
+#s3 .st .n{font-size:clamp(15px,1.8vw,23px);font-weight:600;line-height:1.15}
+#s3 .st .d{font-size:10px;color:var(--ink-2);margin-top:4px;line-height:1.45}
+#s3 .vd{border-top:1px solid var(--rule);padding-top:10px;font-size:12px;line-height:1.5;min-height:54px}
+button{background:transparent;border:1px solid var(--rule);color:var(--ink-2);font:inherit;
+  font-size:11px;padding:6px 12px;border-radius:2px;cursor:pointer}
+button:hover{border-color:var(--ink-3);color:var(--ink)}
+button.primary{border-color:var(--worker);color:var(--worker)}
+
+/* duo flow sim */
+#s3b .stage{flex:1;display:grid;grid-template-columns:1fr 306px;gap:28px;min-height:0;margin-top:10px}
+#s3b .plot{min-height:0}
+#s3b svg{width:100%;height:100%}
+#s3b .side{display:flex;flex-direction:column;justify-content:space-between;gap:10px;min-height:0}
+#s3b .phase{font-size:10px;color:var(--ink-3);letter-spacing:.04em;text-transform:uppercase}
+#s3b label{display:flex;justify-content:space-between;align-items:baseline;font-size:11.5px;
+  color:var(--ink-2);margin:6px 0;gap:10px}
+#s3b label .v{color:var(--ink);font-weight:600}
+#s3b input[type=range]{width:100%;height:3px;appearance:none;background:var(--rule);border-radius:2px;outline:none;margin:0}
+#s3b input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;border-radius:50%;background:var(--a1);cursor:pointer;border:none}
+#s3b input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--a1);cursor:pointer;border:none}
+#s3b .row{display:flex;gap:8px;margin-top:9px}
+#s3b .st{border-left:2px solid var(--rule);padding-left:12px}
+#s3b .st .l{font-size:10px;color:var(--ink-3);margin-bottom:3px}
+#s3b .st .n{font-size:clamp(15px,1.8vw,23px);font-weight:600;line-height:1.15}
+#s3b .st .d{font-size:10px;color:var(--ink-2);margin-top:4px;line-height:1.45}
+#s3b .vd{border-top:1px solid var(--rule);padding-top:10px;font-size:12px;line-height:1.5;min-height:54px}
+button{background:transparent;border:1px solid var(--rule);color:var(--ink-2);font:inherit;
+  font-size:11px;padding:6px 12px;border-radius:2px;cursor:pointer}
+button:hover{border-color:var(--ink-3);color:var(--ink)}
+button.primary{border-color:var(--worker);color:var(--worker)}
+
+#s3b .duo{border:1px solid var(--rule);padding:9px 12px;background:var(--panel);margin-top:2px}
+#s3b .duo .l{font-size:10px;color:var(--ink-3)}
+#s3b .duo .cmp{display:flex;gap:14px;margin-top:6px}
+#s3b .duo .cmp div{flex:1}
+#s3b .duo .a{font-size:13px;font-weight:600;color:var(--anx)}
+#s3b .duo .b{font-size:13px;font-weight:600;color:var(--flow)}
+#s3b .duo .t{font-size:9.5px;color:var(--ink-3);margin-top:2px}
+#s3b button.duoBtn{border-color:var(--flow);color:var(--flow)}
+
+#deck .aboutfoot{display:grid;grid-template-columns:1fr auto;gap:28px;align-items:end;
+  border-top:1px solid var(--rule);margin-top:14px;padding-top:12px}
+#deck .degs{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:9px}
+#deck .degs .dl{font-size:10px;color:var(--ink-3);letter-spacing:.03em;text-transform:uppercase;margin-right:2px}
+#deck .degs .deg{font-size:10.5px;color:var(--ink-2);border:1px solid var(--rule);
+  border-radius:11px;padding:3px 10px;white-space:nowrap}
+#deck a.li{display:flex;align-items:center;gap:9px;text-decoration:none;
+  border:1px solid var(--rule);border-radius:3px;padding:8px 12px}
+#deck a.li:hover{border-color:var(--company)}
+#deck a.li span{display:flex;flex-direction:column;line-height:1.3}
+#deck a.li b{font-size:11.5px;color:var(--ink);font-weight:600}
+#deck a.li i{font-size:10px;color:var(--company);font-style:normal}
+
+
+/* personalised course */
+#pc .pcwrap{flex:1;display:grid;grid-template-columns:1fr 268px;gap:26px;min-height:0;align-items:center}
+#pc .pcplot{min-height:0}
+#pc .pcplot svg{width:100%;height:100%;max-height:50vh;overflow:visible}
+#pc .pcside{display:flex;flex-direction:column;gap:10px}
+#pc .pctl{font-size:10px;color:var(--ink-3);letter-spacing:.04em;text-transform:uppercase}
+#pc .pcpick{display:flex;flex-direction:column;gap:5px}
+#pc .pcpick button{text-align:left;font-size:11.5px;padding:6px 10px;border:1px solid var(--rule);
+  background:transparent;color:var(--ink-3);border-radius:2px;cursor:pointer}
+#pc .pcpick button:hover{border-color:var(--ink-3);color:var(--ink-2)}
+#pc .pcpick button.on{border-color:var(--worker);color:var(--worker);background:rgba(240,171,0,.07)}
+#pc .pccap{font-size:12px;line-height:1.5;color:var(--ink);min-height:70px;
+  border-left:2px solid var(--flow);padding-left:12px}
+#pc .pcnote{font-size:10.5px;line-height:1.5;color:var(--ink-3)}
+#pc .pcq{font-size:clamp(14px,1.5vw,20px);line-height:1.4;color:var(--ink);font-weight:600}
+#pc .pcq .muted{font-weight:400;color:var(--ink-3)}
+
+/* generic broadcast */
+.bcwrap{flex:1;display:grid;grid-template-columns:1fr 290px;gap:28px;min-height:0;align-items:center}
+.bcwrap svg{width:100%;height:100%;max-height:46vh;overflow:visible}
+.bcside{display:flex;flex-direction:column;gap:10px}
+.bctl{font-size:10px;color:var(--ink-3);letter-spacing:.04em;text-transform:uppercase}
+.bcpick{display:flex;flex-direction:column;gap:5px}
+.bcpick button{text-align:left;font-size:11.5px;padding:6px 10px;border:1px solid var(--rule);
+  background:transparent;color:var(--ink-3);border-radius:2px;cursor:pointer}
+.bcpick button:hover{border-color:var(--ink-3);color:var(--ink-2)}
+.bcpick button.on{border-color:var(--worker);color:var(--worker);background:rgba(240,171,0,.07)}
+.bccap{font-size:12px;line-height:1.5;color:var(--ink);min-height:52px;border-left:2px solid var(--company);padding-left:12px}
+.bcnote{font-size:10.5px;line-height:1.5;color:var(--ink-3)}
+.bcplay{align-self:flex-start;font-size:10.5px;padding:5px 11px}
+
+/* two stores */
+#s19 .stage{flex:1;min-height:0;display:flex;justify-content:center;margin-top:4px}
+#s19 .fig{position:relative;height:100%;aspect-ratio:1280/620}
+#s19 svg{width:100%;height:100%}
+#s19 .fc{fill:rgba(74,163,255,.10)} #s19 .fw{fill:rgba(240,171,0,.09)}
+#s19 .enc{stroke:var(--worker);fill:none;stroke-width:1;stroke-dasharray:2 7;opacity:.6}
+#s19 .mk{position:absolute;width:26px;height:26px;transform:translate(-50%,-50%);
+  border-radius:50%;background:var(--bg);cursor:pointer;display:flex;align-items:center;
+  justify-content:center;font-size:15px;line-height:1;padding:0 0 2px}
+#s19 .mk.c{border:1.25px solid var(--company);color:var(--company)}
+#s19 .mk.w{border:1.25px solid var(--worker);color:var(--worker)}
+#s19 .mk[aria-expanded="true"].c{background:var(--company);color:var(--bg)}
+#s19 .mk[aria-expanded="true"].w{background:var(--worker);color:var(--bg)}
+#s19 .co{position:absolute;width:35%;background:var(--panel);border-left:2px solid var(--rule);
+  padding:13px 15px;opacity:0;visibility:hidden;transition:opacity .2s,visibility .2s}
+#s19 .co.c{border-left-color:var(--company)} #s19 .co.w{border-left-color:var(--worker)}
+#s19 .co.open{opacity:1;visibility:visible}
+#s19 .co h3{font-size:11.5px;font-weight:600;margin:0 0 8px;color:var(--ink-3)}
+#s19 .co ul{margin:0;padding:0;list-style:none}
+#s19 .co li{font-size:12px;line-height:1.5;padding-left:12px;margin-bottom:5px;position:relative}
+#s19 .co li::before{content:"";position:absolute;left:0;top:8px;width:5px;height:1px;background:var(--ink-3)}
+
+/* economics lanes */
+#s20 .lane{display:grid;grid-template-columns:140px 1fr;gap:18px;align-items:center;margin-bottom:26px}
+#s20 .ll{text-align:right}
+#s20 .ll .n{font-size:13px;font-weight:600}
+#s20 .ll .o{font-size:11px;color:var(--ink-3);margin-top:3px;line-height:1.4}
+#s20 .b{display:flex;height:52px}
+#s20 .sg{display:flex;flex-direction:column;justify-content:center;padding:0 13px}
+#s20 .sg .n{font-size:14px;font-weight:600} #s20 .sg .l{font-size:10.5px;margin-top:4px}
+#s20 .billed{background:rgba(74,163,255,.12);border:1.25px solid var(--company)}
+#s20 .billed .l{color:var(--company)}
+#s20 .local{background:rgba(240,171,0,.11);border:1.25px solid var(--worker);border-right:none}
+#s20 .local .l{color:var(--worker)}
+
+/* token simulator */
+#s21 .stage{flex:1;display:grid;grid-template-columns:36% 1fr;gap:30px;min-height:0;margin-top:10px}
+#s21 .ctrls{display:flex;flex-direction:column;gap:6px;overflow:auto;padding-right:6px}
+#s21 .gt{font-size:10.5px;color:var(--ink-3);border-bottom:1px solid var(--rule);padding-bottom:4px}
+#s21 label{display:flex;justify-content:space-between;align-items:baseline;font-size:11px;
+  color:var(--ink-2);margin-bottom:3px;gap:10px}
+#s21 label .v{color:var(--ink);font-weight:600}
+#s21 input[type=range]{width:100%;height:3px;appearance:none;background:var(--rule);border-radius:2px;outline:none;margin:0}
+#s21 input[type=range]::-webkit-slider-thumb{appearance:none;width:14px;height:14px;border-radius:50%;background:var(--worker);cursor:pointer;border:none}
+#s21 input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--worker);cursor:pointer;border:none}
+#s21 input[type=number]::placeholder{color:var(--ink-3);opacity:.7;font-size:11px}
+#s21 input[type=number]{width:100%;background:var(--panel);border:1px solid var(--rule);color:var(--ink);
+  font:inherit;font-size:12px;padding:5px 8px;border-radius:2px}
+#s21 .presets{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap}
+#s21 .presets button{font-size:9.5px;padding:3px 7px;border-color:var(--rule);color:var(--ink-3)}
+#s21 .presets button:hover{border-color:var(--worker);color:var(--worker)}
+#s21 .presets #clrBtn{border-color:var(--anx);color:var(--anx)}
+#s21 .presets #rstBtn{border-color:var(--company);color:var(--company)}
+#s21 .hint{font-size:9px;color:var(--ink-3);margin-top:2px;line-height:1.3}
+#s21 .res{display:flex;flex-direction:column;justify-content:space-between;gap:12px;min-height:0}
+#s21 .hl{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+#s21 .ledger{display:flex;flex-direction:column;gap:5px}
+#s21 .lrow{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-2);
+  font-variant-numeric:tabular-nums;padding:3px 0}
+#s21 .lrow.sub{color:var(--ink-3);font-size:11.5px;padding-left:14px}
+#s21 .lrow.tot{border-top:1px solid var(--rule);padding-top:7px;margin-top:3px;color:var(--ink);font-weight:600}
+#s21 .lrow.net{border-top:1px solid var(--flow);color:var(--flow)}
+#s21 .bars{display:flex;flex-direction:column;gap:11px}
+#s21 .rl{display:flex;justify-content:space-between;font-size:11.5px;color:var(--ink-2);margin-bottom:4px}
+#s21 .trk{height:26px;background:rgba(255,255,255,.04);position:relative}
+#s21 .fl{height:100%;position:absolute;left:0;top:0}
+#s21 .fl.now{background:rgba(74,163,255,.28);border-right:1.5px solid var(--company)}
+#s21 .fl.aft{background:rgba(240,171,0,.24);border-right:1.5px solid var(--worker)}
+#s21 .fl.ops{background:rgba(255,255,255,.1);border-right:1px solid var(--ink-3)}
+#s21 .be{border:1px solid var(--rule);padding:10px 13px;background:var(--panel)}
+#s21 .be .n{font-size:15px;font-weight:600;color:var(--worker)}
+#s21 .be .l{font-size:11px;color:var(--ink-2);line-height:1.5;margin-top:4px}
+
+#s24 .coverwrap{display:flex;flex-direction:column;align-items:center;gap:10px}
+#s24 .cover{max-height:44vh;max-width:100%;height:auto;display:block;
+  border:1px solid var(--rule);box-shadow:0 10px 34px rgba(0,0,0,.55)}
+#s24 .attrib{font-size:9px;line-height:1.45;color:var(--ink-3);max-width:40ch;text-align:center}
+#s24 .attrib i{font-style:italic}
+
+#sum .two{display:grid;grid-template-columns:232px 1fr;gap:30px;align-items:start;min-height:0}
+#sum .thread{border-right:1px solid var(--rule);padding-right:26px}
+#sum .tl{font-size:10px;color:var(--ink-3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:11px}
+#sum .beads{margin:0;padding:0;list-style:none;counter-reset:bd}
+#sum .beads li{counter-increment:bd;position:relative;padding-left:18px;margin-bottom:4px;
+  font-size:10.6px;line-height:1.32;color:var(--ink-2)}
+#sum .beads li::before{content:counter(bd);position:absolute;left:0;top:1px;
+  font-size:8.5px;color:var(--ink-3);opacity:.6;font-variant-numeric:tabular-nums}
+#sum .beads li.grp{counter-increment:none;padding-left:0;margin:11px 0 6px;
+  font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);
+  border-bottom:1px solid var(--rule);padding-bottom:4px}
+#sum .beads li.grp:first-child{margin-top:0}
+#sum .beads li.grp::before{content:""}
+#sum .beads li.grp.a1{border-bottom-color:var(--a1)}
+#sum .beads li.grp.a2{border-bottom-color:var(--a2)}
+#sum .beads li.grp.a3{border-bottom-color:var(--a3)}
+#sum .beads li.grp.a4{border-bottom-color:var(--a4)}
+#sum .beads li .w{color:var(--worker);font-weight:600}
+#sum .beads li .c{color:var(--company);font-weight:600}
+#sum .para{columns:2;column-gap:36px;font-size:clamp(9.4px,0.88vw,11.9px);line-height:1.66;
+  color:var(--ink-2);text-align:left;margin:0}
+#sum .para b{color:var(--ink);font-weight:600}
+#sum .para .w{color:var(--worker);font-weight:600}
+#sum .para .c{color:var(--company);font-weight:600}
+#sum .para .g{color:var(--flow);font-weight:600}
+#sum .para .r{color:var(--anx);font-weight:600}
+#sum .strip{display:flex;align-items:center;gap:0;margin-top:14px;border-top:1px solid var(--rule);padding-top:12px}
+#sum .step{display:flex;flex-direction:column;gap:3px;padding-right:16px}
+#sum .step .k{font-size:11.5px;font-weight:600}
+#sum .step .v{font-size:9.5px;color:var(--ink-3);line-height:1.4}
+#sum .arw{color:var(--ink-3);font-size:13px;padding:0 16px 12px 0}
+#sum .spacer{flex:1}
+#sum .doi{font-size:9.5px;color:var(--ink-3);text-align:right;line-height:1.5}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+<!-- TITLE -->
+<section class="slide active a1" id="t">
+  <div class="wrap">
+    <h1>When the river runs dry</h1>
+    <p class="sub" style="font-size:clamp(14px,1.5vw,20px);color:var(--ink-2);max-width:34ch;margin-top:14px">Learning and critical thinking in an automated world</p>
+    <div class="who">
+      <b>Dr. Sean MacNiven</b><br>
+      Head of Research <br>
+	  Technology and Transformation Office<br>
+      SAP Customer Support
+    </div>
+  </div>
+  <svg class="river" viewBox="0 0 560 220">
+    <path d="M10,44 C150,34 250,58 400,50 C480,46 520,52 552,50" class="lng" stroke-opacity=".75"/>
+    <path d="M10,86 C150,80 250,100 400,96 C480,94 520,98 552,97" class="lng" stroke-opacity=".5"/>
+    <path d="M10,128 C150,126 250,140 386,142" class="lnd"/>
+    <path d="M10,168 C130,170 210,178 300,180" class="lnd" stroke-opacity=".5"/>
+    <path d="M300,180 l10,-4 M300,180 l10,4" class="lnd" stroke-opacity=".5"/>
+    <text x="396" y="146" class="txs">the flow thins</text>
+    <text x="318" y="184" class="txs">and then stops</text>
+  </svg>
+  <div class="src">
+    <p class="caveat">Press N on any slide for its sources. Where a figure is mine rather than published, the panel says so explicitly.</p>
+    <ol>
+      <li><span class="k">1</span><b>Dr. Sean MacNiven.</b> Head of Research, Technology and Transformation Office, Customer Support, SAP SE. Visiting professor, Leeds Beckett University Business School. Honorary professor, Glasgow Caledonian University.</li>
+      <li><span class="k">2</span><b>Presented to the Consortium for Service Innovation.</b> KCS and Intelligent Swarming are referenced throughout with attribution, under CC BY-NC-ND 4.0.</li>
+      <li><span class="k">3</span><b>Working paper.</b> A Right to One's Own Method: Worker-paired AI memory and the recording paradox in Union law. Zenodo, DOI 10.5281/zenodo.22738329. Published open access.</li>
+      <li><span class="k">4</span><b>Declaration of interest.</b> Independent consulting is carried out under a contractual permission from SAP. Nothing in this talk is offered commercially.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- 1 -->
+<section class="slide a1">
+  <div class="act"><span class="dot"></span>Act one</div>
+  <h1>About Me: I run dedicated organisational and process research inside SAP's customer support organisation. I am also active as a visiting professor in the business school of Leeds Beckett University and an honorary professor at Glasgow Caledonian University in the UK.</h1>
+  <div class="body">
+    <svg viewBox="0 0 900 152" style="width:100%;max-height:148px;margin-bottom:4px">
+      <circle cx="404" cy="68" r="50" class="lnw" fill="rgba(240,171,0,.07)"/>
+      <circle cx="450" cy="68" r="50" class="lnc" fill="rgba(74,163,255,.07)"/>
+      <circle cx="496" cy="68" r="50" class="lng" fill="rgba(95,212,160,.07)"/>
+      <circle cx="450" cy="68" r="5.5" fill="#EAECEE"/>
+
+      <text x="336" y="44" class="txw" text-anchor="end" font-size="11.5" font-weight="600">Industry</text>
+      <text x="336" y="59" class="txs" text-anchor="end" font-size="9.5">SAP, four thousand engineers</text>
+      <line x1="344" y1="48" x2="372" y2="40" class="ln"/>
+
+      <text x="450" y="12" class="txc" text-anchor="middle" font-size="11.5" font-weight="600">Academia</text>
+      <line x1="450" y1="17" x2="450" y2="26" class="ln"/>
+
+      <text x="564" y="44" class="txg" font-size="11.5" font-weight="600">Independent</text>
+      <text x="564" y="59" class="txs" font-size="9.5">developer and consultant</text>
+      <line x1="556" y1="48" x2="528" y2="40" class="ln"/>
+
+      <line x1="450" y1="74" x2="450" y2="128" class="lnd"/>
+      <text x="450" y="146" class="txs" text-anchor="middle">everything in this talk was formed here, in the overlap</text>
+    </svg>
+    <div class="cols c3">
+      <div class="card"><div class="h">Industry</div><div class="d">Developing research and innovation for around four thousand support engineers at SAP SE. Focussed on intelligent automation; (local) AI; employee wellbeing; data protection and privacy; impact measurement, KCS and the future of work. </div></div>
+      <div class="card"><div class="h">Academia</div><div class="d">The impact of AI on society; computational linguistics; applied neuroscience; behavioural economics; perception, causal inference and design; experimental design; European policy and the rights of the individual. Developing apps to support academics.</div></div>
+      <div class="card"><div class="h">Independent Developer and Consultant</div><div class="d">Over the years I have consulted a range of clients from the European Commission, to universities and companies. Most recently I have begun engaging with representatives in Brussels on the future of work and employee rights, and developing architectures and strategies designed to maximise benefit and minimise harm.</div></div>
+    </div>
+    <div class="aboutfoot">
+      <div>
+        <div class="muted" style="font-size:clamp(12px,1.25vw,16px);line-height:1.45">I live and work at the intersection of industry, academia and solo entrepreneurship.</div>
+        <div class="degs">
+          <span class="dl">Degrees in</span>
+          <span class="deg">Computer science and mathematics</span>
+          <span class="deg">Research methods</span>
+          <span class="deg">Business science</span>
+          <span class="deg">Applied neuroscience</span>
+        </div>
+      </div>
+      <a class="li" href="https://www.linkedin.com/in/seanmacniven" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+          <rect x="0.6" y="0.6" width="22.8" height="22.8" rx="3.4" fill="none" stroke="#4AA3FF" stroke-width="1.2"/>
+          <rect x="4.6" y="9.4" width="2.6" height="9.6" fill="#4AA3FF"/>
+          <circle cx="5.9" cy="6.4" r="1.6" fill="#4AA3FF"/>
+          <path d="M10.2,19 v-9.6 h2.5 v1.3 c0.6,-1 1.7,-1.6 3,-1.6 c2.3,0 3.7,1.5 3.7,4.1 V19 h-2.6 v-5.2 c0,-1.5 -0.7,-2.3 -1.9,-2.3 c-1.3,0 -2.1,0.9 -2.1,2.4 V19 Z" fill="#4AA3FF"/>
+        </svg>
+        <span>
+          <b>Dr. Sean MacNiven</b>
+          <i>linkedin.com/in/seanmacniven</i>
+        </span>
+      </a>
+    </div>
+  </div>
+  <div class="src">
+    <ol>
+      <li><span class="k">1</span><b>Affiliations as stated.</b> SAP SE, Customer Support, Technology and Transformation Office. Visiting professor, Leeds Beckett University Business School. Honorary professor, Glasgow Caledonian University.</li>
+      <li><span class="k">2</span><b>Declaration of interest.</b> I hold a contractual permission from SAP for independent consulting alongside employment. Prior consulting has included the European Commission, universities and companies. Nothing in this talk is offered for sale. The policy argument is published open access and the architecture is described there.</li>
+      <li><span class="k">3</span><b>KCS</b> is a service delivery methodology of the Consortium for Service Innovation, referenced throughout this talk with attribution.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="slide a1">
+  <div class="act"><span class="dot"></span>Act one, the problem</div>
+  <h1>Practice used to make perfect, but the exercises are evaporating.</h1>
+  <div class="body">
+    <svg viewBox="0 0 900 250" style="width:100%;max-height:250px">
+      <defs>
+        <pattern id="drain" width="8" height="8" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+          <line x1="0" y1="0" x2="0" y2="8" stroke="#C86B5A" stroke-width="1.3" opacity=".45"/>
+        </pattern>
+        <marker id="dn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,1 L9,5 L0,9" fill="none" stroke="#C86B5A" stroke-width="1.25"/></marker>
+      </defs>
+
+      <text x="40" y="20" class="txs">The 70-20-10 model</text>
+
+      <rect x="40" y="34" width="430" height="128" class="lnw" fill="rgba(240,171,0,.08)"/>
+      <text x="58" y="66" class="txw" font-size="26" font-weight="600">70</text>
+      <text x="104" y="66" class="txb">On the job. Doing the work.</text>
+      <text x="104" y="88" class="txs">Thousands of cases, each a little harder than the last.</text>
+      <text x="104" y="110" class="txs">This is where expertise actually came from.</text>
+
+      <rect x="40" y="170" width="430" height="34" class="ln" fill="rgba(255,255,255,.03)"/>
+      <text x="58" y="193" class="tx" font-size="16" font-weight="600">20</text>
+      <text x="104" y="193" class="txs">From others. Coaching, swarming, looking over a shoulder.</text>
+
+      <rect x="40" y="212" width="430" height="26" class="ln" fill="rgba(255,255,255,.03)"/>
+      <text x="58" y="230" class="tx" font-size="14" font-weight="600">10</text>
+      <text x="104" y="230" class="txs">Formal. The courses we spend the budget on.</text>
+
+      <path d="M486,98 L556,98" class="lnr" marker-end="url(#dn)"/>
+      <text x="500" y="86" class="txr">automated</text>
+
+      <rect x="572" y="34" width="290" height="128" fill="url(#drain)" stroke="#C86B5A" stroke-width="1.25" stroke-dasharray="5 5"/>
+      <text x="717" y="88" class="txr" text-anchor="middle" font-size="15" font-weight="600">Draining</text>
+      <text x="717" y="110" class="txs" text-anchor="middle">the exercises go first</text>
+
+      <rect x="572" y="170" width="290" height="34" class="ln" fill="rgba(255,255,255,.03)"/>
+      <text x="717" y="192" class="txs" text-anchor="middle">20 survives, but has less to point at</text>
+      <rect x="572" y="212" width="290" height="26" class="ln" fill="rgba(255,255,255,.03)"/>
+      <text x="717" y="230" class="txs" text-anchor="middle">10 is untouched, and was never enough</text>
+    </svg>
+    <div class="land">When the 70 in the 70-20-10 model is eliminated, how much learning is really possible?</div>
+  </div>
+  <div class="src">
+    <p class="caveat">70-20-10 is a heuristic. It is useful as a shared frame and should not be presented as an empirical finding.</p>
+    <ol>
+      <li><span class="k">1</span><b>Lombardo, M. and Eichinger, R., Center for Creative Leadership.</b> The 70-20-10 framework, derived from survey work with executives on where they believed their development came from.</li>
+      <li><span class="k">2</span><b>The known criticism.</b> The ratios are widely used in learning and development and widely challenged for thin empirical support and for being generalised well beyond the population they were drawn from. Call it a model before anyone else calls it one.</li>
+    </ol>
+  </div>
+</section>
+<!-- 3 flow simulation -->
+<section class="slide a1" id="s3">
+  <div class="act"><span class="dot"></span>Act one</div>
+  <h1>Here is what happens to a career when the easy cases stop arriving: the channel that used to teach people collapses beneath them and they freeze at whatever title they had reached.</h1>
+  <div class="stage">
+    <div class="plot">
+      <svg viewBox="0 0 660 420" role="img" aria-label="Skill against difficulty. An engineer climbs the flow channel, then the channel falls away and they are stranded in the too difficult region.">
+        <defs>
+          <pattern id="fh1" width="7" height="7" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+            <line x1="0" y1="0" x2="0" y2="7" stroke="#8497A6" stroke-width="1" opacity=".5"/>
+          </pattern>
+          <clipPath id="fclip"><rect x="70" y="20" width="558" height="350"/></clipPath>
+        </defs>
+        <g clip-path="url(#fclip)">
+          <polygon id="fHard" fill="url(#fh1)"/>
+          <polygon id="fEasy" fill="url(#fh1)"/>
+          <polygon id="fBand" fill="rgba(95,212,160,.12)"/>
+          <line id="fEU" stroke="#5FD4A0" stroke-width="1.1" stroke-opacity=".5"/>
+          <line id="fEL" stroke="#5FD4A0" stroke-width="1.1" stroke-opacity=".5"/>
+          <g id="fMiles"></g>
+          <text id="fFlowLbl" fill="#5FD4A0" font-size="15" font-family="inherit" text-anchor="middle" font-weight="600">FLOW</text>
+          <path id="fTrail" fill="none" stroke="#F0AB00" stroke-width="2.25" stroke-linejoin="round"/>
+          <line id="fGap" stroke="#C86B5A" stroke-width="1.25" stroke-dasharray="3 3" opacity="0"/>
+          <circle id="fDot" r="9" fill="#F0AB00"/>
+        </g>
+        <text id="fHardLbl" fill="#A6B3BF" font-size="13.5" font-family="inherit" text-anchor="middle">Too difficult</text>
+        <text id="fEasyLbl" fill="#A6B3BF" font-size="13.5" font-family="inherit" text-anchor="middle">Too easy</text>
+        <text id="fDotLbl" fill="#F0AB00" font-size="12" font-family="inherit" font-weight="600"></text>
+        <line x1="70" y1="370" x2="628" y2="370" stroke="#33414F" stroke-width="1.25"/>
+        <line x1="70" y1="370" x2="70" y2="20" stroke="#33414F" stroke-width="1.25"/>
+        <text x="70" y="392" fill="#6F7F8D" font-size="11.5" font-family="inherit">Low</text>
+        <text x="628" y="392" fill="#6F7F8D" font-size="11.5" font-family="inherit" text-anchor="end">High skill</text>
+        <text x="62" y="370" fill="#6F7F8D" font-size="11.5" font-family="inherit" text-anchor="end">Low</text>
+        <text x="62" y="28" fill="#6F7F8D" font-size="11.5" font-family="inherit" text-anchor="end">High difficulty</text>
+      </svg>
+    </div>
+    <div class="side">
+      <div>
+        <div class="phase" id="fPhase">Ready</div>
+        <label for="fSlider">Cases the machine has taken <span class="v" id="fVal">0%</span></label>
+        <input type="range" id="fSlider" min="0" max="100" step="1" value="0">
+        <div class="row"><button class="primary" id="fPlay">Run simulation</button><button id="fReset">Reset</button></div>
+      </div>
+      <div class="st" id="fZoneBox">
+        <div class="l">Title reached</div>
+        <div class="n" id="fZone">Junior Specialist</div>
+        <div class="d" id="fZoneD"></div>
+      </div>
+      <div class="st" id="fRateBox">
+        <div class="l">Progress up the channel</div>
+        <div class="n" id="fRate">0%</div>
+        <div class="d" id="fRateD"></div>
+      </div>
+      <div class="vd" id="fVerdict"></div>
+    </div>
+  </div>
+  <div class="src">
+    <p class="caveat">This is a model. The channel is a conceptual diagram and the climb is simulated from assumptions I chose, with nothing fitted to data. I would defend the shape of it and none of the numbers.</p>
+    <ol>
+      <li><span class="k">1</span><b>Csikszentmihalyi, M. (1990).</b> Flow: The Psychology of Optimal Experience. Harper and Row. Skill against challenge, with boredom on one side of the diagonal and anxiety on the other.</li>
+      <li><span class="k">2</span><b>Lave, J. and Wenger, E. (1991).</b> Situated Learning: Legitimate Peripheral Participation. Cambridge University Press. The zigzag is the reach past what you can do, the fall back, and the retry.</li>
+      <li><span class="k">3</span><b>What the falling channel represents.</b> The range of work the organisation can still put in front of a person to learn on. Erode the easy end and that range collapses. The person has not changed. What they can be given has.</li>
+      <li><span class="k">4</span><b>How the climb is simulated.</b> Skill advances only while the work sits inside the band, and freezes when it does not. The collapse follows a 1.5 power curve so erosion accelerates. Band width, growth rate and the five titles are all chosen by me.</li>
+      <li><span class="k">5</span><b>What this does not show.</b> Some removed work returns as review and approval rather than disappearing, which is why the Lee finding on effort shifting from producing to checking appears two slides later.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- 4 Bainbridge reveal -->
+<section class="slide a1" id="s4">
+  <div class="qwrap">
+    <p class="q"><span class="pre">Take away the easy parts of the job, and</span> <q>automation can make the difficult parts of the human operator's task more difficult.</q></p>
+    <div class="cite">
+      <div class="n">Lisanne Bainbridge, Ironies of Automation</div>
+      <div class="d">Automatica, Volume 19, Issue 6, pages 775 to 779. Five pages about process control rooms and power stations. By 2016 it had roughly 1,800 citations and the rate was still climbing. The opening clause here is paraphrased; the quoted portion is hers.</div>
+    </div>
+  </div>
+  <div class="year">
+    <div class="y">1983</div>
+    <div class="ago">Forty three years ago</div>
+  </div>
+  <div class="src">
+    <ol>
+      <li><span class="k">1</span><b>Bainbridge, L. (1983).</b> Ironies of Automation. Automatica, 19(6), 775 to 779.</li>
+      <li><span class="k">2</span><b>On the wording.</b> The original sentence reads "By taking away the easy parts of his task, automation can make the difficult parts of the human operator's task more difficult." The opening clause is paraphrased here in modern phrasing; the second clause is verbatim.</li>
+      <li><span class="k">3</span><b>Citation count.</b> Strauch's analysis records roughly 1,800 citations by November 2016, far ahead of comparable work, and still accelerating.</li>
+      <li><span class="k">4</span><b>Also in the same paper.</b> Bainbridge argues that operators need more training rather than less, because they must be ready for rare but crucial interventions, and that the most reliable automated systems may need the greatest investment in operator training.</li>
+    </ol>
+  </div>
+</section>
+<!-- 5 -->
+<section class="slide a1">
+  <div class="act"><span class="dot"></span>Act one</div>
+  <h1>The evidence has now caught up with her, in confidence effects on critical thinking and in payroll data showing entry level work vanishing where AI automates rather than augments.</h1>
+  <div class="body">
+    <svg viewBox="0 0 900 92" style="width:100%;max-height:92px;margin-bottom:10px">
+      <text x="30" y="16" class="txs">Employment change, 22 to 25 year olds, late 2022 to mid 2026</text>
+      <text x="30" y="46" class="txs" font-size="10">Least AI-exposed</text>
+      <rect x="430" y="34" width="112" height="16" class="lng" fill="rgba(95,212,160,.25)"/>
+      <text x="552" y="46" class="txg" font-size="11">+10%</text>
+      <text x="30" y="76" class="txs" font-size="10">Most AI-exposed</text>
+      <rect x="306" y="64" width="124" height="16" class="lnr" fill="rgba(200,107,90,.25)"/>
+      <text x="298" y="76" class="txr" font-size="11" text-anchor="end">-11%</text>
+      <line x1="430" y1="24" x2="430" y2="86" class="ln"/>
+      <text x="600" y="66" class="txs" font-size="10">21 percentage points apart,</text>
+      <text x="600" y="80" class="txs" font-size="10">a relative decline of about 19 percent</text>
+    </svg>
+    <div class="cols c2">
+      <div>
+        <div class="stat blue"><div class="n">319 / 936</div><div class="l">Knowledge workers surveyed, and first-hand examples of AI use at work. Microsoft Research and Carnegie Mellon, CHI 2025.</div></div>
+        <div class="card blue" style="margin-top:16px"><div class="h">Confidence moves effort, in both directions</div><div class="d">Higher confidence in the AI predicted less critical thinking. Higher confidence in one's own ability predicted more. The work shifts from producing an answer to checking one.</div></div>
+      </div>
+      <div>
+        <div class="stat red"><div class="n">19%</div><div class="l">The employment gap for 22 to 25 year olds in the most AI-exposed occupations, as of the August 2026 update.</div></div>
+        <div class="card red" style="margin-top:16px"><div class="h">Only where AI automates, not where it augments</div><div class="d">Employment in the two most exposed quintiles fell around 11 percent from late 2022 to mid 2026, while the least exposed grew around 10 percent. Experienced workers stayed stable.</div></div>
+      </div>
+    </div>
+    <div class="land">Stanford's own headline is that there is no widespread displacement. What the data shows is a change in who can get in at the start.</div>
+  </div>
+  <div class="src">
+    <p class="caveat">Both are self-reported or administrative rather than experimental. Neither measures critical thinking directly, and neither establishes causation.</p>
+    <ol>
+      <li><span class="k">1</span><b>Lee, H-P., Sarkar, A., Tankelevitch, L., Drosos, I., Rintel, S., Banks, R. and Wilson, N. (2025).</b> The Impact of Generative AI on Critical Thinking. CHI 2025, Yokohama. 319 knowledge workers using GenAI at least weekly, 936 retained examples.</li>
+      <li><span class="k">2</span><b>Important caveat on Lee et al.</b> It measures the enaction of critical thinking as self-reported, not critical thinking itself. Participants reported enacting it in 555 of 936 examples, about 59 percent. Do not say the study shows AI makes people worse thinkers.</li>
+      <li><span class="k">3</span><b>Brynjolfsson, E., Chandar, B. and Chen, R.</b> Canaries in the Coal Mine? Six Facts about the Recent Employment Effects of Artificial Intelligence. Stanford Digital Economy Lab, ADP payroll data.</li>
+      <li><span class="k">4</span><b>The figure has moved between versions.</b> 13 percent in August 2025, 16 percent in November 2025, and about 19 percent in the August 2026 update. Cite the August 2026 version and the 19 percent figure.</li>
+      <li><span class="k">5</span><b>The automation versus augmentation split</b> is measured empirically using the extent to which observed LLM queries substitute for or complement occupational tasks.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="slide a1">
+  <div class="act"><span class="dot"></span>Act one, the hinge</div>
+  <h1>This matters because some skills are worth nothing in themselves and everything as foundations, and it is the additive kind we are quietly automating.</h1>
+  <div class="body">
+    <div class="cols c2">
+      <div>
+        <div class="card"><div class="h">Self-contained</div><div class="d">Exists for its own sake. Nothing rests on it. Automating it is pure gain, and nobody mourns double declutching or doing long division by hand.</div></div>
+        <svg viewBox="0 0 320 120" style="width:100%;margin-top:14px">
+          <rect x="110" y="66" width="100" height="34" class="ln" fill="rgba(255,255,255,.03)"/>
+          <text x="160" y="88" class="txs" text-anchor="middle">a skill</text>
+          <path d="M110,56 L210,56" class="lnd"/>
+          <text x="160" y="44" class="txs" text-anchor="middle">nothing above it</text>
+        </svg>
+      </div>
+      <div>
+        <div class="card amber"><div class="h">Additive</div><div class="d">Not valuable in itself. It is what later judgement is built on. Automate it and the structure above stays standing for years, then does not.</div></div>
+        <svg viewBox="0 0 320 120" style="width:100%;margin-top:14px">
+          <rect x="110" y="66" width="100" height="34" class="lnw" fill="rgba(240,171,0,.08)"/>
+          <text x="160" y="88" class="txw" text-anchor="middle">a skill</text>
+          <rect x="88" y="38" width="144" height="22" class="ln"/>
+          <rect x="66" y="12" width="188" height="22" class="ln"/>
+          <text x="160" y="53" class="txs" text-anchor="middle">pattern recognition</text>
+          <text x="160" y="27" class="txs" text-anchor="middle">judgement under uncertainty</text>
+        </svg>
+      </div>
+    </div>
+    <div class="land">A tier one case alone is most valuable in the engineer it helps evolve. We focus on optimisation of the former at our peril, if we do not also consider its value to the latter.</div>
+  </div>
+  <div class="src">
+    <p class="caveat">The distinction on this slide is mine. It is a way of organising an argument, and I would not defend it as a taxonomy.</p>
+    <ol>
+      <li><span class="k">1</span><b>Self-contained and additive</b> are my labels. The nearest established relative is the literature on prerequisite structures and knowledge dependency in curriculum design, which formalises the idea that some competencies gate others.</li>
+      <li><span class="k">2</span><b>Bainbridge, L. (1983).</b> Ironies of Automation. The underlying claim, that removing routine practice degrades the capability needed for the exceptional case, is hers.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="slide a1">
+  <div class="act"><span class="dot"></span>The turn</div>
+  <h1>If the foundation for learning evaporates through automation, expertise has to be built on purpose. This turns a future staffing apocalypse into a learning problem.</h1>
+  <div class="body">
+    <div class="cols c2">
+      <div>
+        <svg viewBox="0 0 430 200" style="width:100%">
+          <defs>
+            <marker id="cv" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,1 L9,5 L0,9" fill="none" stroke="#33414F" stroke-width="1.25"/></marker>
+          </defs>
+          <text x="14" y="16" class="txs" font-size="10">Then: it fell out of the work</text>
+          <rect x="14" y="30" width="54" height="34" class="ln"/>
+          <rect x="82" y="30" width="54" height="34" class="ln"/>
+          <rect x="150" y="30" width="54" height="34" class="ln"/>
+          <path d="M14,72 L282,72" class="ln"/>
+          <path d="M218,30 L272,30 L272,64 L218,64 Z" class="lnd"/>
+          <path d="M286,47 L322,47" class="ln" marker-end="url(#cv)"/>
+          <circle cx="360" cy="47" r="17" class="lnw" fill="rgba(240,171,0,.12)"/>
+          <text x="360" y="52" class="txw" text-anchor="middle" font-size="11" font-weight="600">E</text>
+          <text x="148" y="90" class="txs" text-anchor="middle" font-size="9.5">cases arrive, an expert comes out</text>
+
+          <path d="M14,110 L416,110" class="lnd"/>
+
+          <text x="14" y="132" class="txs" font-size="10">Now: the cases stop arriving</text>
+          <rect x="14" y="146" width="54" height="34" class="lnr" stroke-dasharray="4 4"/>
+          <rect x="82" y="146" width="54" height="34" class="lnr" stroke-dasharray="4 4"/>
+          <rect x="150" y="146" width="54" height="34" class="lnr" stroke-dasharray="4 4"/>
+          <path d="M14,188 L204,188" class="lnr" stroke-dasharray="4 4"/>
+          <path d="M218,146 L272,146 L272,180 L218,180 Z" class="lnd"/>
+          <path d="M286,163 L322,163" class="lnd"/>
+          <circle cx="360" cy="163" r="17" class="lnd"/>
+          <text x="360" y="168" class="txs" text-anchor="middle" font-size="11">?</text>
+          <path d="M338,141 L382,185 M382,141 L338,185" class="lnr"/>
+          <text x="148" y="206" class="txr" text-anchor="middle" font-size="9.5">no cases, no expert</text>
+        </svg>
+      </div>
+      <div style="display:flex;flex-direction:column;justify-content:center">
+        <p class="sub" style="margin:0;font-size:clamp(13px,1.35vw,18px);line-height:1.45;color:var(--ink)">For a century experts fell out of the pipeline, honed by thousands of cases and problem solving challenges. Remove the work, and we have to compensate deliberately, or risk losing it.</p>
+        <div class="land">Which is awkward, because deliberate learning is the thing every organisation I have ever engaged with is terrible at.</div>
+      </div>
+    </div>
+  </div>
+  <div class="src">
+    <p class="caveat">This slide asserts a mechanism rather than a finding. No source establishes that expertise will fail to appear; the argument is that the route by which it previously appeared is being removed.</p>
+    <ol>
+      <li><span class="k">1</span><b>The evidentiary basis</b> is the preceding two slides: Bainbridge on practice loss, Lee and colleagues on effort shifting from producing to checking, and Brynjolfsson and colleagues on entry level employment in AI exposed occupations.</li>
+      <li><span class="k">2</span><b>Not claimed.</b> That expertise cannot be built deliberately, or that it has already failed. Only that it will now require design where it previously required volume.</li>
+    </ol>
+  </div>
+</section>
+<!-- 8 KCS -->
+<section class="slide a2">
+  <div class="act"><span class="dot"></span>Act two, learning</div>
+  <h1>KCS makes knowledge a deliberate by-product of interaction, but expertise remains idiosyncratic and accidental.</h1>
+  <div class="body">
+    <svg viewBox="0 0 900 250" style="width:100%;max-height:250px">
+      <rect x="24" y="96" width="156" height="58" class="ln" fill="rgba(255,255,255,.035)"/>
+      <text x="102" y="122" class="txb" text-anchor="middle">An interaction</text>
+      <text x="102" y="142" class="txs" text-anchor="middle">one engineer, one case</text>
+
+      <path d="M184,126 C230,126 230,58 276,58" class="lng"/>
+      <path d="M184,126 C230,126 230,190 276,190" class="lnw"/>
+
+      <rect x="282" y="34" width="250" height="48" class="lng" fill="rgba(95,212,160,.08)"/>
+      <text x="300" y="56" class="txg" font-weight="600">Knowledge</text>
+      <text x="300" y="74" class="txs">the article. Captured, reused, improved.</text>
+      <path d="M538,58 L596,58" class="lng"/>
+      <text x="606" y="53" class="txg">Made deliberate</text>
+      <text x="606" y="71" class="txs">KCS, 1992 onwards</text>
+
+      <rect x="282" y="132" width="250" height="88" class="lnw" fill="rgba(240,171,0,.09)" stroke-dasharray="5 5"/>
+      <text x="300" y="162" class="txw" font-size="17" font-weight="600">Expertise</text>
+      <text x="300" y="184" class="txs">the engineer the case produced.</text>
+      <text x="300" y="204" class="txs">Left entirely to chance.</text>
+      <path d="M538,176 L596,176" class="lnw"/>
+      <text x="606" y="164" class="txw">Never made deliberate</text>
+      <text x="606" y="182" class="txs">no standard, no owner, no measure</text>
+      <text x="606" y="204" class="txr">and now the foundations are eroding</text>
+
+      <path d="M282,226 L532,226" class="lnw" stroke-dasharray="2 4"/>
+      <text x="407" y="244" class="txs" text-anchor="middle">the larger by-product, and the unguarded one</text>
+    </svg>
+    <div class="land">The Practices Guide says knowledge is the by-product of interaction. So is expertise. We have secured one of the two by-products, but arguably, the least important one.</div>
+  </div>
+  <div class="src">
+    <ol>
+      <li><span class="k">1</span><b>Consortium for Service Innovation, KCS v6 Practices Guide.</b> "Knowledge is the by-product of interaction." Section 2, The KCS Practices.</li>
+      <li><span class="k">2</span><b>KCS Principles and Core Concepts.</b> Four Principles and ten Core Concepts. Demand-driven and self-correcting, based on double loop learning, a many-to-many model rather than knowledge engineering from a few for the use of many.</li>
+      <li><span class="k">3</span><b>Licence note.</b> KCS Principles and Core Concepts is published under Creative Commons Attribution-NonCommercial-NoDerivatives 4.0. Quote and attribute; do not redraw their diagrams.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- 9 -->
+<section class="slide a2">
+  <div class="act"><span class="dot"></span>Act two</div>
+  <h1>What most organisations call "learning" is scheduled, packaged and generalised "courses". Virtually always offered out of context, either mandated, or to be executed if or when time allows.</h1>
+  <div class="body">
+    <svg viewBox="0 0 900 204" style="width:100%;max-height:204px">
+      <text x="30" y="16" class="txs">Three things wrong with it, and they compound</text>
+
+      <rect x="30" y="30" width="270" height="72" class="lnr" fill="rgba(200,107,90,.05)"/>
+      <text x="48" y="54" class="txr" font-size="12" font-weight="600">Scheduled</text>
+      <text x="48" y="74" class="txs" font-size="10">by someone who does not know</text>
+      <text x="48" y="90" class="txs" font-size="10">what you are working on today</text>
+
+      <rect x="316" y="30" width="270" height="72" class="lnr" fill="rgba(200,107,90,.05)"/>
+      <text x="334" y="54" class="txr" font-size="12" font-weight="600">Packaged</text>
+      <text x="334" y="74" class="txs" font-size="10">forty things bundled, because</text>
+      <text x="334" y="90" class="txs" font-size="10">forty is cheaper to administer than one</text>
+
+      <rect x="602" y="30" width="270" height="72" class="lnr" fill="rgba(200,107,90,.05)"/>
+      <text x="620" y="54" class="txr" font-size="12" font-weight="600">Generalised</text>
+      <text x="620" y="74" class="txs" font-size="10">sized for an average person</text>
+      <text x="620" y="90" class="txs" font-size="10">who does not work here</text>
+
+      <path d="M30,132 L872,132" class="ln"/>
+      <circle cx="150" cy="132" r="5" class="lnr" fill="#C86B5A"/>
+      <text x="150" y="124" class="txr" font-size="10" text-anchor="middle">the gap appears</text>
+      <text x="150" y="152" class="txs" font-size="9.5" text-anchor="middle">Tuesday, mid-case</text>
+      <circle cx="700" cy="132" r="5" class="lng" fill="none"/>
+      <text x="700" y="124" class="txg" font-size="10" text-anchor="middle">the course runs</text>
+      <text x="700" y="152" class="txs" font-size="9.5" text-anchor="middle">March, half a day, off site</text>
+      <path d="M160,168 L690,168" class="lnd"/>
+      <text x="425" y="188" class="txs" text-anchor="middle" font-size="10">in here you solved it anyway, badly, and nobody recorded how</text>
+    </svg>
+    <div class="land muted">Everyone in this room has clicked through one of these this quarter. It was completed. What did you learn from it?</div>
+  </div>
+  <div class="src">
+    <p class="caveat">Observational. This characterises how corporate learning is commonly delivered; it is not drawn from a survey and should be offered as a description the room can test against its own experience.</p>
+    <ol>
+      <li><span class="k">1</span><b>Scheduled, packaged, generalised</b> are my framing of three recurring failure modes, not established categories.</li>
+      <li><span class="k">2</span><b>The latency point</b> is the operative one and connects to the 70-20-10 framing: formal learning is the 10, and it is the part least able to arrive at the moment of need.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="slide a2">
+  <div class="act"><span class="dot"></span>Act two</div>
+  <h1>Beyond the most basic foundations, the course is seldom the right unit or medium for learning. The majority of learning is on the job, in context and ideally, when actually needed. The 70-20-10 model captures the essence of the problem, while personal relevance heightens learning capabilities further.</h1>
+  <div class="body">
+    <svg viewBox="0 0 900 118" style="width:100%;max-height:118px;margin-bottom:12px">
+      <text x="30" y="14" class="txs">What you were given, in March</text><rect x="30" y="28" width="16" height="16" class="ln"/><rect x="52" y="28" width="16" height="16" class="ln"/><rect x="74" y="28" width="16" height="16" class="ln"/><rect x="96" y="28" width="16" height="16" class="ln"/><rect x="118" y="28" width="16" height="16" class="ln"/><rect x="140" y="28" width="16" height="16" class="ln"/><rect x="162" y="28" width="16" height="16" class="ln"/><rect x="184" y="28" width="16" height="16" class="ln"/><rect x="206" y="28" width="16" height="16" class="ln"/><rect x="228" y="28" width="16" height="16" class="ln"/><rect x="250" y="28" width="16" height="16" class="ln"/><rect x="272" y="28" width="16" height="16" class="ln"/><rect x="294" y="28" width="16" height="16" class="ln"/><rect x="316" y="28" width="16" height="16" class="ln"/><rect x="338" y="28" width="16" height="16" class="ln"/><rect x="360" y="28" width="16" height="16" class="ln"/><rect x="382" y="28" width="16" height="16" class="ln"/><rect x="404" y="28" width="16" height="16" class="ln"/><rect x="426" y="28" width="16" height="16" class="ln"/><rect x="448" y="28" width="16" height="16" class="ln"/><rect x="30" y="50" width="16" height="16" class="ln"/><rect x="52" y="50" width="16" height="16" class="ln"/><rect x="74" y="50" width="16" height="16" class="ln"/><rect x="96" y="50" width="16" height="16" class="ln"/><rect x="118" y="50" width="16" height="16" class="ln"/><rect x="140" y="50" width="16" height="16" class="ln"/><rect x="162" y="50" width="16" height="16" class="ln"/><rect x="184" y="50" width="16" height="16" class="ln"/><rect x="206" y="50" width="16" height="16" class="ln"/><rect x="228" y="50" width="16" height="16" class="ln"/><rect x="250" y="50" width="16" height="16" class="ln"/><rect x="272" y="50" width="16" height="16" class="ln"/><rect x="294" y="50" width="16" height="16" class="ln"/><rect x="316" y="50" width="16" height="16" class="ln"/><rect x="338" y="50" width="16" height="16" class="ln"/><rect x="360" y="50" width="16" height="16" class="ln"/><rect x="382" y="50" width="16" height="16" class="ln"/><rect x="404" y="50" width="16" height="16" class="ln"/><rect x="426" y="50" width="16" height="16" class="ln"/><rect x="448" y="50" width="16" height="16" class="ln"/><rect x="316" y="50" width="16" height="16" class="lng" fill="rgba(95,212,160,.35)"/>
+      <path d="M470,54 L540,54" class="ln"/>
+      <text x="560" y="34" class="txg" font-size="11" font-weight="600">What you needed, on Tuesday</text>
+      <rect x="560" y="46" width="16" height="16" class="lng" fill="rgba(95,212,160,.35)"/>
+      <text x="586" y="58" class="txs" font-size="10">one of the forty, nine minutes long</text>
+      <text x="560" y="86" class="txs" font-size="10">By March you had solved it, badly, and forgotten how.</text>
+    </svg>
+    <div class="cols c2">
+      <div class="card"><div class="h">Just-in-case</div><div class="d">Six hours covering forty things, authored last year, in case one of them is ever needed. This is the model KCS replaced for knowledge, and it is still how we do learning.</div></div>
+      <div class="card green"><div class="h">Just-in-time</div><div class="d">Nine minutes of one thing, surfaced when demand for it appears. Sufficient to close the gap, and nothing more. Your own standard, applied to capability.</div></div>
+    </div>
+    <div class="land">Training is the last just-in-case function left in the building. </div>
+  </div>
+  <div class="src">
+    <ol>
+      <li><span class="k">1</span><b>KCS v6 Practices Certification Study Guide.</b> "Just-in-time versus just-in-case" and "sufficient to solve" are both named concepts in the certification syllabus.</li>
+      <li><span class="k">2</span><b>KCS Principles.</b> Demand-Driven is one of the four fundamental Principles, alongside Abundance, Create Value and Trust.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="slide a2">
+  <div class="act"><span class="dot"></span>Act two</div>
+  <h1>Break it into modules whose objectives are written as capabilities with observable evidence.</h1>
+  <div class="body">
+    <svg viewBox="0 0 900 96" style="width:100%;max-height:92px">
+      <defs><marker id="dm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M0,1 L9,5 L0,9" fill="none" stroke="#33414F" stroke-width="1.25"/></marker></defs>
+      <rect x="30" y="34" width="118" height="34" class="ln" fill="rgba(255,255,255,.03)"/>
+      <text x="89" y="56" class="txs" text-anchor="middle" font-size="10.5">A course</text>
+      <path d="M154,51 L192,51" class="ln" marker-end="url(#dm)"/>
+      <rect x="200" y="34" width="104" height="34" class="ln"/>
+      <text x="252" y="56" class="txs" text-anchor="middle" font-size="10.5">Modules</text>
+      <path d="M310,51 L348,51" class="ln" marker-end="url(#dm)"/>
+      <rect x="356" y="34" width="118" height="34" class="lng" fill="rgba(95,212,160,.08)"/>
+      <text x="415" y="56" class="txg" text-anchor="middle" font-size="10.5">Objectives</text>
+      <path d="M480,51 L518,51" class="lnw" marker-end="url(#dm)"/>
+      <rect x="526" y="28" width="150" height="46" rx="12" class="lnw" fill="rgba(240,171,0,.12)"/>
+      <text x="601" y="49" class="txw" text-anchor="middle" font-size="12" font-weight="600">EDUSNACKS</text>
+      <text x="601" y="64" class="txs" text-anchor="middle" font-size="9">capability-bites</text>
+      <text x="698" y="46" class="txs" font-size="10">small enough to be taken</text>
+      <text x="698" y="62" class="txs" font-size="10">mid-stride, without stopping</text>
+    </svg>
+
+    <svg viewBox="0 0 900 152" style="width:100%;max-height:150px;margin-top:6px">
+      <text x="30" y="14" class="txs" font-size="10">One case, one shift, one career. Pick your distance.</text>
+
+      <g opacity=".6">
+        <rect x="30" y="34" width="92" height="46" class="lnr" stroke-dasharray="4 4" fill="rgba(200,107,90,.06)"/>
+        <path d="M36,40 L116,74 M116,40 L36,74" class="lnr"/>
+      </g>
+      <text x="76" y="96" class="txr" text-anchor="middle" font-size="9.5">the whole course, up front</text>
+      <text x="76" y="110" class="txs" text-anchor="middle" font-size="9">nobody eats dinner</text>
+      <text x="76" y="122" class="txs" text-anchor="middle" font-size="9">at the start line</text>
+
+      <path d="M140,110 L868,110" class="ln"/>
+      <text x="146" y="130" class="txs" font-size="9">start</text>
+      <text x="868" y="130" class="txs" font-size="9" text-anchor="end">finish</text>
+
+      <g>
+        <rect x="246" y="98" width="26" height="12" rx="6" class="lnw" fill="rgba(240,171,0,.25)"/>
+        <line x1="259" y1="96" x2="259" y2="76" class="lnd"/>
+        <text x="259" y="70" class="txs" text-anchor="middle" font-size="9">read a timeout trace</text>
+      </g>
+      <g>
+        <rect x="406" y="98" width="26" height="12" rx="6" class="lnw" fill="rgba(240,171,0,.25)"/>
+        <line x1="419" y1="96" x2="419" y2="62" class="lnd"/>
+        <text x="419" y="56" class="txs" text-anchor="middle" font-size="9">rule out connection pooling</text>
+      </g>
+      <g>
+        <rect x="566" y="98" width="26" height="12" rx="6" class="lnw" fill="rgba(240,171,0,.25)"/>
+        <line x1="579" y1="96" x2="579" y2="76" class="lnd"/>
+        <text x="579" y="70" class="txs" text-anchor="middle" font-size="9">get the customer to send logs</text>
+      </g>
+      <g>
+        <rect x="726" y="98" width="26" height="12" rx="6" class="lnw" fill="rgba(240,171,0,.25)"/>
+        <line x1="739" y1="96" x2="739" y2="62" class="lnd"/>
+        <text x="739" y="56" class="txs" text-anchor="middle" font-size="9">write it up so it reads</text>
+      </g>
+
+      <circle cx="336" cy="110" r="7" fill="#F0AB00"/>
+      <text x="336" y="132" class="txw" text-anchor="middle" font-size="9.5">you are here</text>
+      <text x="868" y="146" class="txs" text-anchor="end" font-size="9">each one taken at the moment it is needed, and not before</text>
+    </svg>
+    <div class="land">Dynamic, adaptive, situated and contextually rich capability-bites. <b>EDUSNACKS.</b> <span class="muted">Fuelling human performance and learning exactly when needed, like an energy bar in the middle of a marathon.</span></div>
+  </div>
+  <div class="src">
+    <ol>
+      <li><span class="k">1</span><b>EDUSNACKS</b> is my term for the unit described here. The underlying idea, that learning should be sized to the moment of need rather than to the convenience of scheduling, is not mine and is common to microlearning and to the KCS demand-driven principle.</li>
+      <li><span class="k">2</span><b>KCS Principles and Core Concepts,</b> Consortium for Service Innovation. Demand-driven is one of the four Principles. Published under Creative Commons Attribution-NonCommercial-NoDerivatives 4.0.</li>
+      <li><span class="k">3</span><b>The four example capability-bites</b> on the route are illustrative support tasks, not drawn from a real curriculum.</li>
+      <li><span class="k">4</span><b>The marathon analogy</b> is mine and has the usual limit: an energy gel restores something already possessed, whereas learning adds something new.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- 12 -->
+<section class="slide a2">
+  <div class="act"><span class="dot"></span>Act two</div>
+  <h1>Each objective then carries its evidence, its prerequisites, its owner and its expiry date (yes, a lot of knowledge often has the shelf life of a lettuce).</h1>
+  <div class="body">
+    <svg viewBox="0 0 900 96" style="width:100%;max-height:96px;margin-bottom:10px">
+      <rect x="30" y="34" width="150" height="30" class="ln"/><text x="105" y="54" class="txs" text-anchor="middle" font-size="10">Evidence</text>
+      <rect x="192" y="34" width="150" height="30" class="ln"/><text x="267" y="54" class="txs" text-anchor="middle" font-size="10">Prerequisites</text>
+      <rect x="354" y="34" width="150" height="30" class="ln"/><text x="429" y="54" class="txs" text-anchor="middle" font-size="10">Owner</text>
+      <rect x="516" y="28" width="150" height="42" class="lnr" fill="rgba(200,107,90,.10)"/>
+      <text x="591" y="46" class="txr" text-anchor="middle" font-size="11" font-weight="600">Expiry date</text>
+      <text x="591" y="62" class="txs" text-anchor="middle" font-size="9">eighteen months</text>
+      <text x="105" y="20" class="txs" font-size="9" text-anchor="middle">uncontroversial</text>
+      <text x="267" y="20" class="txs" font-size="9" text-anchor="middle">uncontroversial</text>
+      <text x="429" y="20" class="txs" font-size="9" text-anchor="middle">mildly political</text>
+      <text x="591" y="20" class="txr" font-size="9" text-anchor="middle">the one nobody wants</text>
+      <path d="M678,49 L716,49" class="lnr"/>
+      <text x="726" y="45" class="txs" font-size="10">You accepted this for articles years ago.</text>
+      <text x="726" y="61" class="txs" font-size="10">Content health, review, archive.</text>
+    </svg>
+    <div class="cols c2">
+      <div class="card amber">
+        <div class="h">Read an intermittent timeout trace and form a hypothesis</div>
+        <div class="d" style="margin-top:12px">
+          <b style="color:var(--ink-3);font-weight:600">EVIDENCE</b><br>Produces a ranked shortlist of causes from a trace, unaided, on two consecutive real cases.<br><br>
+          <b style="color:var(--ink-3);font-weight:600">PREREQUISITES</b><br>Connection pooling basics. Query plan reading.<br><br>
+          <b style="color:var(--ink-3);font-weight:600">OWNER</b><br>The component team, who do the work and know when it changes.<br><br>
+          <b style="color:var(--anx);font-weight:600">DECAY</b><br>Eighteen months.
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;justify-content:center">
+        <p class="sub" style="margin:0">Three of these fields are well known. The fourth suggests that a completion record from 2022 may not be evidence of anything.</p>
+        <div class="land">We have already accepted this for content...but what about people?</div>
+      </div>
+    </div>
+  </div>
+  <div class="src">
+    <ol>
+      <li><span class="k">1</span><b>KCS v6, Evolve Loop.</b> Content Health includes the Content Standard Checklist, formerly the Article Quality Index, plus indicators of article value through reuse and reference. Articles are actively reviewed and retired.</li>
+      <li><span class="k">2</span><b>KCS Competency Model.</b> KCS Candidate, Contributor, Publisher and Coach are defined competencies with expected evidence, set by the KCS Council. The objective format here is that idea generalised beyond article quality.</li>
+    </ol>
+  </div>
+</section>
+<!-- 13 -->
+<!-- personalised course -->
+<section class="slide a2" id="pc">
+  <div class="act"><span class="dot"></span>Act two</div>
+  <h1>Courses still matter. Built from modules, a course can be assembled to fit one engineer, guided by what that engineer actually needs.</h1>
+  <div class="body">
+    <div class="pcwrap">
+      <div class="pcplot">
+        <svg viewBox="0 0 880 322" id="pcSvg" role="img" aria-label="A catalogue of two hundred learning modules, from which a small number are selected and assembled into a personal course for one engineer.">
+          <text x="20" y="16" class="txs" font-size="10.5">The catalogue: 200 modules, each one an addressable objective</text>
+          <g id="pcGrid"></g>
+          <path id="pcRule" d="M20,214 L860,214" class="lnd" opacity="0"/>
+          <text id="pcTrayLbl" x="20" y="240" class="txw" font-size="11" font-weight="600" opacity="0">A course, for this engineer</text>
+          <text id="pcTraySub" x="20" y="256" class="txs" font-size="9.5" opacity="0"></text>
+          <g id="pcTray"></g>
+          <g id="pcFly"></g>
+          <text id="pcCount" x="860" y="240" class="txw" font-size="11" text-anchor="end" opacity="0"></text>
+        </svg>
+      </div>
+      <div class="pcside">
+        <div class="pctl">Assemble for</div>
+        <div class="pcpick">
+          <button class="on" data-p="0">Junior, six weeks in</button>
+          <button data-p="1">Specialist, moving to HANA</button>
+          <button data-p="2">Senior, first time on call</button>
+        </div>
+        <div class="pccap" id="pcCap"></div>
+        <div class="pcnote">Same catalogue, three different courses. The 10 percent is worth keeping once it is assembled for the person in front of you rather than for the average of four thousand.</div>
+        <button id="pcPlay" class="bcplay">Replay</button>
+      </div>
+    </div>
+    <div class="land pcq">But how do we know what each of these engineers actually needs? <span class="muted">Hold that thought. We get there in act three.</span></div>
+  </div>
+  <div class="src">
+    <p class="caveat">Illustrative. The 200 modules are a stand-in for a real catalogue, and the three courses shown are constructed for the talk rather than generated by a working system.</p>
+    <ol>
+      <li><span class="k">1</span><b>Why the course survives.</b> The argument earlier in this act is against the course as the unit of authoring and scheduling. Once modules are the unit, a course becomes a selection over them, which is worth having: it gives sequence, coherence and a sense of completion that a stream of fragments does not.</li>
+      <li><span class="k">2</span><b>70-20-10.</b> The 10 percent is formal learning. The claim here is that the 10 is not the problem; generalising it to the average person is.</li>
+      <li><span class="k">3</span><b>What the selection draws on.</b> Prerequisites already met, objectives already evidenced, the component areas in the engineer's recent case history, and the decay dates on capabilities last demonstrated some time ago. Act three describes the architecture that holds this and scores it on the engineer's own machine.</li>
+      <li><span class="k">4</span><b>Consortium for Service Innovation, KCS.</b> Demand-driven and just-in-time are their principles, applied here to capability rather than content. CC BY-NC-ND 4.0.</li>
+      <li><span class="k">5</span><b>Not claimed.</b> That this has been built or measured. The selection logic described is a design intent.</li>
+    </ol>
+  </div>
+</section>
+
+<section class="slide a2">
+  <div class="act"><span class="dot"></span>Act two, the core move</div>
+  <h1>Once objectives are addressable, learning becomes demand-driven and many-to-many, so the organisation can find who needs something and a person can ask for what they need.</h1>
+  <div class="body">
+    <svg viewBox="0 0 900 128" style="width:100%;max-height:128px;margin-bottom:10px">
+      <defs>
+        <marker id="hC" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+          <path d="M0,0.5 L9,5 L0,9.5 Z" fill="#4AA3FF"/></marker>
+        <marker id="hW" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+          <path d="M0,0.5 L9,5 L0,9.5 Z" fill="#F0AB00"/></marker>
+      </defs>
+      <rect x="30" y="44" width="180" height="46" class="lnc" fill="rgba(74,163,255,.07)"/>
+      <text x="120" y="72" class="txc" text-anchor="middle" font-weight="600">The organisation</text>
+      <rect x="690" y="44" width="180" height="46" class="lnw" fill="rgba(240,171,0,.07)"/>
+      <text x="780" y="72" class="txw" text-anchor="middle" font-weight="600">A person</text>
+      <path d="M216,56 C400,28 500,28 682,56" class="lnc" marker-end="url(#hC)"/>
+      <text x="450" y="24" class="txc" text-anchor="middle" font-size="11">Proactive: who needs this?</text>
+      <path d="M684,80 C500,108 400,108 218,80" class="lnw" marker-end="url(#hW)"/>
+      <text x="450" y="124" class="txw" text-anchor="middle" font-size="11">Interactive: I need this.</text>
+      <text x="450" y="72" class="txs" text-anchor="middle" font-size="10">same objects, same index, one mechanism</text>
+    </svg>
+    <div class="cols c2">
+      <div class="card blue"><div class="h">Proactive, the organisation asks</div><div class="d">The objective broadcasts, and the engineers who would benefit identify themselves. Nobody had to know in advance who they were.</div></div>
+      <div class="card amber"><div class="h">Interactive, the person asks</div><div class="d">An engineer, or the AI working beside them, raises a need against a case in progress. The organisation (e.g. via an AI learning agent) answers it. Situational, contextual, and personal.</div></div>
+    </div>
+    <div class="land">Learning becomes a market. A similar shift to the one KCS made from knowledge engineering to many-to-many.</div>
+  </div>
+  <div class="src">
+    <ol>
+      <li><span class="k">1</span><b>KCS v6 Practices Guide,</b> Consortium for Service Innovation. The many-to-many model, contrasted with knowledge engineering by a few for the use of many, is theirs. The claim here is that the same shift applies to capability as to content.</li>
+      <li><span class="k">2</span><b>Demand-driven</b> is one of the four KCS Principles, alongside Abundance, Create Value and Trust.</li>
+      <li><span class="k">3</span><b>Not claimed.</b> That the Consortium has proposed this extension. The extension to learning is mine.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- 14 -->
+
+<!-- 15 -->
+<section class="slide a2">
+  <div class="act"><span class="dot"></span>Act two, the question</div>
+  <h1>Every one of those flows needs an answer to the same question, and it is the question that breaks everything: who is this for?</h1>
+  <div class="body">
+    <svg viewBox="0 0 900 190" style="width:100%;max-height:190px">
+      <rect x="26" y="66" width="210" height="58" class="lng" fill="rgba(95,212,160,.08)"/>
+      <text x="131" y="90" class="txg" text-anchor="middle" font-weight="600">One objective</text>
+      <text x="131" y="110" class="txs" text-anchor="middle">nine minutes, one capability</text>
+      <path d="M240,95 L300,95" class="ln"/>
+      <text x="270" y="82" class="txs" text-anchor="middle" font-size="10">for whom?</text>
+      <g><circle cx="318" cy="52" r="6.5" class="ln"/><circle cx="344" cy="52" r="6.5" class="ln"/><circle cx="370" cy="52" r="6.5" class="ln"/><circle cx="396" cy="52" r="6.5" class="ln"/><circle cx="422" cy="52" r="6.5" class="ln"/><circle cx="448" cy="52" r="6.5" class="ln"/><circle cx="474" cy="52" r="6.5" class="ln"/><circle cx="500" cy="52" r="6.5" class="ln"/><circle cx="526" cy="52" r="6.5" class="ln"/><circle cx="552" cy="52" r="6.5" class="ln"/><circle cx="578" cy="52" r="6.5" class="ln"/><circle cx="604" cy="52" r="6.5" class="ln"/><circle cx="630" cy="52" r="6.5" class="ln"/><circle cx="656" cy="52" r="6.5" class="ln"/><circle cx="682" cy="52" r="6.5" class="ln"/><circle cx="708" cy="52" r="6.5" class="ln"/><circle cx="734" cy="52" r="6.5" class="ln"/><circle cx="760" cy="52" r="6.5" class="ln"/><circle cx="786" cy="52" r="6.5" class="ln"/><circle cx="812" cy="52" r="6.5" class="ln"/><circle cx="838" cy="52" r="6.5" class="ln"/><circle cx="864" cy="52" r="6.5" class="ln"/><circle cx="318" cy="82" r="6.5" class="ln"/><circle cx="344" cy="82" r="6.5" class="ln"/><circle cx="370" cy="82" r="6.5" class="ln"/><circle cx="396" cy="82" r="6.5" class="ln"/><circle cx="422" cy="82" r="6.5" class="ln"/><circle cx="448" cy="82" r="6.5" class="ln"/><circle cx="474" cy="82" r="6.5" class="ln"/><circle cx="500" cy="82" r="6.5" class="ln"/><circle cx="526" cy="82" r="6.5" class="ln"/><circle cx="552" cy="82" r="6.5" class="ln"/><circle cx="578" cy="82" r="6.5" class="ln"/><circle cx="604" cy="82" r="6.5" class="ln"/><circle cx="630" cy="82" r="6.5" class="ln"/><circle cx="656" cy="82" r="6.5" class="ln"/><circle cx="682" cy="82" r="6.5" class="ln"/><circle cx="708" cy="82" r="6.5" class="ln"/><circle cx="734" cy="82" r="6.5" class="ln"/><circle cx="760" cy="82" r="6.5" class="ln"/><circle cx="786" cy="82" r="6.5" class="ln"/><circle cx="812" cy="82" r="6.5" class="ln"/><circle cx="838" cy="82" r="6.5" class="ln"/><circle cx="864" cy="82" r="6.5" class="ln"/><circle cx="318" cy="112" r="6.5" class="ln"/><circle cx="344" cy="112" r="6.5" class="ln"/><circle cx="370" cy="112" r="6.5" class="ln"/><circle cx="396" cy="112" r="6.5" class="ln"/><circle cx="422" cy="112" r="6.5" class="ln"/><circle cx="448" cy="112" r="6.5" class="ln"/><circle cx="474" cy="112" r="6.5" class="ln"/><circle cx="500" cy="112" r="6.5" class="ln"/><circle cx="526" cy="112" r="6.5" class="ln"/><circle cx="552" cy="112" r="6.5" class="ln"/><circle cx="578" cy="112" r="6.5" class="ln"/><circle cx="604" cy="112" r="6.5" class="ln"/><circle cx="630" cy="112" r="6.5" class="ln"/><circle cx="656" cy="112" r="6.5" class="ln"/><circle cx="682" cy="112" r="6.5" class="ln"/><circle cx="708" cy="112" r="6.5" class="ln"/><circle cx="734" cy="112" r="6.5" class="ln"/><circle cx="760" cy="112" r="6.5" class="ln"/><circle cx="786" cy="112" r="6.5" class="ln"/><circle cx="812" cy="112" r="6.5" class="ln"/><circle cx="838" cy="112" r="6.5" class="ln"/><circle cx="864" cy="112" r="6.5" class="ln"/></g>
+      <text x="318" y="26" class="txs">four thousand engineers, and no way to tell which of them needs it</text>
+      <path d="M318,158 L860,158" class="lnd"/>
+      <text x="589" y="180" class="txs" text-anchor="middle">asking them does not work, and neither does guessing</text>
+    </svg>
+    <div class="land">Proactive or interactive, broadcast or request, every direction collapses into the same problem. Matching requires knowing something about people, and that is exactly the thing we are not allowed to know.</div>
+  </div>
+  <div class="src">
+    <ol>
+      <li><span class="k">1</span><b>The figure of four thousand</b> is the approximate size of the SAP support engineering community I work with. The dots are illustrative.</li>
+      <li><span class="k">2</span><b>Why asking does not work.</b> Self-assessment of competence is unreliable in both directions, and self-reported need is subject to the same incentive to inflate that makes a self-written profile unusable for matching. This is the reasoning behind the evidence requirement described later in the Alise data model.</li>
+    </ol>
+  </div>
+</section>
+
+<section class="slide a2">
+  <div class="act"><span class="dot"></span>Act two</div>
+  <h1>Learning arrives in the context of a problem you are trying to solve, WHEN you need it.</h1>
+  <div class="body">
+    <svg viewBox="0 0 900 150" style="width:100%;max-height:150px;margin-bottom:10px">
+      <circle cx="260" cy="76" r="52" class="lnw" fill="rgba(240,171,0,.05)"/>
+      <text x="260" y="72" class="txw" text-anchor="middle" font-size="11" font-weight="600">What you</text>
+      <text x="260" y="88" class="txw" text-anchor="middle" font-size="11" font-weight="600">can do today</text>
+      <circle cx="260" cy="76" r="80" class="lnd"/>
+      <text x="260" y="16" class="txs" text-anchor="middle">the edge of it</text>
+      <circle cx="330" cy="40" r="9" class="lng" fill="rgba(95,212,160,.3)"/>
+      <text x="348" y="36" class="txg" font-size="11">the case in front of you</text>
+      <text x="348" y="52" class="txs" font-size="10">just past the edge, and real</text>
+      <circle cx="470" cy="112" r="9" class="lnc" fill="rgba(74,163,255,.25)"/>
+      <text x="488" y="108" class="txc" font-size="11">someone who can already do it</text>
+      <text x="488" y="124" class="txs" font-size="10">close enough to ask, at the moment you need to</text>
+      <path d="M338,48 C380,70 420,96 460,110" class="lnd"/>
+      <text x="700" y="36" class="txs" font-size="10">Lave and Wenger called this</text>
+      <text x="700" y="52" class="txs" font-size="10">legitimate peripheral participation.</text>
+      <text x="700" y="72" class="txs" font-size="10">The pipeline used to supply it</text>
+      <text x="700" y="88" class="txs" font-size="10">by accident.</text>
+    </svg>
+    <div class="big">People become expert by doing slightly harder things than they can currently manage, next to someone who can already do them.</div>
+    <div class="land muted">Lave and Wenger called it legitimate peripheral participation. It is what the pipeline used to provide by osmosis. This provides it on purpose, which is the reason the architecture that follows is necessary.</div>
+  </div>
+  <div class="src">
+    <ol><li><span class="k">1</span><b>Lave, J. and Wenger, E. (1991).</b> Situated Learning: Legitimate Peripheral Participation. Cambridge University Press.</li></ol>
+  </div>
+</section>
+
+<!-- 16 -->
+<section class="slide a2">
+  <div class="act"><span class="dot"></span>Act two</div>
+  <h1>The aggregate of those anonymous signals shows where capability is thin, which is a Learning Loop for people rather than an Evolve Loop for articles, and which I offer as a hypothesis rather than a finding.</h1>
+  <div class="body">
+    <svg viewBox="0 0 900 200" style="width:100%;max-height:200px">
+      <ellipse cx="200" cy="100" rx="130" ry="66" class="ln"/>
+      <text x="200" y="94" class="txb" text-anchor="middle">Solve Loop</text>
+      <text x="200" y="116" class="txs" text-anchor="middle">the individual, in the moment</text>
+      <ellipse cx="470" cy="100" rx="130" ry="66" class="lng"/>
+      <text x="470" y="94" class="txg" text-anchor="middle" font-weight="600">Evolve Loop</text>
+      <text x="470" y="116" class="txs" text-anchor="middle">the organisation, over time</text>
+      <ellipse cx="740" cy="100" rx="130" ry="66" class="lnw" stroke-dasharray="4 5"/>
+      <text x="740" y="94" class="txw" text-anchor="middle" font-weight="600">Learning Loop</text>
+      <text x="740" y="116" class="txs" text-anchor="middle">capability, not content</text>
+      <text x="740" y="136" class="txs" text-anchor="middle" font-size="9.5">what the person needs next</text>
+      <path d="M332,100 L336,100" class="ln"/><path d="M602,100 L608,100" class="lnd"/>
+      <text x="740" y="186" class="txs" text-anchor="middle">proposed, not yet implemented</text>
+    </svg>
+    <div class="land">Solve and Evolve both optimise the knowledge base. Neither has a term for the person. The Learning Loop is that missing term, and it is the thinnest claim in this talk: I have no data showing it works, and I would rather say so than have it found.</div>
+  </div>
+  <div class="src">
+    <p class="caveat">Stated as a hypothesis I intend to test. There is no empirical support for the aggregate signal claim yet.</p>
+    <ol>
+      <li><span class="k">1</span><b>KCS v6, the double loop.</b> The Solve Loop is the individual-focused responsibility of the responder; the Evolve Loop is the team and organisational level analysis of patterns across many Solve Loop events.</li>
+      <li><span class="k">2</span><b>Argyris, C.</b> Double loop learning. KCS documentation states the methodology is based on this concept, which is why the framing transfers cleanly.</li>
+      <li><span class="k">3</span><b>The coaching ratio problem.</b> You cannot hire one coach per five people. The claim is that you can make the demand signal cheap enough to answer. Untested.</li>
+    </ol>
+  </div>
+</section>
+<!-- 17 -->
+<section class="slide a3">
+  <div class="act"><span class="dot"></span>Act three, architecture</div>
+  <h1>BUT...and here is the challenge...all of it depends on knowing what each person is able to do. Today, that would require building, storing and maintaining a central register of every employee's skills and weaknesses. An ambition that in the EU would be illegal, and where not, arguably extremely unethical. And yet, there is no personalisation without knowing the person...RIGHT?</h1>
+  <div class="body">
+    <div class="cols c2">
+      <div style="display:flex;align-items:center">
+        <svg viewBox="0 0 430 220" style="width:100%">
+          <defs>
+            <marker id="tk" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0,1 L9,5 L0,9" fill="none" stroke="#C86B5A" stroke-width="1.25"/></marker>
+          </defs>
+          <g transform="rotate(-4 215 110)">
+            <path d="M28,44 L402,44 L402,88 a14,14 0 0 0 0,28 L402,176 L28,176 L28,116 a14,14 0 0 0 0,-28 Z"
+                  class="lnr" fill="rgba(200,107,90,.09)" stroke-width="1.5"/>
+            <path d="M300,44 L300,176" class="lnr" stroke-dasharray="4 5"/>
+            <text x="44" y="78" class="txr" font-size="15" font-weight="600">NEXT ROUND OF LAYOFFS</text>
+            <text x="44" y="104" class="txs">Holder: Engineer 2277</text>
+            <text x="44" y="126" class="txs">Cannot yet read query plans</text>
+            <text x="44" y="148" class="txs">Weak on customer de-escalation</text>
+            <text x="44" y="168" class="txs">Failed evidence twice, 2024</text>
+            <text x="351" y="104" class="txr" font-size="13" font-weight="600" text-anchor="middle">ADMIT</text>
+            <text x="351" y="128" class="txr" font-size="21" font-weight="600" text-anchor="middle">ONE</text>
+            <text x="351" y="152" class="txs" font-size="9" text-anchor="middle">no expiry</text>
+          </g>
+          <text x="28" y="24" class="txs">What a central capability register actually is</text>
+          <path d="M28,196 L96,196" class="lnr" marker-end="url(#tk)"/>
+          <text x="104" y="200" class="txs">subpoenaed, leaked, hacked, or simply inherited</text>
+        </svg>
+      </div>
+      <div style="display:flex;flex-direction:column;justify-content:center">
+        <p class="sub" style="margin:0">Permanent, queryable, and available to whoever later runs a restructuring. It does not matter whether anyone intended to use it that way. It exists: subpoenaed, leaked, hacked or repurposed by the next management team.</p>
+        <div class="land">Any central storage of capabilities or performance data, is a form of profiling. But any meaningful personalisation, requires profiles. What to do, what to do...</div>
+      </div>
+    </div>
+  </div>
+  <div class="src">
+    <p class="caveat">This slide contains the strongest legal claim in the talk and it needs care. A central register of employee capability is not flatly illegal in the EU. The accurate position is that it would be very difficult to make lawful, and in Germany could not be introduced at all without works council agreement. Prefer that formulation if challenged.</p>
+    <ol>
+      <li><span class="k">1</span><b>GDPR.</b> Article 5 on purpose limitation, data minimisation and storage limitation; Article 22 on decisions based solely on automated processing producing legal or similarly significant effects; Article 35 requiring a data protection impact assessment for systematic evaluation of personal aspects. A permanent capability register engages all three.</li>
+      <li><span class="k">2</span><b>EU AI Act, Annex III.</b> AI systems used in employment for recruitment, promotion, termination, task allocation or evaluation of performance and behaviour are classified as high risk, with the obligations that follow.</li>
+      <li><span class="k">3</span><b>Betriebsverfassungsgesetz paragraph 87(1)(6).</b> Introduction of technical devices capable of monitoring behaviour or performance is subject to works council co-determination. In practice this is decisive in Germany regardless of the data protection analysis.</li>
+      <li><span class="k">4</span><b>The ethical claim is mine</b> and is separate from the legal one. The argument is about what such a register becomes under a future management team, not about anyone's present intent.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- 18 -->
+<section class="slide a3">
+  <div class="act"><span class="dot"></span>Act three</div>
+  <h1>TURN THAT FROWN UPSIDE DOWN: Profiles and matching decentralised. Models belong to, and are accessible only by the person modelled.</h1>
+  <div class="body">
+    <svg viewBox="0 0 900 176" style="width:100%;max-height:176px">
+      <defs>
+        <marker id="inv" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,1 L9,5 L0,9" fill="none" stroke="#F0AB00" stroke-width="1.4"/></marker>
+      </defs>
+      <text x="30" y="16" class="txs">One register, four thousand records</text>
+      <rect x="30" y="28" width="230" height="112" class="lnr" fill="rgba(200,107,90,.07)"/>
+      <circle cx="145" cy="84" r="30" class="lnr"/>
+      <text x="145" y="89" class="txr" text-anchor="middle" font-size="13" font-weight="600">THEM</text>
+      <path d="M78,50 L112,72 M212,50 L178,72 M78,118 L112,96 M212,118 L178,96" class="lnd"/>
+      <circle cx="72" cy="46" r="5" class="lnd"/><circle cx="218" cy="46" r="5" class="lnd"/>
+      <circle cx="72" cy="122" r="5" class="lnd"/><circle cx="218" cy="122" r="5" class="lnd"/>
+      <text x="145" y="158" class="txs" text-anchor="middle">everything flows in, nothing comes back</text>
+
+      <path d="M286,84 L360,84" class="lnw" stroke-width="1.6" marker-end="url(#inv)"/>
+      <text x="323" y="70" class="txw" text-anchor="middle" font-size="11">invert it</text>
+
+      <text x="386" y="16" class="txs">Four thousand registers of one</text>
+      <rect x="386" y="28" width="484" height="112" class="lnw" fill="rgba(240,171,0,.06)"/>
+      <g>
+        <rect x="408" y="52" width="92" height="64" class="lnw"/>
+        <circle cx="454" cy="74" r="9" class="lnw"/>
+        <rect x="436" y="90" width="36" height="16" rx="2" class="lnc" fill="rgba(74,163,255,.14)"/>
+        <text x="454" y="128" class="txs" text-anchor="middle" font-size="9">Duo</text>
+      </g>
+      <g>
+        <rect x="516" y="52" width="92" height="64" class="lnw"/>
+        <circle cx="562" cy="74" r="9" class="lnw"/>
+        <rect x="544" y="90" width="36" height="16" rx="2" class="lnc" fill="rgba(74,163,255,.14)"/>
+        <text x="562" y="128" class="txs" text-anchor="middle" font-size="9">Duo</text>
+      </g>
+      <g>
+        <rect x="624" y="52" width="92" height="64" class="lnw"/>
+        <circle cx="670" cy="74" r="9" class="lnw"/>
+        <rect x="652" y="90" width="36" height="16" rx="2" class="lnc" fill="rgba(74,163,255,.14)"/>
+        <text x="670" y="128" class="txs" text-anchor="middle" font-size="9">Duo</text>
+      </g>
+      <text x="768" y="76" class="txs">and so on,</text>
+      <text x="768" y="92" class="txs">four thousand times</text>
+      <text x="628" y="158" class="txs" text-anchor="middle">each one a register of exactly one person, held by that person</text>
+    </svg>
+
+    <div class="cols c2" style="margin-top:14px">
+      <div class="card amber">
+        <div class="h">The Support Duo</div>
+        <div class="d">An engineer and a model that belongs to them, working as one unit. The model is called Alise. It runs locally, is encrypted to the engineer, and survives theft or repossession of company equipment because nobody else can open it.</div>
+      </div>
+      <div class="pts">
+        <div class="pt"><div class="h">Anonymous scalar reputation</div><div class="d">A number goes out. Nothing that could be reassembled into a profile goes anywhere.</div></div>
+        <div class="pt"><div class="h">Identity on accept only</div><div class="d">You find out who someone is when they agree to help, not before, and not if they decline.</div></div>
+      </div>
+    </div>
+    <div class="land">From this slide on, the unit of support is the pairing. An engineer and their Duo, together, are what the organisation deals with.</div>
+  </div>
+  <div class="src">
+    <ol>
+      <li><span class="k">1</span><b>MacNiven, S.</b> Alise Data Model Specification. Storage architecture, the trust boundary, anonymous scalar scoring and identity on acceptance. Detailed on the two architecture slides that follow.</li>
+      <li><span class="k">2</span><b>MacNiven, S.</b> A Right to One's Own Method: Worker-paired AI memory and the recording paradox in Union law. Zenodo, DOI 10.5281/zenodo.22738329.</li>
+      <li><span class="k">3</span><b>Support Duo and Alise</b> are my names for the pairing and the model respectively. Alise runs local first and is encrypted to the engineer's device credentials.</li>
+      <li><span class="k">4</span><b>Not yet demonstrated.</b> No deployment of this architecture exists at scale. Everything after this slide describes a design, not a result.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- 19b duo flow -->
+<section class="slide a3">
+  <div class="act"><span class="dot"></span>Act three, the mechanism</div>
+  <h1>Now the question from act two has an answer: a Duo can be matched to a need without anyone holding a profile of it.</h1>
+  <div class="body">
+    <div class="bcwrap">
+      <svg viewBox="-330 -215 660 400" id="bcSvg">
+        <circle id="bcR0" cx="0" cy="0" r="34" fill="none" stroke="#F0AB00" stroke-width="1.3" opacity="0"/>
+        <circle id="bcR1" cx="0" cy="0" r="34" fill="none" stroke="#F0AB00" stroke-width="1.3" opacity="0"/>
+        <g id="bcLines"></g>
+        <g id="bcDots"></g>
+        <g id="bcScores"></g>
+        <circle id="bcCirc" cx="0" cy="0" r="30" fill="#12171C" stroke="#F0AB00" stroke-width="1.4"/>
+        <text id="bcC1" x="0" y="-3" text-anchor="middle" font-size="11" font-weight="600" fill="#F0AB00" font-family="inherit">A new</text>
+        <text id="bcC2" x="0" y="11" text-anchor="middle" font-size="11" font-weight="600" fill="#F0AB00" font-family="inherit">case</text>
+        <text id="bcCScore" x="0" y="-42" text-anchor="middle" font-size="10" fill="#4AA3FF" font-family="inherit" opacity="0"></text>
+        <text id="bcWin" x="0" y="0" font-size="11" font-weight="600" fill="#4AA3FF" font-family="inherit" opacity="0"></text>
+      </svg>
+      <div class="bcside">
+        <div class="bctl">What is being broadcast</div>
+        <div class="bcpick">
+          <button class="on" data-k="case">A case</button>
+          <button data-k="opp">A learning opportunity</button>
+          <button data-k="need">A learning need</button>
+        </div>
+        <div class="bccap" id="bcCap"></div>
+        <div class="bcnote">The payload changes. The mechanism does not. Case assignment, swarming, learning, mentoring and internal mobility all run on this one exchange.</div>
+        <button id="bcPlay" class="bcplay">Replay</button>
+      </div>
+    </div>
+    <div class="land">This is the contract net protocol. Intelligent Swarming already uses it for cases, and the same exchange serves any personal matching scenario. One mechanic solving N problems.</div>
+  </div>
+  <div class="src">
+    <ol>
+      <li><span class="k">1</span><b>Smith, R. G. (1980).</b> The Contract Net Protocol: High-Level Communication and Control in a Distributed Problem Solver. IEEE Transactions on Computers, C-29(12). Announce, bid, award.</li>
+      <li><span class="k">2</span><b>Consortium for Service Innovation, Intelligent Swarming.</b> Replaces tiered escalation with connecting the person who needs help to the person who can help. The matching problem is the same shape as the one here.</li>
+      <li><span class="k">3</span><b>The uncomfortable point, if you choose to make it.</b> Swarming already dismantled the tiered pipeline, for good reasons, years before AI arrived. This room has already run half of this experiment.</li>
+    </ol>
+  </div>
+</section>
+<section class="slide a3" id="s3b">
+  <div class="act"><span class="dot"></span>Act three</div>
+  <h1>The channel does not come back, so Alise builds a narrow one, curating cases from work that is otherwise out of reach.</h1>
+  <div class="stage">
+    <div class="plot">
+      <svg viewBox="0 0 660 420" role="img" aria-label="The same flow diagram, with a narrow curated channel opened by the paired AI and cases drawn into it from the remaining work.">
+        <defs>
+          <pattern id="gh1" width="7" height="7" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+            <line x1="0" y1="0" x2="0" y2="7" stroke="#8497A6" stroke-width="1" opacity=".5"/>
+          </pattern>
+          <clipPath id="gclip"><rect x="70" y="20" width="558" height="350"/></clipPath>
+        </defs>
+        <g clip-path="url(#gclip)">
+          <polygon id="gHard" fill="url(#gh1)"/>
+          <polygon id="gEasy" fill="url(#gh1)"/>
+          <polygon id="gBand" fill="rgba(95,212,160,.12)"/>
+          <line id="gEU" stroke="#5FD4A0" stroke-width="1.1" stroke-opacity=".5"/>
+          <line id="gEL" stroke="#5FD4A0" stroke-width="1.1" stroke-opacity=".5"/>
+          <g id="gPulls"></g>
+          <polygon id="gCur" fill="rgba(74,163,255,.16)" stroke="#4AA3FF" stroke-width="1.1" stroke-opacity=".7" opacity="0"/>
+          <text id="gCurLbl" fill="#4AA3FF" font-size="12" font-family="inherit" text-anchor="middle" font-weight="600" opacity="0">Curated channel</text>
+          <g id="gMiles"></g>
+          <text id="gFlowLbl" fill="#5FD4A0" font-size="15" font-family="inherit" text-anchor="middle" font-weight="600">FLOW</text>
+          <path id="gTrail" fill="none" stroke="#F0AB00" stroke-width="2.25" stroke-linejoin="round"/>
+          <path id="gTrail2" fill="none" stroke="#4AA3FF" stroke-width="2.25" stroke-linejoin="round"/>
+          <g id="gCases"></g>
+          <line id="gGap" stroke="#C86B5A" stroke-width="1.25" stroke-dasharray="3 3" opacity="0"/>
+          <circle id="gDot" r="9" fill="#F0AB00"/>
+        </g>
+        <text id="gHardLbl" fill="#A6B3BF" font-size="13.5" font-family="inherit" text-anchor="middle">Too difficult</text>
+        <text id="gEasyLbl" fill="#A6B3BF" font-size="13.5" font-family="inherit" text-anchor="middle">Too easy</text>
+        <text id="gDotLbl" fill="#F0AB00" font-size="12" font-family="inherit" font-weight="600"></text>
+        <line x1="70" y1="370" x2="628" y2="370" stroke="#33414F" stroke-width="1.25"/>
+        <line x1="70" y1="370" x2="70" y2="20" stroke="#33414F" stroke-width="1.25"/>
+        <text x="70" y="392" fill="#6F7F8D" font-size="11.5" font-family="inherit">Low</text>
+        <text x="628" y="392" fill="#6F7F8D" font-size="11.5" font-family="inherit" text-anchor="end">High skill</text>
+        <text x="62" y="370" fill="#6F7F8D" font-size="11.5" font-family="inherit" text-anchor="end">Low</text>
+        <text x="62" y="28" fill="#6F7F8D" font-size="11.5" font-family="inherit" text-anchor="end">High difficulty</text>
+      </svg>
+    </div>
+    <div class="side">
+      <div>
+        <div class="phase" id="gPhase">Ready</div>
+        <label for="gSlider">Cases the machine has taken <span class="v" id="gVal">45%</span></label>
+        <input type="range" id="gSlider" min="0" max="100" step="1" value="45">
+        <div class="row"><button id="gPlay">1. Run status quo</button><button class="duoBtn" id="gDuo">2. Enable Support Duo</button></div>
+        <div class="row"><button id="gReset">Reset</button></div>
+      </div>
+      <div class="st" id="gZoneBox">
+        <div class="l">Title reached</div>
+        <div class="n" id="gZone">Junior Specialist</div>
+        <div class="d" id="gZoneD"></div>
+      </div>
+      <div class="duo">
+        <div class="l">Same engineer, same automation level</div>
+        <div class="cmp">
+          <div><div class="a" id="gA">&mdash;</div><div class="t">Left alone</div></div>
+          <div><div class="b" id="gB">&mdash;</div><div class="t">Paired with Alise</div></div>
+        </div>
+      </div>
+      <div class="vd" id="gVerdict"></div>
+    </div>
+  </div>
+  <div class="src">
+    <p class="caveat">The same model as earlier in the talk, with one addition. The curated channel is a design proposal. Nothing here demonstrates that curation works; it shows what the architecture is for.</p>
+    <ol>
+      <li><span class="k">1</span><b>Why the curated channel is narrow.</b> The natural channel was wide because volume supplied it for free. Every curated case has to be selected, scaffolded and justified, so the supply is deliberate and scarce. A wide curated band would be claiming the problem had gone away.</li>
+      <li><span class="k">2</span><b>Why cases are drawn from the remaining work.</b> There is no reservoir of easy cases to go back to. Curation means taking work that is genuinely out of reach and decomposing it into a step that is not, which is the only source left.</li>
+      <li><span class="k">3</span><b>Lave, J. and Wenger, E. (1991).</b> Situated Learning. What Alise is doing here is the scaffolding a senior colleague used to provide by proximity, when there were enough seniors and enough time.</li>
+      <li><span class="k">4</span><b>The honest limit.</b> Paired curation recovers part of the climb. The comparison stops deliberately short of the full career, because claiming a full recovery would be claiming that automation costs nothing.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- 19 two stores -->
+<section class="slide a3" id="s19">
+  <div class="act"><span class="dot"></span>Act three, the heart of it</div>
+  <h1>Every case then produces two things, a record of what happened which the company keeps and the method by which it was done which the engineer keeps, because KCS captures the responder's knowledge but never their method.</h1>
+  <div class="stage"><div class="fig">
+    <svg viewBox="0 0 1280 620">
+      <defs>
+        <marker id="aC" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,1 L9,5 L0,9" fill="none" stroke="#4AA3FF" stroke-width="1.25"/></marker>
+        <marker id="aW" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,1 L9,5 L0,9" fill="none" stroke="#F0AB00" stroke-width="1.25"/></marker>
+        <marker id="aR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,1 L9,5 L0,9" fill="none" stroke="#6F7F8D" stroke-width="1.25"/></marker>
+      </defs>
+      <rect x="30" y="262" width="200" height="96" rx="2" class="ln"/>
+      <text x="130" y="302" class="txb" text-anchor="middle">One engineer,</text>
+      <text x="130" y="326" class="txb" text-anchor="middle">one case</text>
+      <path d="M230,310 L296,310" class="ln"/>
+      <circle cx="300" cy="310" r="4" fill="#33414F"/>
+      <path d="M304,310 C352,310 352,140 396,140" class="lnc" marker-end="url(#aC)"/>
+      <path d="M304,310 C352,310 352,484 396,484" class="lnw" marker-end="url(#aW)"/>
+      <rect x="400" y="84" width="300" height="114" rx="2" class="fc"/>
+      <rect x="400" y="84" width="300" height="114" rx="2" class="lnc"/>
+      <text x="424" y="118" font-size="19" font-weight="600" fill="#EAECEE" font-family="inherit">Episodic store</text>
+      <text x="424" y="144" font-size="15" fill="#A6B3BF" font-family="inherit">What happened</text>
+      <text x="424" y="172" font-size="13" fill="#6F7F8D" font-family="inherit">Held by the employer</text>
+      <text x="400" y="234" font-size="15" fill="#A6B3BF" font-family="inherit">The company keeps the record. This is the KCS article.</text>
+      <text x="382" y="400" font-size="11.5" fill="#F0AB00" opacity=".85" font-family="inherit">Encrypted and local to the engineer</text>
+      <rect x="382" y="412" width="336" height="150" rx="2" class="enc"/>
+      <rect x="400" y="428" width="300" height="114" rx="2" class="fw"/>
+      <rect x="400" y="428" width="300" height="114" rx="2" class="lnw"/>
+      <text x="424" y="462" font-size="19" font-weight="600" fill="#EAECEE" font-family="inherit">Procedural store</text>
+      <text x="424" y="488" font-size="15" fill="#A6B3BF" font-family="inherit">Skills, prompts, workflows</text>
+      <text x="424" y="516" font-size="13" fill="#6F7F8D" font-family="inherit">Held by the engineer</text>
+      <text x="400" y="598" font-size="15" fill="#A6B3BF" font-family="inherit">The engineer keeps the method. KCS never asked for this.</text>
+      <path d="M400,532 C300,588 145,556 130,366" class="lnd" marker-end="url(#aR)"/>
+      <text x="248" y="446" font-size="12.5" fill="#6F7F8D" text-anchor="middle" font-family="inherit">Method returns</text>
+      <text x="248" y="466" font-size="12.5" fill="#6F7F8D" text-anchor="middle" font-family="inherit">to the work.</text>
+      <text x="248" y="486" font-size="12.5" fill="#6F7F8D" text-anchor="middle" font-family="inherit">The data never leaves.</text>
+    </svg>
+    <button class="mk c" aria-expanded="false" aria-controls="c19a" style="left:52.8%;top:17.5%">+</button>
+    <button class="mk w" aria-expanded="false" aria-controls="c19b" style="left:52.8%;top:73.0%">+</button>
+    <div class="co c" id="c19a" style="left:60%;top:2%">
+      <h3>The same case, as the company records it</h3>
+      <ul><li>Opened 14:20, closed 18:02</li><li>Product area, component, priority</li><li>Resolved, knowledge article linked</li><li>Two colleagues joined the swarm</li></ul>
+    </div>
+    <div class="co w" id="c19b" style="left:60%;top:56%">
+      <h3>The same case, as the engineer works it</h3>
+      <ul><li>Rule out connection pooling before touching the query plan</li><li>The order I check things in when timeouts are intermittent</li><li>The prompt I use to turn a trace into something a customer can read</li><li>The phrasing that gets a reluctant customer to send logs</li></ul>
+    </div>
+  </div></div>
+  <div class="src">
+    <ol>
+      <li><span class="k">1</span><b>MacNiven, S.</b> A Right to One's Own Method: Worker-paired AI memory and the recording paradox in Union law. Zenodo, DOI 10.5281/zenodo.22738329.</li>
+      <li><span class="k">2</span><b>KCS v6, Capture practice.</b> Capture in the workflow records the requestor's context, in their words and phrases, and the responder's knowledge. It does not record the responder's method. The procedural store is capture in the workflow applied to what KCS leaves out.</li>
+      <li><span class="k">3</span><b>KCS Trust principle.</b> Those doing the work own the content. The argument here extends that one layer down: those doing the work own their method.</li>
+    </ol>
+  </div>
+</section>
+<!-- 20 -->
+<!-- trust boundary -->
+<section class="slide a3">
+  <div class="act"><span class="dot"></span>Act three, the architecture</div>
+  <h1>One scalar crosses the network, and nothing else, which is the constraint every other claim in this talk rests on.</h1>
+  <div class="body">
+    <svg viewBox="0 0 900 232" style="width:100%;max-height:232px">
+      <defs>
+        <marker id="tb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,1 L9,5 L0,9" fill="none" stroke="#4AA3FF" stroke-width="1.25"/></marker>
+      </defs>
+      <rect x="24" y="24" width="430" height="186" class="lnw" fill="rgba(240,171,0,.05)"/>
+      <text x="44" y="46" class="txw" font-weight="600">The engineer's device</text>
+      <rect x="44" y="58" width="184" height="44" class="lnw" fill="rgba(240,171,0,.10)"/>
+      <text x="58" y="78" class="txw" font-size="12" font-weight="600">Case cords</text>
+      <text x="58" y="94" class="txs" font-size="9.5">authoritative, append only</text>
+      <rect x="240" y="58" width="192" height="44" class="ln"/>
+      <text x="254" y="78" class="tx" font-size="12" font-weight="600">Engineer wiki</text>
+      <text x="254" y="94" class="txs" font-size="9.5">derived, prose, always in context</text>
+      <rect x="44" y="112" width="122" height="40" class="ln"/>
+      <text x="56" y="130" class="tx" font-size="11">Projections</text><text x="56" y="145" class="txs" font-size="9.5">derived</text>
+      <rect x="176" y="112" width="122" height="40" class="ln"/>
+      <text x="188" y="130" class="tx" font-size="11">Retrieval index</text><text x="188" y="145" class="txs" font-size="9.5">derived</text>
+      <rect x="308" y="112" width="124" height="40" class="ln"/>
+      <text x="320" y="130" class="tx" font-size="11">Keystore</text><text x="320" y="145" class="txs" font-size="9.5">authoritative</text>
+      <text x="44" y="176" class="txs">One authoritative store. Everything else can be deleted and rebuilt from it.</text>
+      <text x="44" y="196" class="txs">Scoring a broadcast happens here, against all of it.</text>
+
+      <path d="M470,10 L470,120 M470,146 L470,214" class="lnc" stroke-dasharray="4 4"/>
+      <text x="478" y="228" class="txc" font-size="10">the trust boundary</text>
+
+      <path d="M458,133 L576,133" class="lnc" marker-end="url(#tb)"/>
+      <rect x="586" y="112" width="120" height="42" class="lnc" fill="rgba(74,163,255,.10)"/>
+      <text x="646" y="132" class="txc" text-anchor="middle" font-size="13" font-weight="600">0.81</text>
+      <text x="646" y="148" class="txs" text-anchor="middle" font-size="9.5">one anonymous scalar</text>
+      <text x="586" y="176" class="txs" font-size="10">plus, on acceptance only, the identity of the accepting Duo</text>
+
+      <rect x="586" y="30" width="288" height="66" class="lnr" fill="rgba(200,107,90,.06)" stroke-dasharray="5 5"/>
+      <text x="602" y="50" class="txr" font-size="11" font-weight="600">What never crosses</text>
+      <text x="602" y="68" class="txs" font-size="9.5">no profile, no wiki content, no case history,</text>
+      <text x="602" y="84" class="txs" font-size="9.5">no embeddings, no intermediate features</text>
+    </svg>
+    <div class="land">The temptation to refuse early: it will look efficient to send a small feature vector so ranking can happen centrally. A feature vector is a profile. Accept one and the architecture has quietly become the thing it was built to replace.</div>
+  </div>
+  <div class="src">
+    <ol>
+      <li><span class="k">1</span><b>MacNiven, S.</b> Alise Data Model Specification, pages 1 and 4. Storage architecture, the trust boundary, and the two retrieval modes.</li>
+      <li><span class="k">2</span><b>The governing rule.</b> There is exactly one authoritative store, the case cords. Every other structure is derived and can be discarded and rebuilt, which is what makes schema migration, erasure, audit and corruption recovery tractable at once.</li>
+      <li><span class="k">3</span><b>Two retrieval modes.</b> Case against case history is episodic, fetched on demand, strong on recurrence and weak on novelty. Case against the wiki is semantic and always loaded, and handles the case never seen before but well suited to. The split is the selection mechanism itself.</li>
+      <li><span class="k">4</span><b>Why a smaller local model has to run first.</b> Deciding which cords are worth pulling for this particular case, and surfacing only those, is precisely the job that cannot be done centrally without first centralising the material it draws on.</li>
+      <li><span class="k">5</span><b>The engineer wiki is derived, not authoritative.</b> Every claim names the cords that evidence it and carries a last-evidenced date. The engineer may edit anything, and their edits are themselves events on the cord. Only evidenced claims are load-bearing in a match.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- erasure -->
+<section class="slide a3">
+  <div class="act"><span class="dot"></span>Act three, the architecture</div>
+  <h1>An append-only record cannot satisfy a deletion obligation by deleting, so it satisfies it by destroying the key instead.</h1>
+  <div class="body">
+    <div class="cols c2">
+      <div>
+        <svg viewBox="0 0 430 210" style="width:100%">
+          <rect x="16" y="16" width="398" height="82" class="lnw" fill="rgba(240,171,0,.06)"/>
+          <text x="32" y="38" class="txw" font-size="12" font-weight="600">Durable layer &middot; the engineer</text>
+          <text x="32" y="58" class="txs" font-size="10">Brief as broadcast, skill signals, full event chain, outcomes</text>
+          <text x="32" y="78" class="txs" font-size="10">Retention: the life of their tenure, and portable beyond it</text>
+          <text x="32" y="92" class="txs" font-size="9.5">encrypted with device credentials</text>
+          <rect x="16" y="110" width="398" height="84" class="lnc" fill="rgba(74,163,255,.07)"/>
+          <text x="32" y="132" class="txc" font-size="12" font-weight="600">Volatile payload &middot; the customer</text>
+          <text x="32" y="152" class="txs" font-size="10">Verbatim case content as received</text>
+          <text x="32" y="172" class="txs" font-size="10">Retention: bounded by contract, DPA and erasure obligation</text>
+          <text x="32" y="188" class="txs" font-size="9.5">separately encrypted under a per-case content key</text>
+        </svg>
+        <p class="tiny" style="margin-top:10px">Merge them and the strictest clock governs the whole record, so the engineer's history silently inherits a deletion schedule it should never have had.</p>
+      </div>
+      <div class="pts">
+        <div class="pt"><div class="h">Erasure destroys the key, not the file</div><div class="d">The ciphertext remains and is permanently undecryptable, by anyone, including the engineer.</div></div>
+        <div class="pt"><div class="h">The discharge is itself auditable</div><div class="d">A redacted event is appended recording when, under what legal basis, and on whose authority.</div></div>
+        <div class="pt"><div class="h">The chain still verifies</div><div class="d">Nothing in the record was altered, so integrity checking still passes and tampering remains detectable.</div></div>
+        <div class="pt"><div class="h">Derived stores are rebuilt without it</div><div class="d">Safe precisely because they were never authoritative. The solution path survives; the customer's content does not.</div></div>
+      </div>
+    </div>
+    <div class="land">This is the answer to the obvious objection. A permanent worker-held record and a right to erasure are not in conflict, provided you separate the two data subjects before you need to.</div>
+  </div>
+  <div class="src">
+    <ol>
+      <li><span class="k">1</span><b>MacNiven, S.</b> Alise Data Model Specification, page 3. Retention, erasure and schema drift.</li>
+      <li><span class="k">2</span><b>Why the layers cannot share a retention rule.</b> Beyond the inherited clock, the case can no longer be traced once the payload expires, because the trace was stored inside the thing that expired.</li>
+      <li><span class="k">3</span><b>Schema drift.</b> Genesis records are stamped with the schema in force on arrival and never migrated. Canonical projections are regenerated across the corpus when the schema moves, so a migration rebuilds a derived layer rather than rewriting history, and can be run again if it was wrong.</li>
+      <li><span class="k">4</span><b>Self-verifying reputation.</b> Because the chain is verifiable and events are timestamped in sequence, an engineer can demonstrate that their record was neither fabricated nor back-dated. Once that record influences assignment and mobility, proving it was earned matters as much as having it.</li>
+    </ol>
+  </div>
+</section>
+
+<section class="slide a3" id="s20">
+  <div class="act"><span class="dot"></span>Act three</div>
+  <h1>That same split also makes the system cheaper, because the local model assembles context for free and only a curated prompt ever crosses the network.</h1>
+  <div class="body">
+    <div class="lane">
+      <div class="ll"><div class="n">Generic use</div><div class="o">whole case dumped<br>into the context</div></div>
+      <div class="b"><div class="sg billed" style="flex:0 0 76%"><div class="n">Every token billed</div><div class="l">retrieval, boilerplate, history, the answer</div></div></div>
+    </div>
+    <div class="lane">
+      <div class="ll"><div class="n">Paired use</div><div class="o">local model assembles,<br>frontier model answers</div></div>
+      <div class="b">
+        <div class="sg local" style="flex:0 0 44%"><div class="n">Assembled locally</div><div class="l">token free, never leaves the machine</div></div>
+        <div class="sg billed" style="flex:0 0 26%"><div class="n">Billed</div><div class="l">curated prompt, the answer</div></div>
+      </div>
+    </div>
+    <div class="land"><b>Personal performance enhacement without disclosure makes employees and employers more competitive, whilst safeguarding against exploitation and unwarranted redundancy. Economics puts a thick helping of icing on the cake. </b> <span class="muted">A curated prompt carries fewer tokens than a bloated one at any price. The saving shrinks as prices fall, but it does not invert.</span></div>
+  </div>
+  <div class="src">
+    <p class="caveat">Agency, vendor and press estimates. Not peer reviewed and not specific to this deployment.</p>
+    <ol>
+      <li><span class="k">1</span><b>Practical Logix (2026).</b> Reduction of 30 to 70 percent in frontier API spend for the right workload profiles, and argues the choice is not small versus frontier as a binary.</li>
+      <li><span class="k">2</span><b>like2byte (2026).</b> Attributes a reduction of roughly 70 percent to routing, cutting premium output tokens, and removing the network leg, not to cheaper per token pricing.</li>
+      <li><span class="k">3</span><b>mem0 (2026).</b> Retrieval based memory cutting context to 166 tokens with comparable quality, about 72 percent saving on 24 entries. Vendor published, small sample.</li>
+      <li><span class="k">4</span><b>The bioplastics counterfactual.</b> Biodegradable resin at roughly 3 US dollars per kilo against 1.2 for conventional, and a 20 to 50 percent packaging premium. Adoption stalls when the ethical option costs more. This architecture does not have to be cheaper. It only has to not be more expensive.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- 21 token simulator -->
+<section class="slide a3" id="s21">
+  <div class="act"><span class="dot"></span>Act three</div>
+  <h1>I will not tell you what you would save, but here is the model so you can find out for yourselves.</h1>
+  <div class="stage">
+    <div class="ctrls">
+      <div class="gt">Your organisation</div>
+      <div><label for="eng">Engineers using AI <span class="v" id="engV">&mdash;</span></label><input type="number" id="eng" value="" min="1" step="100" placeholder="how many people?"></div>
+      <div><label for="spend">AI spend per person, per year</label><input type="number" id="spend" value="" min="0" step="100" placeholder="spend per person, per year">
+        <div class="presets">
+          <button type="button" data-v="6000">Uber, low</button>
+          <button type="button" data-v="18000">Uber, cap</button>
+          <button type="button" data-v="24000">Uber, high</button>
+          <button type="button" data-v="7330">Benchmark</button>
+          <button type="button" id="clrBtn">Clear</button>
+          <button type="button" id="rstBtn">Reset</button>
+        </div>
+        <div class="hint">Uber disclosed 500 to 2,000 per engineer per month across 5,000 engineers, and has since capped it at 1,500. Default is their low end.</div></div>
+      <div class="gt">The effect of curation</div>
+      <div><label for="ratio">Curated prompt is this much smaller <span class="v" id="ratioV">2.0x</span></label><input type="range" id="ratio" min="1" max="6" step="0.1" value="2">
+        <div class="hint">Published reductions of 30 to 70 percent are 1.43x and 3.33x. Default sits mid range, not at the flattering end.</div></div>
+      <div><label for="share">Share of spend that is input tokens <span class="v" id="shareV">62%</span></label><input type="range" id="share" min="10" max="90" step="1" value="62"><div class="hint">Derived. Published traces put output volume at roughly a ninth of input, and output is priced 3 to 5 times higher, which lands the spend share between 61 and 75 percent. 62 is the conservative end.</div></div>
+      <div><label for="outcut">Output tokens also fall by <span class="v" id="outcutV">10%</span></label><input type="range" id="outcut" min="0" max="50" step="1" value="10">
+        <div class="hint">A precise prompt gets a tighter answer and fewer agentic retries. Real, but unquantified. Set to zero to ignore it.</div></div>
+      <div class="gt">Cost of running it locally</div>
+      <div><label for="fte">Model ops staff per 1,000 engineers <span class="v" id="fteV">0.50</span></label><input type="range" id="fte" min="0" max="2" step="0.05" value="0.5">
+        <div class="hint">No published figure exists for this. My estimate, and the one most likely to be wrong.</div></div>
+      <div><label for="fteCost">Loaded cost per model ops FTE</label><input type="number" id="fteCost" value="95000" min="0" step="5000">
+        <div class="hint">German fully loaded cost. Replace with your market.</div></div>
+      <div><label for="hw">Hardware uplift per person, per year <span class="v" id="hwV">30</span></label><input type="range" id="hw" min="0" max="200" step="5" value="30"><div class="hint">Electricity is about 0.30 per person per year at German commercial rates, and is included. The costs that matter are the two above it. My estimate.</div></div>
+    </div>
+    <div class="res">
+      <div class="headline">
+        <div class="stat green" style="grid-column:1 / -1">
+          <div class="n" id="netN">0</div>
+          <div class="l">Net saving per year, after paying to run the models locally, in whatever currency you entered</div>
+        </div>
+      </div>
+      <div class="ledger">
+        <div class="lrow"><span>AI spend today</span><span id="rowNow">0</span></div>
+        <div class="lrow sub"><span>less saved on input, from curation</span><span id="rowIn">0</span></div>
+        <div class="lrow sub"><span>less saved on output, from tighter answers</span><span id="rowOut">0</span></div>
+        <div class="lrow tot"><span>AI spend after</span><span id="rowAfter">0</span></div>
+        <div class="lrow sub"><span>plus cost of running models locally</span><span id="rowLocal">0</span></div>
+        <div class="lrow tot net"><span>Net saving</span><span id="rowNet">0</span></div>
+      </div>
+      <div class="be"><div class="n" id="beN">1.02x</div><div class="l" id="beL"></div></div>
+    </div>
+  </div>
+  <div class="src">
+    <p class="caveat">Where a company is named, the figure was disclosed by that company or reported by a named outlet. Where it is a benchmark or a survey, it is an aggregate and should be treated as one. None of it is specific to this deployment.</p>
+    <ol>
+      <li><span class="k">1</span><b>Uber, 2026. The closest published analogue to this estimate.</b> CTO Praveen Neppalli Naga confirmed to The Information that Uber exhausted its entire 2026 AI tooling budget by April, four months in, across roughly 5,000 engineers. Claude Code adoption rose from 32 to 84 percent after rollout in December 2025. Per engineer costs ran 500 to 2,000 US dollars per month. Reported by Fortune, Forbes and AI Magazine, May 2026.</li>
+      <li><span class="k">2</span><b>Uber's response.</b> Bloomberg, reported via TechCrunch in June 2026, that Uber imposed a cap of 1,500 US dollars per employee per month per agentic coding tool, tracked on an internal dashboard and exceedable with permission. The three preset buttons on this slide are the low end, the cap, and the high end of that range.</li>
+      <li><span class="k">3</span><b>a16z.</b> Average Global 2000 LLM budget of about 7 million US dollars in 2025, rising to about 11.6 million in 2026, an increase of roughly 65 percent.</li>
+      <li><span class="k">4</span><b>Menlo Ventures.</b> Total enterprise generative AI spend of 37 billion US dollars in 2025, of which 12.5 billion went on foundation model APIs.</li>
+      <li><span class="k">5</span><b>Ramp.</b> Business token usage up about 1,001 percent and dollar spend up about 497 percent between January 2025 and April 2026. Usage is outrunning price falls.</li>
+      <li><span class="k">6</span><b>G2, via Forbes (August 2026).</b> Over 1.27 million US dollars on AI tokens in 2026, about 970 billion tokens. A named company with a real number, useful as a sanity check on scale.</li>
+      <li><span class="k">7</span><b>Decagon.</b> Reports cutting its own inference costs sixfold by moving off closed per-token APIs onto infrastructure built around open-weight models. This is the architectural move described here, made by someone else for commercial reasons.</li>
+      <li><span class="k">8</span><b>Input to output ratio, published.</b> A 90 day OpenRouter trace across models gives completion to prompt ratios from 0.021 to 0.722 with a median of 0.111, so output volume is typically about a ninth of input. The 100 trillion token OpenRouter study puts average prompts above 6,000 tokens against completions near 400. Silicon Data's support ticket profile of 3,150 and 400 is consistent with both.</li>
+      <li><span class="k">9</span><b>Two things that invert this, and they matter.</b> Reasoning models count chain of thought as output, which can push output to 90 to 95 percent of request cost. Prompt caching at a 90 percent discount can move the effective ratio to 50 to 1. In either case the saving shifts from the input side to the output side, which is why the output slider exists rather than being assumed away.</li>
+      <li><span class="k">10</span><b>Gartner.</b> Agentic workloads can consume 5 to 30 times more tokens per task than a standard chatbot interaction, because an agent plans, calls tools, checks results and retries. This is why the curation ratio matters more, not less, over time.</li>
+      <li><span class="k">11</span><b>Mavvrik (2025) and the 2026 State of FinOps Report.</b> 85 percent of enterprises saw AI costs exceed expectations by more than 10 percent; nearly three quarters exceeded their AI budget outright.</li>
+      <li><span class="k">12</span><b>Model ops and hardware figures are my own estimates.</b> Half an FTE per thousand engineers at a loaded 95,000 EUR, hardware uplift at 30 EUR per person per year. Both are guesses, both adjustable, and they remain the numbers most likely to be wrong.</li>
+      <li><span class="k">13</span><b>Currency.</b> The fields carry no currency. Published anchors are in US dollars. Whatever unit goes in is the unit that comes out.</li>
+    </ol>
+  </div>
+  </section>
+
+<!-- 22 -->
+<section class="slide a4">
+  <div class="act"><span class="dot"></span>Act four, policy</div>
+  <h1>This is the safe version because co-determination was engaged before there was anything to approve, and because it extends your own Trust principle one layer down to the method itself.</h1>
+  <div class="body">
+    <svg viewBox="0 0 900 104" style="width:100%;max-height:104px;margin-bottom:12px">
+      <rect x="120" y="26" width="240" height="52" class="lnw" fill="rgba(240,171,0,.07)"/>
+      <text x="240" y="50" class="txw" text-anchor="middle" font-size="12" font-weight="600">Employee wellbeing</text>
+      <text x="240" y="68" class="txs" text-anchor="middle" font-size="10">what works councils defend</text>
+      <rect x="540" y="26" width="240" height="52" class="lnc" fill="rgba(74,163,255,.07)"/>
+      <text x="660" y="50" class="txc" text-anchor="middle" font-size="12" font-weight="600">Interests of the business</text>
+      <text x="660" y="68" class="txs" text-anchor="middle" font-size="10">what the same paragraph also requires</text>
+      <path d="M366,52 L534,52" class="lng"/>
+      <text x="450" y="42" class="txg" text-anchor="middle" font-size="11" font-weight="600">BetrVG 2(1)</text>
+      <text x="450" y="70" class="txs" text-anchor="middle" font-size="9">the duty runs to both</text>
+      <text x="450" y="98" class="txs" text-anchor="middle" font-size="10">Most privacy architectures are a tax on one side. This one is not.</text>
+    </svg>
+    <div class="pts">
+      <div class="pt"><div class="h">The works council came in first, by choice</div><div class="d">Before there was anything to approve, rather than summoned once there was. Betriebsverfassungsgesetz paragraph 87(1)(6) is the provision everyone reaches for.</div></div>
+      <div class="pt"><div class="h">The statutory duty runs both ways</div><div class="d">Paragraph 2(1) asks the works council and the employer to serve employee wellbeing and the interests of the business. Most privacy architectures are a tax on the company. This one is not, so it serves both halves of the duty.</div></div>
+      <div class="pt"><div class="h">An ethics review that produced a classification</div><div class="d">Controlled high risk, and cleared on those terms. A real assessment with conditions attached to it.</div></div>
+      <div class="pt"><div class="h">A principle, published</div><div class="d">The argument and the architecture are in the open, so they can be examined, adopted or improved by anyone.</div></div>
+    </div>
+  </div>
+  <div class="src">
+    <ol>
+      <li><span class="k">1</span><b>Betriebsverfassungsgesetz paragraph 2(1)</b> on the duty of cooperation, and <b>paragraph 87(1)(6)</b> on technical devices capable of monitoring behaviour or performance.</li>
+      <li><span class="k">2</span><b>KCS Trust principle.</b> One of the four fundamental Principles. Those doing the work own the content.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- 23 -->
+<section class="slide a4">
+  <div class="act"><span class="dot"></span>Act four</div>
+  <h1>It is also a gap in European law that nobody in Brussels is currently addressing.</h1>
+  <div class="body">
+    <svg viewBox="0 0 900 200" style="width:100%;max-height:200px">
+      <rect x="30" y="50" width="250" height="90" class="ln" fill="rgba(255,255,255,.03)"/>
+      <text x="155" y="82" class="txb" text-anchor="middle">Systems that direct</text>
+      <text x="155" y="104" class="txs" text-anchor="middle">allocation, scheduling, targets</text>
+      <text x="155" y="126" class="txs" text-anchor="middle">covered</text>
+      <rect x="310" y="50" width="250" height="90" class="ln" fill="rgba(255,255,255,.03)"/>
+      <text x="435" y="82" class="txb" text-anchor="middle">Systems that evaluate</text>
+      <text x="435" y="104" class="txs" text-anchor="middle">scoring, ranking, discipline</text>
+      <text x="435" y="126" class="txs" text-anchor="middle">covered</text>
+      <rect x="590" y="50" width="250" height="90" class="lnr" stroke-dasharray="5 5" fill="rgba(200,107,90,.06)"/>
+      <text x="715" y="82" class="txr" text-anchor="middle" font-weight="600">Systems that assist</text>
+      <text x="715" y="104" class="txs" text-anchor="middle">paired, holding your method</text>
+      <text x="715" y="126" class="txr" text-anchor="middle">governed by nothing</text>
+      <text x="715" y="172" class="txs" text-anchor="middle">the third gap</text>
+    </svg>
+    <div class="land">Two organisations in Brussels have confirmed this is not addressed in any current advice going to the Commission. The instruments regulate systems that direct, evaluate or discipline. An AI that holds your method does none of those things.</div>
+    <p class="tiny" style="margin-top:14px">A Right to One's Own Method. Zenodo, DOI 10.5281/zenodo.22738329. Full paper in preparation for the European Labour Law Journal.</p>
+  </div>
+  <div class="src">
+    <ol>
+      <li><span class="k">1</span><b>MacNiven, S.</b> A Right to One's Own Method: Worker-paired AI memory and the recording paradox in Union law. Zenodo, DOI 10.5281/zenodo.22738329.</li>
+      <li><span class="k">2</span><b>Add a QR code before the day.</b> One code, on screen, pointing at the DOI.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- 25 -->
+<section class="slide a4">
+  <div class="act"><span class="dot"></span>Close, callback</div>
+  <h1>Bainbridge's operators were left monitoring a system they could no longer run, and the only question that matters is whether ours will still be able to tell when it is wrong.</h1>
+  <div class="body">
+    <svg viewBox="0 0 900 134" style="width:100%;max-height:134px;margin-bottom:12px">
+      <rect x="150" y="24" width="270" height="86" class="ln" fill="rgba(255,255,255,.03)"/>
+      <circle cx="196" cy="52" r="8" class="lng"/><circle cx="230" cy="52" r="8" class="lng"/>
+      <circle cx="264" cy="52" r="8" class="lng"/><circle cx="298" cy="52" r="8" class="lnr"/>
+      <circle cx="332" cy="52" r="8" class="lng"/><circle cx="366" cy="52" r="8" class="lng"/>
+      <path d="M176,80 L394,80" class="lnd"/>
+      <path d="M176,94 L330,94" class="lnd"/>
+      <text x="285" y="16" class="txs" text-anchor="middle">a system running correctly, almost always</text>
+      <circle cx="530" cy="66" r="18" class="lnw"/>
+      <path d="M530,84 L530,110 M512,120 L530,110 L548,120" class="lnw"/>
+      <path d="M424,64 L506,62" class="lnd"/>
+      <text x="580" y="54" class="txs" font-size="11">Watching. Not practising.</text>
+      <text x="580" y="74" class="txs" font-size="11">Called on only when it fails,</text>
+      <text x="580" y="94" class="txs" font-size="11">which is when skill matters most</text>
+      <text x="580" y="114" class="txr" font-size="11">and is least available.</text>
+    </svg>
+    <div class="big">She wrote that the most reliable automated systems are the ones that need the greatest investment in the people watching them.</div>
+    <div class="land muted">Forty three years, and we have built the most reliable automated systems in history while reducing the investment in the people watching them. The architecture I have described is one attempt at the other half of her sentence.</div>
+  </div>
+  <div class="src">
+    <ol><li><span class="k">1</span><b>Bainbridge, L. (1983).</b> Ironies of Automation. Automatica, 19(6), 775 to 779. The closing argument of the paper is that successful automation increases rather than decreases the need for operator training.</li></ol>
+  </div>
+</section>
+
+<!-- 26 -->
+<section class="slide a4">
+  <div class="act"><span class="dot"></span>The ask</div>
+  <h1>So the concept stands: Inverting how and where personal profiles are stored and processed, literally, changes the game played.</h1>
+  <div class="body">
+    <svg viewBox="0 0 900 96" style="width:100%;max-height:96px;margin-bottom:12px">
+      <text x="30" y="16" class="txs">The whole change, in one line</text>
+      <rect x="30" y="30" width="330" height="44" class="lnr" fill="rgba(200,107,90,.06)"/>
+      <text x="195" y="50" class="txr" text-anchor="middle" font-size="11">The organisation holds a model of you</text>
+      <text x="195" y="66" class="txs" text-anchor="middle" font-size="9.5">and personalisation costs you your privacy</text>
+      <path d="M376,52 L442,52" class="lnw"/><path d="M442,52 l-10,-4 M442,52 l-10,4" class="lnw"/>
+      <rect x="456" y="30" width="330" height="44" class="lnw" fill="rgba(240,171,0,.07)"/>
+      <text x="621" y="50" class="txw" text-anchor="middle" font-size="11">You hold a model of you</text>
+      <text x="621" y="66" class="txs" text-anchor="middle" font-size="9.5">and personalisation costs you nothing</text>
+      <text x="800" y="56" class="txs" font-size="10">that is the</text>
+      <text x="800" y="70" class="txs" font-size="10">whole game</text>
+    </svg>
+    <div class="cols c2">
+      <div class="card"><div class="h">Who will test the module and objective model?</div><div class="d">It needs an estate that is not mine, and a curriculum that was not written for it. If it only works at SAP, then all I have found is something about SAP.</div></div>
+      <div class="card"><div class="h">Who has the aggregate signal data?</div><div class="d">The Learning Loop is the weakest claim I made today. I would like it to stop being a hypothesis, and that needs somebody else's numbers.</div></div>
+    </div>
+    <div class="land">A Right to One's Own Method. Zenodo, DOI 10.5281/zenodo.22738329. Published open access, with the policy implications set out in full. If you want to build it, build it.</div>
+  </div>
+  <div class="src">
+    <ol>
+      <li><span class="k">1</span><b>MacNiven, S.</b> A Right to One's Own Method. Zenodo, DOI 10.5281/zenodo.22738329. Published open access, setting out the regulatory gap and its implications for European policy.</li>
+      <li><span class="k">2</span><b>The two asks are genuine.</b> The module and objective model has not been tested outside SAP, and the Learning Loop has no supporting data. Both are stated as open in the body of the talk.</li>
+      <li><span class="k">3</span><b>Declaration of interest.</b> I consult independently under a contractual permission from SAP. Nothing here is offered commercially.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- summary -->
+<section class="slide a4" id="sum">
+  <div class="act"><span class="dot"></span>The whole thing, in one paragraph</div>
+  <h1>If you remember one thing, remember this.</h1>
+  <div class="body">
+    <div class="two"><div class="thread">
+      <div class="tl">The red thread</div>
+      <ol class="beads">
+        <li class="grp a1">Act one &middot; the problem</li>
+        <li>The exercises are evaporating</li>
+        <li>Careers freeze where they stood</li>
+        <li>Bainbridge said it in 1983</li>
+        <li>Load-bearing skills go first</li>
+
+        <li class="grp a2">Act two &middot; learning</li>
+        <li>KCS secured only half of it</li>
+        <li>Objectives as the unit</li>
+        <li>A course built for one person</li>
+        <li>But who is it for?</li>
+
+        <li class="grp a3">Act three &middot; architecture</li>
+        <li>A register is a layoff ticket</li>
+        <li>Invert it: the <span class="w">Support Duo</span></li>
+        <li><span class="c">Broadcast, bid, accept</span></li>
+        <li>Two stores, two owners</li>
+        <li>One scalar crosses</li>
+        <li>Cheaper to run as well</li>
+
+        <li class="grp a4">Act four &middot; policy</li>
+        <li>The third gap</li>
+        <li>Published, open access</li>
+      </ol>
+    </div>
+    <p class="para">Practice used to make perfect, but the exercises are evaporating: the <span class="w">70</span> in <b>70-20-10</b> is being automated away, and with it the graded battery of cases that produced expertise as a by-product. Run the simulation and a career freezes at whatever title it had reached when the channel collapsed beneath it. <b>Bainbridge</b> described exactly this in <span class="r">1983</span>, in five pages about power stations, and the evidence has now caught up with her, in confidence effects on critical thinking and in payroll data showing entry level work vanishing precisely where AI automates rather than augments. It matters because some skills are worth nothing in themselves and everything as foundations, and it is the <span class="w">load-bearing</span> kind we are quietly automating. So expertise has to be built on purpose, which turns a staffing apocalypse into a learning problem. <b>KCS</b> made knowledge a deliberate by-product of interaction but left expertise idiosyncratic and accidental, and what most organisations still call learning is <span class="g">just-in-case</span> in a building where everything else became <span class="g">just-in-time</span>. So break the course into <span class="g">modules</span> whose <span class="g">objectives</span> are capabilities with observable evidence, prerequisites, an owner and an expiry date, and make them addressable. The course survives this: from a catalogue of two hundred modules, <span class="g">one course is assembled for one engineer</span>, guided by what that engineer has actually done. Then one mechanism serves everything: a <span class="c">broadcast</span> goes out, every model <span class="c">bids</span> locally with a single score, and <span class="c">identity is revealed only on accept</span>. That one mechanic solves case assignment, swarming, learning, mentoring and internal mobility alike. But all of it depends on knowing what each person cannot yet do, and a central register of that is an <span class="r">admission ticket to the next round of layoffs</span>. So invert it: one register of four thousand becomes four thousand registers of one. That pairing of an engineer and their own model is the <span class="w">Support Duo</span>, and the model is <span class="w">Alise</span>. Alise curates cases from work otherwise out of reach, so learning continues after the channel has gone. Every case then produces two things, the <span class="c">episodic record</span> the company keeps and the <span class="w">procedural method</span> the engineer keeps, because KCS captures the responder's knowledge but never their method. Only <span class="c">one scalar</span> crosses the <b>trust boundary</b>, and since a feature vector is a profile, it never leaves either. <b>Erasure</b> destroys the key rather than the record, so a permanent worker-held history and a right to be forgotten can both hold at once. The same split also makes the system cheaper, because the local model assembles context for free and only a curated prompt crosses the network. This is the safe version, because co-determination came first and the architecture serves the business as squarely as the person, and it is also a gap in European law that nobody in Brussels is addressing. The company takes the record, the resolution and the throughput, and the engineer walks out with their method intact. Bainbridge's operators were left monitoring a system they could no longer run. The only question that matters is whether ours will still be able to tell when it is wrong.</p></div>
+
+    <div class="strip">
+      <div class="step"><div class="k" style="color:var(--company)">Broadcast</div><div class="v">a need goes out<br>with no names on it</div></div>
+      <div class="arw">&rarr;</div>
+      <div class="step"><div class="k" style="color:var(--company)">Bid</div><div class="v">every Duo scores it locally<br>and returns one number</div></div>
+      <div class="arw">&rarr;</div>
+      <div class="step"><div class="k" style="color:var(--company)">Accept</div><div class="v">only now is an identity<br>attached to anything</div></div>
+      <div class="arw">&rarr;</div>
+      <div class="step"><div class="k" style="color:var(--worker)">Two stores</div><div class="v">the record to the company,<br>the method to the engineer</div></div>
+      <div class="spacer"></div>
+      <div class="doi">A Right to One's Own Method<br>Zenodo, DOI 10.5281/zenodo.22738329<br>Published open access.</div>
+    </div>
+  </div>
+  <div class="src">
+    <p class="caveat">This slide restates the whole argument, so every source in the deck applies. Press N on the slide in question for the detail. The items below are the load-bearing ones.</p>
+    <ol>
+      <li><span class="k">1</span><b>Bainbridge, L. (1983).</b> Ironies of Automation. Automatica, 19(6), 775 to 779.</li>
+      <li><span class="k">2</span><b>Lee and colleagues, CHI 2025.</b> Microsoft Research and Carnegie Mellon. 319 knowledge workers, 936 examples. Self reported enaction of critical thinking, not measured thinking.</li>
+      <li><span class="k">3</span><b>Brynjolfsson, Chandar and Chen.</b> Stanford Digital Economy Lab. About 19 percent relative employment decline for 22 to 25 year olds in the most AI exposed occupations, August 2026 update.</li>
+      <li><span class="k">4</span><b>Csikszentmihalyi (1990); Lave and Wenger (1991).</b> The flow channel and legitimate peripheral participation.</li>
+      <li><span class="k">5</span><b>Consortium for Service Innovation.</b> KCS Principles, Core Concepts and Practices Guide, and Intelligent Swarming. CC BY-NC-ND 4.0.</li>
+      <li><span class="k">6</span><b>Uber, 2026.</b> Entire annual AI budget exhausted in four months across roughly 5,000 engineers. The Information, via Fortune, Forbes and TechCrunch.</li>
+      <li><span class="k">7</span><b>MacNiven, S.</b> A Right to One's Own Method, Zenodo DOI 10.5281/zenodo.22738329, and the Alise Data Model Specification.</li>
+      <li><span class="k">8</span><b>Mine, and unevidenced:</b> EDUSNACKS, the Learning Loop, the self-contained and additive distinction, the model ops and hardware cost estimates, and the claim that aggregate anonymous signals reveal where capability is thin.</li>
+    </ol>
+  </div>
+</section>
+
+<div class="timer" id="timer" title="Click to start or pause. Shift-click to reset. T and Shift-T do the same."><span class="dot"></span><span id="tElapsed">00:00</span><span class="tgt">/ 30:00</span></div>
+<div class="attrib">The ideas, designs and solutions presented here were developed by Prof. Dr. Sean MacNiven (Head of Research, Technology and Transformation Office, Customer Support, SAP SE | Honorary Professor, Glasgow Caledonian University | Visiting Professor Leeds-Beckett University).<br>To discuss further, please connect via LinkedIn on <a href="https://www.linkedin.com/in/seanmacniven" target="_blank" rel="noopener">https://www.linkedin.com/in/seanmacniven</a>.</div>
+<div class="rail" id="rail"></div>
+<div class="bar"><span id="pos">1 / 27</span><span class="mid">When the river runs dry &middot; Consortium for Service Innovation</span><span>N for sources</span></div>
+<div class="ov" id="ov"><h2>Sources</h2><div id="ovBody"></div><div class="hint">N or Escape to close</div></div>
+</div>
+<script>
+(function(){
+  var g=function(id){return document.getElementById(id);};
+  var slides=[].slice.call(document.querySelectorAll(".slide"));
+  var acts=slides.map(function(s){return s.classList.contains("a1")?1:s.classList.contains("a2")?2:s.classList.contains("a3")?3:4;});
+  var i=0, rail=g("rail");
+  slides.forEach(function(s,n){var t=document.createElement("i");t.className="k"+acts[n];rail.appendChild(t);});
+  var ticks=[].slice.call(rail.children);
+  var ov=g("ov"), ovBody=g("ovBody");
+
+  function show(n){
+    if(n>0 && window.__timerStart) window.__timerStart();
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach(function(s,x){s.classList.toggle("active",x===i);});
+    ticks.forEach(function(t,x){t.classList.toggle("on",x<=i);});
+    g("pos").textContent=(i+1)+" / "+slides.length;
+    ov.classList.remove("open");
+    if (window.__flowStop) window.__flowStop();
+    if (window.__duoStop) window.__duoStop();
+    if (window.__bcStop) window.__bcStop();
+    if (window.__pcStop) window.__pcStop();
+    if (slides[i].querySelector("#pcSvg") && window.__pcPlay) window.__pcPlay();
+    if (slides[i].querySelector("#bcSvg") && window.__bcPlay) window.__bcPlay();
+  }
+  function sources(){
+    if (ov.classList.contains("open")){ov.classList.remove("open");return;}
+    var s=slides[i].querySelector(".src");
+    ovBody.innerHTML = s ? s.innerHTML : '<p class="none">No sources on this slide.</p>';
+    ov.classList.add("open");
+  }
+  document.addEventListener("keydown",function(e){
+    var t=e.target.tagName;
+    if (t==="INPUT"||t==="BUTTON") return;
+    switch(e.key){
+      case "ArrowRight": case "PageDown": case " ": e.preventDefault(); show(i+1); break;
+      case "ArrowLeft": case "PageUp": e.preventDefault(); show(i-1); break;
+      case "Home": show(0); break;
+      case "End": show(slides.length-1); break;
+      case "t": case "T": e.preventDefault(); if(e.shiftKey) window.__timerReset(); else window.__timerToggle(); break;
+      case "n": case "N": sources(); break;
+      case "Escape": ov.classList.remove("open"); break;
+    }
+  });
+
+  // two stores markers
+  document.querySelectorAll("#s19 .mk").forEach(function(b){
+    b.addEventListener("click",function(){
+      var p=g(b.getAttribute("aria-controls"));
+      var open=b.getAttribute("aria-expanded")==="true";
+      b.setAttribute("aria-expanded",String(!open));
+      b.textContent=open?"+":"\u2212";
+      p.classList.toggle("open",!open);
+    });
+  });
+
+  // flow simulation
+  (function(){
+    var X0=70,X1=628,Y0=370,Y1=20,W=X1-X0,H=Y0-Y1,BW=0.15,AMP=0.06,FALL=1.30,N=440,DUR=15;
+    var SPAN=[0.05,0.92];
+    var px=function(s){return X0+s*W;}, py=function(v){return Y0-v*H;};
+    var P=function(a){return a.map(function(p){return px(p[0]).toFixed(1)+","+py(p[1]).toFixed(1);}).join(" ");};
+    var cl=function(v,a,b){return Math.max(a,Math.min(b,v));};
+    var M=[{s:0.05,n:"Junior Specialist"},{s:0.25,n:"Specialist"},{s:0.45,n:"Senior Specialist"},{s:0.66,n:"Expert"},{s:0.86,n:"Chief Expert"}];
+    var MG=g("fMiles"), me=[];
+    M.forEach(function(m){
+      var c=document.createElementNS("http://www.w3.org/2000/svg","circle");
+      c.setAttribute("r","3.5");c.setAttribute("fill","#5FD4A0");c.setAttribute("fill-opacity",".55");
+      var t=document.createElementNS("http://www.w3.org/2000/svg","text");
+      t.setAttribute("font-size","10.5");t.setAttribute("font-family","inherit");t.setAttribute("fill","#6F7F8D");
+      t.textContent=m.n;MG.appendChild(c);MG.appendChild(t);me.push({c:c,t:t,s:m.s});
+    });
+    function title(sk){var n=M[0].n;M.forEach(function(m){if(sk>=m.s)n=m.n;});return n;}
+    function run(f){
+      var inc=(SPAN[1]-SPAN[0])/N, sk=SPAN[0], frozen=false, path=[], last=[SPAN[0],SPAN[0]];
+      for(var k=0;k<=N;k++){
+        var u=k/N, drop=f*FALL*Math.pow(u,1.5), zig=AMP*Math.sin(u*Math.PI*9);
+        if(!frozen){ if(Math.abs(zig+drop)>BW) frozen=true; else {last=[sk,sk+zig];sk+=inc;} }
+        path.push({drop:drop,p:last.slice(),frozen:frozen});
+      }
+      return {path:path};
+    }
+    var running=false,curU=0,R=null,tm=null;
+    function fdraw(){
+      var f=+g("fSlider").value/100;
+      g("fVal").textContent=Math.round(f*100)+"%";
+      if(!R) R=run(f);
+      var fr=R.path[Math.max(0,Math.min(N,Math.round(curU*N)))];
+      var drop=(running||curU>0)?fr.drop:0;
+      var uE=function(x){return x-drop+BW;}, lE=function(x){return x-drop-BW;};
+      var A=-0.25,Z=1.25;
+      g("fBand").setAttribute("points",P([[A,uE(A)],[Z,uE(Z)],[Z,lE(Z)],[A,lE(A)]]));
+      g("fHard").setAttribute("points",P([[A,uE(A)],[Z,uE(Z)],[Z,1.6],[A,1.6]]));
+      g("fEasy").setAttribute("points",P([[A,lE(A)],[Z,lE(Z)],[Z,-0.6],[A,-0.6]]));
+      g("fEU").setAttribute("x1",px(A));g("fEU").setAttribute("y1",py(uE(A)));
+      g("fEU").setAttribute("x2",px(Z));g("fEU").setAttribute("y2",py(uE(Z)));
+      g("fEL").setAttribute("x1",px(A));g("fEL").setAttribute("y1",py(lE(A)));
+      g("fEL").setAttribute("x2",px(Z));g("fEL").setAttribute("y2",py(lE(Z)));
+      me.forEach(function(m){m.c.setAttribute("cx",px(m.s));m.c.setAttribute("cy",py(m.s-drop));
+        m.t.setAttribute("x",px(m.s)+9);m.t.setAttribute("y",py(m.s-drop)-8);});
+      var fx=0.74, fy=fx-drop;
+      g("fFlowLbl").setAttribute("x",px(fx));g("fFlowLbl").setAttribute("y",py(fy));
+      g("fFlowLbl").setAttribute("transform","rotate(-33 "+px(fx)+" "+py(fy)+")");
+      g("fFlowLbl").setAttribute("opacity",(fy>0.03&&fy<0.97)?"1":"0");
+      g("fHardLbl").setAttribute("x",px(0.21));
+      g("fHardLbl").setAttribute("y",py(cl(uE(0.21)+(1-uE(0.21))*0.78,0.10,0.95)));
+      g("fEasyLbl").setAttribute("x",px(0.82));
+      g("fEasyLbl").setAttribute("y",py(cl(lE(0.82)*0.5,0.04,0.9)));
+      g("fEasyLbl").setAttribute("opacity",lE(0.82)>0.07?"1":"0");
+      var upto=Math.max(0,Math.round(curU*N));
+      var seg=R.path.slice(0,upto+1).map(function(x){return x.p;});
+      g("fTrail").setAttribute("d",seg.map(function(p,k){return (k?"L":"M")+px(p[0]).toFixed(1)+","+py(p[1]).toFixed(1);}).join(" "));
+      var cur=fr.p, stuck=fr.frozen, right=cur[0]>0.74;
+      g("fDot").setAttribute("cx",px(cur[0]));g("fDot").setAttribute("cy",py(cur[1]));
+      g("fDot").setAttribute("fill",stuck?"#C86B5A":"#F0AB00");
+      g("fDotLbl").setAttribute("fill",stuck?"#C86B5A":"#F0AB00");
+      g("fDotLbl").setAttribute("x",px(cur[0])+(right?-14:14));
+      g("fDotLbl").setAttribute("y",py(cur[1])+(right?22:5));
+      g("fDotLbl").setAttribute("text-anchor",right?"end":"start");
+      g("fDotLbl").textContent=title(cur[0]);
+      if(stuck&&cur[1]-uE(cur[0])>0.02){
+        g("fGap").setAttribute("opacity","1");
+        g("fGap").setAttribute("x1",px(cur[0]));g("fGap").setAttribute("x2",px(cur[0]));
+        g("fGap").setAttribute("y1",py(cur[1]));g("fGap").setAttribute("y2",py(uE(cur[0])));
+      } else g("fGap").setAttribute("opacity","0");
+      g("fZone").textContent=title(cur[0]);
+      g("fZone").style.color=stuck?"#C86B5A":"#F0AB00";
+      g("fZoneBox").style.borderLeftColor=stuck?"#C86B5A":"#F0AB00";
+      g("fZoneD").textContent=stuck
+        ?"Frozen here. The channel dropped below them and nothing further arrived at their level."
+        :(curU>0.99?"Reached the top of the channel with the ladder still intact."
+          :curU>0?"Still climbing. Every case is a small stretch."
+          :"Set the automation level, then run it.");
+      var reached=Math.round((cur[0]-SPAN[0])/(SPAN[1]-SPAN[0])*100);
+      g("fRate").textContent=reached+"%";
+      g("fRate").style.color=reached>92?"#5FD4A0":reached>45?"#F0AB00":"#C86B5A";
+      g("fRateBox").style.borderLeftColor=reached>92?"#5FD4A0":reached>45?"#F0AB00":"#C86B5A";
+      g("fRateD").textContent=reached>92?"The full climb, all the way to Chief Expert."
+        :"How far up they got before the work that would have taught them next stopped arriving.";
+      var v;
+      if(curU<0.02&&!running) v="Set the automation level on the slider, then run it. At zero, the engineer goes all the way.";
+      else if(!stuck&&curU<0.99) v="Each case is a little harder than the last. Nobody planned this, it was a by-product of volume.";
+      else if(!stuck) v="Chief Expert. They got here by doing thousands of cases that were, individually, not worth their time.";
+      else v="They stopped at "+title(cur[0])+". Not through lack of effort, and not because the work got harder. The range that would have taught them next collapsed out from under them.";
+      g("fVerdict").textContent=v;
+      g("fPhase").textContent=running?"Running":(curU>0.99?"Run complete":"Ready");
+    }
+    function fstop(){if(tm){cancelAnimationFrame(tm);tm=null;}running=false;g("fPlay").textContent="Run simulation";}
+    window.__flowStop=function(){fstop();fdraw();};
+    g("fPlay").addEventListener("click",function(){
+      if(tm){fstop();fdraw();return;}
+      R=run(+g("fSlider").value/100);curU=0;running=true;g("fPlay").textContent="Pause";
+      var t0=null;
+      function fr(ts){if(!t0)t0=ts;curU=Math.min(1,(ts-t0)/1000/DUR);fdraw();
+        if(curU>=1){running=false;tm=null;g("fPlay").textContent="Run simulation";fdraw();return;}
+        tm=requestAnimationFrame(fr);}
+      tm=requestAnimationFrame(fr);
+    });
+    function reset(){fstop();curU=0;R=run(+g("fSlider").value/100);fdraw();}
+    g("fReset").addEventListener("click",reset);
+    g("fSlider").addEventListener("input",reset);
+    fdraw();
+  })();
+
+  // duo flow simulation
+  (function(){
+    var X0=70,X1=628,Y0=370,Y1=20,W=X1-X0,H=Y0-Y1,BW=0.15,CBW=0.055,AMP=0.06,FALL=1.30,N=440,DUR=15,DUO=8;
+    var SPAN=[0.05,0.92];
+    var px=function(v){return X0+v*W;}, py=function(v){return Y0-v*H;};
+    var P=function(a){return a.map(function(q){return px(q[0]).toFixed(1)+","+py(q[1]).toFixed(1);}).join(" ");};
+    var cl=function(v,a,b){return Math.max(a,Math.min(b,v));};
+    var M=[{s:0.05,n:"Junior Specialist"},{s:0.25,n:"Specialist"},{s:0.45,n:"Senior Specialist"},{s:0.66,n:"Expert"},{s:0.86,n:"Chief Expert"}];
+    var MG=g("gMiles"), me=[];
+    M.forEach(function(m){
+      var c=document.createElementNS("http://www.w3.org/2000/svg","circle");
+      c.setAttribute("r","3.5");c.setAttribute("fill","#5FD4A0");c.setAttribute("fill-opacity",".55");
+      var t=document.createElementNS("http://www.w3.org/2000/svg","text");
+      t.setAttribute("font-size","10.5");t.setAttribute("font-family","inherit");t.setAttribute("fill","#6F7F8D");
+      t.textContent=m.n;MG.appendChild(c);MG.appendChild(t);me.push({c:c,t:t,s:m.s});
+    });
+    function title(sk){var n=M[0].n;M.forEach(function(m){if(sk>=m.s)n=m.n;});return n;}
+
+    var NC=6, cases=[], pulls=[], PG=g("gPulls"), CG=g("gCases");
+    for(var k=0;k<NC;k++){
+      var pl=document.createElementNS("http://www.w3.org/2000/svg","path");
+      pl.setAttribute("fill","none");pl.setAttribute("stroke","#4AA3FF");
+      pl.setAttribute("stroke-width","1");pl.setAttribute("stroke-opacity",".3");
+      pl.setAttribute("stroke-dasharray","3 4");PG.appendChild(pl);pulls.push(pl);
+      var r=document.createElementNS("http://www.w3.org/2000/svg","rect");
+      r.setAttribute("width","11");r.setAttribute("height","11");r.setAttribute("rx","2");
+      r.setAttribute("fill","#12171C");r.setAttribute("stroke","#4AA3FF");r.setAttribute("stroke-width","1.4");
+      CG.appendChild(r);cases.push(r);
+    }
+
+    function run(f){
+      var inc=(SPAN[1]-SPAN[0])/N, sk=SPAN[0], frozen=false, path=[], last=[SPAN[0],SPAN[0]];
+      for(var k=0;k<=N;k++){
+        var u=k/N, drop=f*FALL*Math.pow(u,1.5), zig=AMP*Math.sin(u*Math.PI*9);
+        if(!frozen){ if(Math.abs(zig+drop)>BW) frozen=true; else {last=[sk,sk+zig];sk+=inc;} }
+        path.push({drop:drop,p:last.slice(),frozen:frozen});
+      }
+      return {path:path,end:sk,frozen:frozen};
+    }
+
+    var running=false,curU=0,d2=0,R=null,tm=null,tm2=null;
+
+    function gdraw(){
+      var f=+g("gSlider").value/100;
+      g("gVal").textContent=Math.round(f*100)+"%";
+      if(!R) R=run(f);
+      var fr=R.path[Math.max(0,Math.min(N,Math.round(curU*N)))];
+      var drop=(running||curU>0)?fr.drop:0;
+      var uE=function(x){return x-drop+BW;}, lE=function(x){return x-drop-BW;};
+      var A=-0.25,Z=1.25;
+      g("gBand").setAttribute("points",P([[A,uE(A)],[Z,uE(Z)],[Z,lE(Z)],[A,lE(A)]]));
+      g("gHard").setAttribute("points",P([[A,uE(A)],[Z,uE(Z)],[Z,1.6],[A,1.6]]));
+      g("gEasy").setAttribute("points",P([[A,lE(A)],[Z,lE(Z)],[Z,-0.6],[A,-0.6]]));
+      g("gEU").setAttribute("x1",px(A));g("gEU").setAttribute("y1",py(uE(A)));
+      g("gEU").setAttribute("x2",px(Z));g("gEU").setAttribute("y2",py(uE(Z)));
+      g("gEL").setAttribute("x1",px(A));g("gEL").setAttribute("y1",py(lE(A)));
+      g("gEL").setAttribute("x2",px(Z));g("gEL").setAttribute("y2",py(lE(Z)));
+      me.forEach(function(m){m.c.setAttribute("cx",px(m.s));m.c.setAttribute("cy",py(m.s-drop));
+        m.t.setAttribute("x",px(m.s)+9);m.t.setAttribute("y",py(m.s-drop)-8);});
+      var fx=0.74, fy=fx-drop;
+      g("gFlowLbl").setAttribute("x",px(fx));g("gFlowLbl").setAttribute("y",py(fy));
+      g("gFlowLbl").setAttribute("transform","rotate(-33 "+px(fx)+" "+py(fy)+")");
+      g("gFlowLbl").setAttribute("opacity",(fy>0.03&&fy<0.97)?"1":"0");
+      g("gHardLbl").setAttribute("x",px(0.21));
+      g("gHardLbl").setAttribute("y",py(cl(uE(0.21)+(1-uE(0.21))*0.78,0.10,0.95)));
+      g("gEasyLbl").setAttribute("x",px(0.82));
+      g("gEasyLbl").setAttribute("y",py(cl(lE(0.82)*0.5,0.04,0.9)));
+      g("gEasyLbl").setAttribute("opacity",lE(0.82)>0.07?"1":"0");
+
+      var upto=Math.max(0,Math.round(curU*N));
+      var seg=R.path.slice(0,upto+1).map(function(x){return x.p;});
+      g("gTrail").setAttribute("d",seg.map(function(q,k){return (k?"L":"M")+px(q[0]).toFixed(1)+","+py(q[1]).toFixed(1);}).join(" "));
+
+      var base=R.path[N], sk0=base.p[0], stuckBase=base.frozen;
+      var duoEnd=Math.min(SPAN[1], sk0+0.70*(SPAN[1]-sk0));
+
+      // curated channel
+      var on = d2>0.01;
+      var chanP=cl(d2/0.22,0,1);
+      g("gCur").setAttribute("opacity", on?String(Math.min(1,d2*4)):"0");
+      g("gCurLbl").setAttribute("opacity", on?String(Math.min(1,d2*4)):"0");
+      if(on){
+        var x0=Math.max(0,sk0-0.05), x1=Math.min(1.02, sk0+(duoEnd-sk0)*chanP+0.05);
+        g("gCur").setAttribute("points",P([[x0,x0+CBW],[x1,x1+CBW],[x1,x1-CBW],[x0,x0-CBW]]));
+        var mx=(x0+x1)/2;
+        g("gCurLbl").setAttribute("x",px(mx));g("gCurLbl").setAttribute("y",py(mx+CBW+0.045));
+        g("gCurLbl").setAttribute("transform","rotate(-33 "+px(mx)+" "+py(mx+CBW+0.045)+")");
+      }
+
+      // cases pulled from the remaining work into the curated channel
+      for(var k=0;k<NC;k++){
+        var pr=cl((d2-0.06-k*0.055)/0.20,0,1);
+        var tS=sk0+(k+1)/NC*(duoEnd-sk0);
+        var sx=0.58+k*0.068, sy=sx-drop;
+        var tx=tS, ty=tS;
+        var cx=(sx+tx)/2+0.10, cy=(sy+ty)/2-0.14;
+        var bx=(1-pr)*(1-pr)*sx+2*(1-pr)*pr*cx+pr*pr*tx;
+        var by=(1-pr)*(1-pr)*sy+2*(1-pr)*pr*cy+pr*pr*ty;
+        cases[k].setAttribute("x",px(bx)-5.5);cases[k].setAttribute("y",py(by)-5.5);
+        cases[k].setAttribute("opacity", (on&&pr>0)?String(pr<1?1:0.85):"0");
+        pulls[k].setAttribute("d","M"+px(sx).toFixed(1)+","+py(sy).toFixed(1)+" Q"+px(cx).toFixed(1)+","+py(cy).toFixed(1)+" "+px(tx).toFixed(1)+","+py(ty).toFixed(1));
+        pulls[k].setAttribute("opacity",(on&&pr>0.02)?".35":"0");
+      }
+
+      // engineer position
+      var cur, stuck;
+      if(d2>0.01){
+        var prog=cl((d2-0.50)/0.50,0,1);
+        void 0;
+        var sk=sk0+(duoEnd-sk0)*prog;
+        cur=[sk,sk]; stuck=false;
+        var pts=[];
+        for(var q=0;q<=40;q++){var t2=q/40*prog; var v=sk0+(duoEnd-sk0)*t2; pts.push([v,v]);}
+        g("gTrail2").setAttribute("d",pts.map(function(q,k){return (k?"L":"M")+px(q[0]).toFixed(1)+","+py(q[1]).toFixed(1);}).join(" "));
+      } else {
+        cur=fr.p; stuck=fr.frozen;
+        g("gTrail2").setAttribute("d","");
+      }
+      var right=cur[0]>0.74;
+      g("gDot").setAttribute("cx",px(cur[0]));g("gDot").setAttribute("cy",py(cur[1]));
+      g("gDot").setAttribute("fill",stuck?"#C86B5A":(d2>0.01?"#4AA3FF":"#F0AB00"));
+      g("gDotLbl").setAttribute("fill",stuck?"#C86B5A":(d2>0.01?"#4AA3FF":"#F0AB00"));
+      g("gDotLbl").setAttribute("x",px(cur[0])+(right?-14:14));
+      g("gDotLbl").setAttribute("y",py(cur[1])+(right?22:5));
+      g("gDotLbl").setAttribute("text-anchor",right?"end":"start");
+      g("gDotLbl").textContent=title(cur[0]);
+
+      if(stuck&&cur[1]-uE(cur[0])>0.02){
+        g("gGap").setAttribute("opacity","1");
+        g("gGap").setAttribute("x1",px(cur[0]));g("gGap").setAttribute("x2",px(cur[0]));
+        g("gGap").setAttribute("y1",py(cur[1]));g("gGap").setAttribute("y2",py(uE(cur[0])));
+      } else g("gGap").setAttribute("opacity","0");
+
+      g("gZone").textContent=title(cur[0]);
+      g("gZone").style.color=stuck?"#C86B5A":(d2>0.01?"#4AA3FF":"#F0AB00");
+      g("gZoneBox").style.borderLeftColor=stuck?"#C86B5A":(d2>0.01?"#4AA3FF":"#F0AB00");
+      g("gZoneD").textContent = d2>=0.50
+        ? "Climbing again, on cases that were selected rather than cases that happened to arrive."
+        : d2>0.01
+        ? "Still where they stopped. Alise is placing the next steps in front of them first."
+        : (stuck ? "Frozen. The channel dropped below them and nothing further arrived at their level."
+          : curU>0 ? "Still climbing on whatever the queue happens to deliver."
+          : "Run the status quo first, then enable the Duo.");
+
+      g("gA").textContent = curU>0.99 ? title(sk0) : "\u2014";
+      g("gB").textContent = d2>0.99 ? title(duoEnd) : "\u2014";
+
+      var v;
+      if(curU<0.02&&!running) v="Same simulation as before. Run it, watch them freeze, then switch Alise on.";
+      else if(running) v="Each case is a little harder than the last, until the range that supplied them collapses.";
+      else if(d2<0.01) v=stuckBase?"Frozen at "+title(sk0)+". There is no reservoir of easy cases to go back to, so nothing here fixes itself.":"At this level they still make it unaided.";
+      else if(d2<0.50) v="Alise takes work that is out of reach and decomposes it into steps that are not. The cases are placed ahead of the engineer before they move.";
+      else if(d2<0.99) v="Now they climb, on cases that were chosen for them rather than cases that happened to arrive.";
+      else v="From "+title(sk0)+" to "+title(duoEnd)+". Not the full climb, and I would not claim it was. Automation still cost something. It cost less.";
+      g("gVerdict").textContent=v;
+      g("gPhase").textContent = running?"Running status quo":(d2>0.99?"Duo complete":(d2>=0.50?"Climbing":(d2>0?"Curating cases":(curU>0.99?"Status quo complete":"Ready"))));
+    }
+
+    function gstop(){if(tm){cancelAnimationFrame(tm);tm=null;}if(tm2){cancelAnimationFrame(tm2);tm2=null;}running=false;g("gPlay").textContent="1. Run status quo";}
+    window.__duoStop=function(){gstop();gdraw();};
+    g("gPlay").addEventListener("click",function(){
+      if(tm){gstop();gdraw();return;}
+      R=run(+g("gSlider").value/100);curU=0;d2=0;running=true;g("gPlay").textContent="Pause";
+      var t0=null;
+      function fr(ts){if(!t0)t0=ts;curU=Math.min(1,(ts-t0)/1000/DUR);gdraw();
+        if(curU>=1){running=false;tm=null;g("gPlay").textContent="1. Run status quo";gdraw();return;}
+        tm=requestAnimationFrame(fr);}
+      tm=requestAnimationFrame(fr);
+    });
+    g("gDuo").addEventListener("click",function(){
+      if(tm2){cancelAnimationFrame(tm2);tm2=null;return;}
+      if(!R) R=run(+g("gSlider").value/100);
+      if(running){gstop();}
+      curU=1;d2=0;
+      var t0=null;
+      function fr(ts){if(!t0)t0=ts;d2=Math.min(1,(ts-t0)/1000/DUO);gdraw();
+        if(d2>=1){tm2=null;gdraw();return;}
+        tm2=requestAnimationFrame(fr);}
+      tm2=requestAnimationFrame(fr);
+    });
+    function reset(){gstop();curU=0;d2=0;R=run(+g("gSlider").value/100);gdraw();}
+    g("gReset").addEventListener("click",reset);
+    g("gSlider").addEventListener("input",reset);
+    gdraw();
+  })();
+
+  // presentation timer
+  (function(){
+    var el=g("timer"), out=g("tElapsed");
+    var TARGET=30*60, running=false, base=0, startedAt=0;
+    function elapsed(){ return running ? base + (Date.now()-startedAt)/1000 : base; }
+    function fmt(x){
+      var m=Math.floor(x/60), sec=Math.floor(x%60);
+      return (m<10?"0":"")+m+":"+(sec<10?"0":"")+sec;
+    }
+    function paint(){
+      var e=elapsed();
+      out.textContent=fmt(e);
+      el.classList.toggle("run", running);
+      el.classList.toggle("warn", e>=TARGET*0.8 && e<TARGET);
+      el.classList.toggle("over", e>=TARGET);
+      requestAnimationFrame(paint);
+    }
+    function toggle(){
+      if(running){ base=elapsed(); running=false; }
+      else { startedAt=Date.now(); running=true; }
+    }
+    function reset(){ running=false; base=0; }
+    el.addEventListener("click",function(e){ if(e.shiftKey) reset(); else toggle(); });
+    window.__timerToggle=toggle; window.__timerReset=reset;
+    window.__timerStart=function(){ if(!running && base===0){ startedAt=Date.now(); running=true; } };
+    paint();
+  })();
+
+
+  // personalised course assembly
+  (function(){
+    var svg=g("pcSvg"); if(!svg) return;
+    var COLS=25, ROWS=8, N=COLS*ROWS;
+    var X0=20, Y0=26, CW=26, CH=16, GX=4, GY=6;
+    var cells=[];
+    var GRID=g("pcGrid");
+    for(var r=0;r<ROWS;r++){
+      for(var c=0;c<COLS;c++){
+        var x=X0+c*(CW+GX), y=Y0+r*(CH+GY);
+        var el=document.createElementNS("http://www.w3.org/2000/svg","rect");
+        el.setAttribute("x",x); el.setAttribute("y",y);
+        el.setAttribute("width",CW); el.setAttribute("height",CH);
+        el.setAttribute("rx","2");
+        el.setAttribute("fill","rgba(255,255,255,.035)");
+        el.setAttribute("stroke","#33414F"); el.setAttribute("stroke-width","0.9");
+        GRID.appendChild(el);
+        cells.push({el:el,x:x,y:y});
+      }
+    }
+
+    var PROFILES=[
+      {label:"Junior, six weeks in",
+       sub:"Nothing evidenced yet. Prerequisites are the whole story.",
+       cap:"Six weeks in, so almost nothing is evidenced. The selection is the prerequisites that everything else rests on, in the order they unlock each other.",
+       picks:[6,31,58,72,94,118,136,161,183],
+       mods:["Read a trace","Product areas","Triage","Query plans","Pooling","Customer tone","Escalation","Log requests","Write-ups"]},
+      {label:"Specialist, moving to HANA",
+       sub:"Strong on the old stack. Two component areas are new.",
+       cap:"Everything general is already evidenced, so it is skipped. What remains is the delta between the stack they know and the one they are moving to.",
+       picks:[12,44,67,89,103,127,150,176],
+       mods:["Column store","Memory model","Delta merge","Plan viz","Partitioning","Workload classes","Tracing","Migration traps"]},
+      {label:"Senior, first time on call",
+       sub:"Deeply capable. Never been the last line at 3am.",
+       cap:"Technically there is nothing left to teach. The course is about judgement under pressure, and about the two capabilities whose decay dates have passed.",
+       picks:[21,53,81,110,142,168,191],
+       mods:["Sev1 command","Who to wake","Comms under load","Rollback calls","Handover","Post-incident","When to stop"]}
+    ];
+
+    var TRAY=g("pcTray"), FLY=g("pcFly");
+    var prof=0, raf=null, t0=null;
+
+    function trayPos(i,total){
+      var w=Math.min(96, (840-(total-1)*8)/total);
+      var totalW=total*w+(total-1)*8;
+      var sx=20+(840-totalW)/2;
+      return {x:sx+i*(w+8), y:268, w:w, h:26};
+    }
+
+    function build(){
+      TRAY.innerHTML=""; FLY.innerHTML="";
+      var P=PROFILES[prof], flyEls=[];
+      P.picks.forEach(function(idx,i){
+        var slot=trayPos(i,P.picks.length);
+        var box=document.createElementNS("http://www.w3.org/2000/svg","g");
+        var r=document.createElementNS("http://www.w3.org/2000/svg","rect");
+        r.setAttribute("width",slot.w); r.setAttribute("height",slot.h); r.setAttribute("rx","2");
+        r.setAttribute("fill","rgba(240,171,0,.14)"); r.setAttribute("stroke","#F0AB00"); r.setAttribute("stroke-width","1.1");
+        var t=document.createElementNS("http://www.w3.org/2000/svg","text");
+        t.setAttribute("x",slot.w/2); t.setAttribute("y",slot.h/2+3);
+        t.setAttribute("text-anchor","middle"); t.setAttribute("font-size","8");
+        t.setAttribute("font-family","inherit"); t.setAttribute("fill","#EAECEE");
+        t.textContent=(P.mods[i]||"");
+        box.appendChild(r); box.appendChild(t);
+        box.setAttribute("opacity","0");
+        FLY.appendChild(box);
+        flyEls.push({g:box, from:cells[idx], to:slot, r:r, t:t, w:slot.w, h:slot.h});
+      });
+      return flyEls;
+    }
+
+    var flyEls=[];
+    var cl=function(v,a,b){return Math.max(a,Math.min(b,v));};
+    var ease=function(p){ return p<0.5 ? 4*p*p*p : 1-Math.pow(-2*p+2,3)/2; };
+
+    function frame(ts){
+      if(!t0) t0=ts;
+      var t=(ts-t0)/1000, P=PROFILES[prof];
+      var scanEnd=1.1;
+
+      // scan across the catalogue
+      var picked={}; P.picks.forEach(function(p){ picked[p]=true; });
+      cells.forEach(function(c,k){
+        var col=k%COLS, sweep=(t/scanEnd)*COLS;
+        var seen=col<sweep;
+        if(!seen){ c.el.setAttribute("stroke","#33414F"); c.el.setAttribute("fill","rgba(255,255,255,.035)"); return; }
+        if(picked[k]){ c.el.setAttribute("stroke","#5FD4A0"); c.el.setAttribute("fill","rgba(95,212,160,.25)"); }
+        else { c.el.setAttribute("stroke","#2A3642"); c.el.setAttribute("fill","rgba(255,255,255,.02)"); }
+      });
+
+      var trayOn = t>scanEnd+0.15;
+      g("pcRule").setAttribute("opacity", trayOn?cl((t-scanEnd-0.15)/0.4,0,1)*0.7:0);
+      g("pcTrayLbl").setAttribute("opacity", trayOn?cl((t-scanEnd-0.15)/0.4,0,1):0);
+      g("pcTraySub").setAttribute("opacity", trayOn?cl((t-scanEnd-0.15)/0.4,0,1):0);
+      g("pcTraySub").textContent=P.sub;
+
+      flyEls.forEach(function(f,i){
+        var start=scanEnd+0.35+i*0.11;
+        if(t<start){ f.g.setAttribute("opacity","0"); return; }
+        var p=ease(cl((t-start)/0.75,0,1));
+        var x=f.from.x+(f.to.x-f.from.x)*p;
+        var y=f.from.y+(f.to.y-f.from.y)*p;
+        var sw=CW+(f.w-CW)*p, sh=CH+(f.h-CH)*p;
+        f.r.setAttribute("width",sw); f.r.setAttribute("height",sh);
+        f.t.setAttribute("x",sw/2); f.t.setAttribute("y",sh/2+3);
+        f.t.setAttribute("opacity", p>0.75?cl((p-0.75)/0.25,0,1):0);
+        f.g.setAttribute("transform","translate("+x.toFixed(1)+" "+y.toFixed(1)+")");
+        f.g.setAttribute("opacity","1");
+      });
+
+      var done = t > scanEnd+0.35+(flyEls.length-1)*0.11+0.75;
+      var cnt=g("pcCount");
+      cnt.setAttribute("opacity", done?cl((t-(scanEnd+0.35+(flyEls.length-1)*0.11+0.75))/0.4,0,1):0);
+      cnt.textContent=P.picks.length+" of 200";
+      g("pcCap").textContent = t<scanEnd ? "Reading the whole catalogue against one engineer." : P.cap;
+
+      if(t<6.5) raf=requestAnimationFrame(frame);
+    }
+
+    function play(){
+      if(raf) cancelAnimationFrame(raf);
+      t0=null; flyEls=build();
+      raf=requestAnimationFrame(frame);
+    }
+    document.querySelectorAll("#pc .pcpick button").forEach(function(btn){
+      btn.addEventListener("click",function(){
+        prof=+btn.getAttribute("data-p");
+        document.querySelectorAll("#pc .pcpick button").forEach(function(b2){
+          b2.classList.toggle("on", b2===btn);
+        });
+        play();
+      });
+    });
+    g("pcPlay").addEventListener("click", play);
+    window.__pcPlay=play;
+    window.__pcStop=function(){ if(raf){cancelAnimationFrame(raf); raf=null;} };
+    play();
+  })();
+
+  // generic broadcast animation
+  (function(){
+    var svg=g("bcSvg"); if(!svg) return;
+    var N=14, R=150, agents=[];
+    for(var k=0;k<N;k++){
+      var ang=(k/N)*Math.PI*2 - Math.PI/2;
+      agents.push({x:Math.cos(ang)*R, y:Math.sin(ang)*R, score:0});
+    }
+    var ORIGIN_IDX=9;                       // the engineer who raises the need
+    var LG=g("bcLines"), DG=g("bcDots"), SG=g("bcScores");
+    var lines=[], dots=[], scores=[];
+    agents.forEach(function(p){
+      var l=document.createElementNS("http://www.w3.org/2000/svg","line");
+      l.setAttribute("stroke","#4AA3FF");l.setAttribute("stroke-width","1");l.setAttribute("opacity","0");
+      LG.appendChild(l); lines.push(l);
+      var c=document.createElementNS("http://www.w3.org/2000/svg","circle");
+      c.setAttribute("cx",p.x);c.setAttribute("cy",p.y);c.setAttribute("r","7");
+      c.setAttribute("fill","#12171C");c.setAttribute("stroke","#6F7F8D");c.setAttribute("stroke-width","1.2");
+      DG.appendChild(c); dots.push(c);
+      var t=document.createElementNS("http://www.w3.org/2000/svg","text");
+      t.setAttribute("x",p.x*1.22);t.setAttribute("y",p.y*1.22+4);
+      t.setAttribute("text-anchor","middle");t.setAttribute("font-size","10");
+      t.setAttribute("font-family","inherit");t.setAttribute("fill","#4AA3FF");t.setAttribute("opacity","0");
+      SG.appendChild(t); scores.push(t);
+    });
+    // line from the origin dot to the centre, used in need mode
+    var cLine=document.createElementNS("http://www.w3.org/2000/svg","line");
+    cLine.setAttribute("stroke","#4AA3FF");cLine.setAttribute("stroke-width","1");cLine.setAttribute("opacity","0");
+    LG.appendChild(cLine);
+
+    var MODES={
+      case:{c1:"A new",c2:"case",centre:null,verb:"Accepts",origin:-1,
+        caps:["A case brief goes out to every Duo. No names are attached and nobody is asked to identify themselves.",
+              "Each Duo scores it privately, on its own machine, against everything it knows about its engineer.",
+              "Only a number comes back. No profile, no history, no features. Just a fitness score.",
+              "The best score is offered the case. Identity is revealed at this moment and not before."]},
+      opp:{c1:"A learning",c2:"objective",centre:null,verb:"Takes it up",origin:-1,
+        caps:["An objective goes out the same way. Nobody had to know in advance who needed it.",
+              "Each Duo scores it against what its engineer can already do, and what they are about to need.",
+              "Only a number comes back. The organisation never learns who cannot do what.",
+              "The best fit is offered it. Someone who needed it has been found without anyone being profiled."]},
+      need:{c1:"The",c2:"organisation",centre:"org",verb:"Answers it",origin:ORIGIN_IDX,
+        caps:["This time one engineer raises the need, mid-case. It travels outward from them.",
+              "Every other Duo scores it, and so does the organisation, which holds objectives and mentors of its own.",
+              "Only numbers come back. The person who asked has not advertised a weakness to anyone.",
+              "The best answer is offered. Direction reversed, mechanism identical."]}
+    };
+    var mode="case", raf=null, t0=null, cScore=0;
+    var cl=function(v,a,b){return Math.max(a,Math.min(b,v));};
+    function originPt(){ var o=MODES[mode].origin; return o<0?{x:0,y:0}:agents[o]; }
+    function isOriginDot(k){ return MODES[mode].origin===k; }
+    function centreResponds(){ return MODES[mode].origin>=0; }
+
+    function setMode(k){
+      mode=k;
+      document.querySelectorAll(".bcpick button").forEach(function(btn){
+        btn.classList.toggle("on", btn.getAttribute("data-k")===k);
+      });
+      var big = MODES[k].origin>=0;
+      g("bcCirc").setAttribute("r", big?38:30);
+      g("bcC1").setAttribute("font-size", big?10:11);
+      g("bcC2").setAttribute("font-size", big?10:11);
+      g("bcCScore").setAttribute("y", big?-50:-42);
+      g("bcC1").textContent=MODES[k].c1; g("bcC2").textContent=MODES[k].c2;
+      play();
+    }
+
+    function frame(ts){
+      if(!t0) t0=ts;
+      var t=(ts-t0)/1000, M=MODES[mode], O=originPt();
+      var maxR = M.origin<0 ? R-24 : R*2;
+
+      [0,1].forEach(function(n){
+        var st=n*0.55, p=(t-st)/1.5, el=g(n?"bcR1":"bcR0");
+        el.setAttribute("cx",O.x); el.setAttribute("cy",O.y);
+        if(p>0&&p<1){ el.setAttribute("r",20+p*maxR); el.setAttribute("opacity",(1-p)*0.55); }
+        else el.setAttribute("opacity",0);
+      });
+
+      var responders=[];
+      agents.forEach(function(p,k){ if(!isOriginDot(k)) responders.push(k); });
+
+      responders.forEach(function(k,i){
+        var p=agents[k];
+        var arrive=0.5+(i%7)*0.05, lit=t>arrive;
+        dots[k].setAttribute("stroke", lit?"#F0AB00":"#6F7F8D");
+        dots[k].setAttribute("r", lit?8:7);
+        var sT=1.9+(i%7)*0.06, fade=t>4.2?cl((4.6-t)/0.4,0,1):1;
+        var show=t>sT && t<4.6;
+        if(t>sT && !scores[k].textContent) scores[k].textContent=p.score.toFixed(2);
+        scores[k].setAttribute("opacity", show?cl((t-sT)/0.3,0,1)*fade:0);
+        var ret=t>2.3&&t<4.6;
+        lines[k].setAttribute("x1",O.x); lines[k].setAttribute("y1",O.y);
+        lines[k].setAttribute("x2",p.x); lines[k].setAttribute("y2",p.y);
+        lines[k].setAttribute("opacity", ret?cl((t-2.3)/0.4,0,1)*0.4*fade:0);
+      });
+
+      // the origin dot, when the need comes from the edge
+      if(M.origin>=0){
+        dots[M.origin].setAttribute("fill","#F0AB00");
+        dots[M.origin].setAttribute("stroke","#F0AB00");
+        dots[M.origin].setAttribute("r","10");
+        scores[M.origin].setAttribute("opacity","0");
+        lines[M.origin].setAttribute("opacity","0");
+      }
+
+      // the centre, which responds only in need mode
+      var circ=g("bcCirc"), cs=g("bcCScore");
+      if(centreResponds()){
+        var lit=t>0.8, fade=t>4.2?cl((4.6-t)/0.4,0,1):1;
+        circ.setAttribute("stroke", lit?"#F0AB00":"#6F7F8D");
+        if(t>2.0 && !cs.textContent) cs.textContent=cScore.toFixed(2);
+        cs.setAttribute("opacity", (t>2.0&&t<4.6)?cl((t-2.0)/0.3,0,1)*fade:0);
+        cLine.setAttribute("x1",O.x); cLine.setAttribute("y1",O.y);
+        cLine.setAttribute("x2",0); cLine.setAttribute("y2",0);
+        cLine.setAttribute("opacity",(t>2.3&&t<4.6)?cl((t-2.3)/0.4,0,1)*0.4*fade:0);
+      } else {
+        circ.setAttribute("stroke","#F0AB00");
+        cs.setAttribute("opacity",0); cLine.setAttribute("opacity",0);
+      }
+
+      var phase = t>4.6?3 : t>2.3?2 : t>1.9?1 : 0;
+
+      // winner across every responder, centre included
+      var w=responders[0], best=agents[w].score;
+      responders.forEach(function(k){ if(agents[k].score>best){best=agents[k].score;w=k;} });
+      var centreWins = centreResponds() && cScore>best;
+      var win=t>4.6;
+
+      dots.forEach(function(d,k){
+        if(isOriginDot(k)) return;
+        if(win){
+          var isW = !centreWins && k===w;
+          d.setAttribute("stroke", isW?"#4AA3FF":"#33414F");
+          d.setAttribute("fill", isW?"#4AA3FF":"#12171C");
+        } else d.setAttribute("fill","#12171C");
+      });
+      lines.forEach(function(l,k){
+        if(isOriginDot(k)) return;
+        if(win){
+          var isW = !centreWins && k===w;
+          l.setAttribute("opacity", isW?cl((t-4.6)/0.4,0,1)*0.9:0);
+          if(isW){ l.setAttribute("stroke","#4AA3FF"); l.setAttribute("stroke-width","1.6"); }
+        }
+      });
+      if(centreResponds()&&win){
+        circ.setAttribute("stroke", centreWins?"#4AA3FF":"#33414F");
+        cLine.setAttribute("opacity", centreWins?cl((t-4.6)/0.4,0,1)*0.9:0);
+        if(centreWins){ cLine.setAttribute("stroke","#4AA3FF"); cLine.setAttribute("stroke-width","1.6"); }
+      }
+
+      var wl=g("bcWin");
+      if(win){
+        var wp = centreWins ? {x:0,y:0} : agents[w];
+        var off = centreWins ? 2.1 : 1.30;
+        wl.setAttribute("x", centreWins? 0 : wp.x*off);
+        wl.setAttribute("y", centreWins? -52 : wp.y*off+4);
+        wl.setAttribute("text-anchor", centreWins?"middle":(wp.x<-20?"end":(wp.x>20?"start":"middle")));
+        wl.textContent=M.verb; wl.setAttribute("opacity",cl((t-4.6)/0.4,0,1));
+      } else wl.setAttribute("opacity",0);
+
+      g("bcCap").textContent=M.caps[phase];
+      if(t<7.2) raf=requestAnimationFrame(frame);
+    }
+
+    function play(){
+      if(raf) cancelAnimationFrame(raf);
+      t0=null;
+      agents.forEach(function(p){ p.score=Math.random()*0.55+0.15; });
+      cScore=Math.random()*0.5+0.2;
+      var pool=[]; agents.forEach(function(_,k){ if(!isOriginDot(k)) pool.push(k); });
+      if(mode==="need" && Math.random()<0.4) cScore=0.88+Math.random()*0.1;
+      else agents[pool[Math.floor(Math.random()*pool.length)]].score=0.88+Math.random()*0.1;
+      scores.forEach(function(t){ t.textContent=""; });
+      g("bcCScore").textContent="";
+      dots.forEach(function(d){ d.setAttribute("fill","#12171C"); d.setAttribute("r","7"); });
+      raf=requestAnimationFrame(frame);
+    }
+    document.querySelectorAll(".bcpick button").forEach(function(btn){
+      btn.addEventListener("click",function(){ setMode(btn.getAttribute("data-k")); });
+    });
+    g("bcPlay").addEventListener("click", play);
+    window.__bcPlay=play;
+    window.__bcStop=function(){ if(raf){cancelAnimationFrame(raf); raf=null;} };
+    play();
+  })();
+
+  // token simulator
+  (function(){
+    var ids=["eng","spend","ratio","share","outcut","fte","fteCost","hw"],el={};
+    ids.forEach(function(k){el[k]=g(k);});
+    function eur(v){var a=Math.abs(v),s=v<0?"-":"";
+      if(a>=1e6)return s+(a/1e6).toFixed(2)+"m";
+      if(a>=1e3)return s+Math.round(a/1e3)+"k";
+      return s+Math.round(a);}
+    function calc(){
+      var blank = el.spend.value.trim()==="" || +el.spend.value===0 || el.eng.value.trim()==="";
+      g("outcutV").textContent=Math.round(+el.outcut.value)+"%";
+      g("ratioV").textContent=(+el.ratio.value).toFixed(1)+"x";
+      g("shareV").textContent=Math.round(+el.share.value)+"%";
+      g("fteV").textContent=(+el.fte.value).toFixed(2);
+      g("hwV").textContent=Math.round(+el.hw.value);
+      if (blank){
+        g("netN").textContent="\u2014";
+        ["rowNow","rowIn","rowOut","rowAfter","rowLocal","rowNet"].forEach(function(k){g(k).textContent="\u2014";});
+        g("engV").textContent = el.eng.value.trim()==="" ? "\u2014" : (+el.eng.value).toLocaleString("en-GB");
+        g("beN").textContent="Over to you";
+        g("beL").textContent="Put your own headcount and spend in the two fields above, or press Reset for the Uber figures.";
+        return;
+      }
+      var eng=Math.max(1,+el.eng.value||0), spend=Math.max(0,+el.spend.value||0);
+      var ratio=+el.ratio.value, share=+el.share.value/100, outcut=+el.outcut.value/100;
+      var fte=+el.fte.value, fteC=Math.max(0,+el.fteCost.value||0), hw=+el.hw.value;
+
+      var total=eng*spend;
+      var inSpend=total*share, outSpend=total*(1-share);
+      var inSave=inSpend*(1-1/ratio), outSave=outSpend*outcut;
+      var gross=inSave+outSave;
+      var local=(fte*fteC/1000)*eng + hw*eng + 0.30*eng;
+      var net=gross-local;
+
+      g("engV").textContent=eng.toLocaleString("en-GB");
+      g("netN").textContent=eur(net);
+      g("netN").style.color = net<0 ? "#C86B5A" : "#5FD4A0";
+      g("rowNow").textContent=eur(total);
+      g("rowIn").textContent="-"+eur(inSave);
+      g("rowOut").textContent="-"+eur(outSave);
+      g("rowAfter").textContent=eur(total-gross);
+      g("rowLocal").textContent="+"+eur(local);
+      g("rowNet").textContent=eur(net);
+
+      var bN=g("beN"), bL=g("beL");
+      if (outSave>=local){
+        bN.textContent="Already covered";
+        bL.textContent="The output saving alone pays for running the models locally. Curation of the input is entirely upside from here.";
+      } else {
+        var need=(local-outSave)/inSpend;
+        if (need>=1){
+          bN.textContent="No break even";
+          bL.textContent="At these running costs, curation cannot pay for itself however good the prompts get.";
+        } else {
+          var be=1/(1-need);
+          bN.textContent=be.toFixed(2)+"x";
+          bL.textContent="A curated prompt only has to be "+((1-1/be)*100).toFixed(1)+
+            " percent smaller than a generic one for this to pay for itself. Everything beyond that is saving.";
+        }
+      }
+    }
+    ids.forEach(function(k){el[k].addEventListener("input",calc);el[k].addEventListener("change",calc);});
+    document.querySelectorAll("#s21 .presets button[data-v]").forEach(function(btn){
+      btn.addEventListener("click",function(){ el.spend.value=btn.getAttribute("data-v"); calc(); });
+    });
+    g("clrBtn").addEventListener("click",function(){
+      el.eng.value=""; el.spend.value=""; calc(); el.eng.focus();
+    });
+    g("rstBtn").addEventListener("click",function(){
+      el.eng.value=5000; el.spend.value=6000; el.ratio.value=2; el.share.value=62; el.outcut.value=10;
+      el.fte.value=0.5; el.fteCost.value=95000; el.hw.value=30; calc();
+    });
+    calc();
+  })();
+
+  show(0);
+})();
+</script>
+</body>
+</html>
