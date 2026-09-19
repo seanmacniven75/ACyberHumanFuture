@@ -11,11 +11,12 @@
   --a1:#C86B5A; --a2:#6FB8A8; --a3:#7E8FC7; --a4:#B08CC4;
 }
 *{box-sizing:border-box}
-html,body{margin:0;height:100%}
+html,body{margin:0;height:100%;overflow:hidden}
 body{background:#0B0F13;color:var(--ink);
-  font-family:"72","Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;
-  display:flex;align-items:center;justify-content:center;padding:18px}
-.deck{width:100%;max-width:1280px;aspect-ratio:16/9;position:relative;background:var(--bg);overflow:hidden}
+  font-family:"72","Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;padding:0}
+#stage{position:absolute;top:50%;left:50%;width:1280px;height:720px;
+  transform-origin:center center;transform:translate(-50%,-50%) scale(1)}
+.deck{width:1280px;height:720px;position:relative;background:var(--bg);overflow:hidden}
 .slide{position:absolute;inset:0;padding:34px 54px 86px;display:none;flex-direction:column}
 .slide.active{display:flex}
 
@@ -24,13 +25,13 @@ body{background:#0B0F13;color:var(--ink);
 .a1 .dot{background:var(--a1)} .a2 .dot{background:var(--a2)}
 .a3 .dot{background:var(--a3)} .a4 .dot{background:var(--a4)}
 
-h1{font-size:clamp(16px,1.85vw,25px);font-weight:600;letter-spacing:-.01em;
+h1{font-size:23.68px;font-weight:600;letter-spacing:-.01em;
   line-height:1.32;margin:0;max-width:66ch;color:var(--ink)}
-.sub{font-size:clamp(11px,1.02vw,13.5px);line-height:1.55;color:var(--ink-2);max-width:78ch;margin:9px 0 0}
+.sub{font-size:13.06px;line-height:1.55;color:var(--ink-2);max-width:78ch;margin:9px 0 0}
 .body{flex:1;display:flex;flex-direction:column;justify-content:center;min-height:0;margin-top:14px}
 
-.big{font-size:clamp(20px,2.7vw,40px);font-weight:600;line-height:1.25;letter-spacing:-.015em;max-width:26ch}
-.huge{font-size:clamp(40px,6.5vw,96px);font-weight:600;letter-spacing:-.03em;line-height:1}
+.big{font-size:34.56px;font-weight:600;line-height:1.25;letter-spacing:-.015em;max-width:26ch}
+.huge{font-size:83.2px;font-weight:600;letter-spacing:-.03em;line-height:1}
 
 .pts{display:flex;flex-direction:column;gap:15px;max-width:80ch}
 .pt{border-left:2px solid var(--rule);padding-left:15px}
@@ -48,7 +49,7 @@ h1{font-size:clamp(16px,1.85vw,25px);font-weight:600;letter-spacing:-.01em;
 .card.red{border-color:var(--anx)} .card.red .h{color:var(--anx)}
 
 .stat{border-left:2px solid var(--rule);padding-left:14px}
-.stat .n{font-size:clamp(24px,3.1vw,44px);font-weight:600;line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.stat .n{font-size:39.68px;font-weight:600;line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
 .stat .l{font-size:11.5px;color:var(--ink-3);margin-top:7px;line-height:1.45}
 .stat.red{border-left-color:var(--anx)} .stat.red .n{color:var(--anx)}
 .stat.blue{border-left-color:var(--company)} .stat.blue .n{color:var(--company)}
@@ -56,7 +57,7 @@ h1{font-size:clamp(16px,1.85vw,25px);font-weight:600;letter-spacing:-.01em;
 .stat.amber{border-left-color:var(--worker)} .stat.amber .n{color:var(--worker)}
 
 .land{border-top:1px solid var(--rule);margin-top:15px;padding-top:12px;
-  font-size:clamp(12px,1.25vw,16px);line-height:1.45;max-width:70ch}
+  font-size:16px;line-height:1.45;max-width:70ch}
 .muted{color:var(--ink-2)}
 .tiny{font-size:11px;color:var(--ink-3);line-height:1.5}
 
@@ -114,18 +115,18 @@ svg{display:block;overflow:visible}
 
 /* title */
 #t .wrap{flex:1;display:flex;flex-direction:column;justify-content:center}
-#t h1{font-size:clamp(26px,3.7vw,54px);font-weight:600;line-height:1.14;max-width:22ch;letter-spacing:-.02em}
-#t .who{margin-top:26px;font-size:clamp(12px,1.15vw,15px);line-height:1.6;color:var(--ink-2)}
+#t h1{font-size:47.36px;font-weight:600;line-height:1.14;max-width:22ch;letter-spacing:-.02em}
+#t .who{margin-top:26px;font-size:14.72px;line-height:1.6;color:var(--ink-2)}
 #t .who b{color:var(--ink);font-weight:600}
 #t .river{position:absolute;right:0;bottom:70px;width:46%;opacity:.5}
 
 /* bainbridge reveal */
 #s4 .qwrap{flex:1;display:flex;flex-direction:column;justify-content:center;max-width:60%;padding-right:20px}
-#s4 .q{font-size:clamp(17px,2.25vw,33px);font-weight:600;line-height:1.24;letter-spacing:-.015em;margin:0}
+#s4 .q{font-size:28.8px;font-weight:600;line-height:1.24;letter-spacing:-.015em;margin:0}
 #s4 .q q{quotes:none;color:var(--ink)}
 #s4 .pre{color:var(--ink-3)}
 #s4 .year{position:absolute;top:80px;right:54px;text-align:right}
-#s4 .year .y{font-size:clamp(42px,6.6vw,98px);font-weight:600;letter-spacing:-.04em;line-height:.9;color:var(--anx)}
+#s4 .year .y{font-size:84.48px;font-weight:600;letter-spacing:-.04em;line-height:.9;color:var(--anx)}
 #s4 .year .ago{font-size:12.5px;color:var(--ink-3);margin-top:8px}
 #s4 .cite{margin-top:22px;border-left:2px solid var(--anx);padding-left:16px;max-width:58ch}
 #s4 .cite .n{font-size:15px;font-weight:600}
@@ -146,7 +147,7 @@ svg{display:block;overflow:visible}
 #s3 .row{display:flex;gap:8px;margin-top:9px}
 #s3 .st{border-left:2px solid var(--rule);padding-left:12px}
 #s3 .st .l{font-size:10px;color:var(--ink-3);margin-bottom:3px}
-#s3 .st .n{font-size:clamp(15px,1.8vw,23px);font-weight:600;line-height:1.15}
+#s3 .st .n{font-size:23px;font-weight:600;line-height:1.15}
 #s3 .st .d{font-size:10px;color:var(--ink-2);margin-top:4px;line-height:1.45}
 #s3 .vd{border-top:1px solid var(--rule);padding-top:10px;font-size:12px;line-height:1.5;min-height:54px}
 button{background:transparent;border:1px solid var(--rule);color:var(--ink-2);font:inherit;
@@ -169,7 +170,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 #s3b .row{display:flex;gap:8px;margin-top:9px}
 #s3b .st{border-left:2px solid var(--rule);padding-left:12px}
 #s3b .st .l{font-size:10px;color:var(--ink-3);margin-bottom:3px}
-#s3b .st .n{font-size:clamp(15px,1.8vw,23px);font-weight:600;line-height:1.15}
+#s3b .st .n{font-size:23px;font-weight:600;line-height:1.15}
 #s3b .st .d{font-size:10px;color:var(--ink-2);margin-top:4px;line-height:1.45}
 #s3b .vd{border-top:1px solid var(--rule);padding-top:10px;font-size:12px;line-height:1.5;min-height:54px}
 button{background:transparent;border:1px solid var(--rule);color:var(--ink-2);font:inherit;
@@ -203,7 +204,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 /* personalised course */
 #pc .pcwrap{flex:1;display:grid;grid-template-columns:1fr 268px;gap:26px;min-height:0;align-items:center}
 #pc .pcplot{min-height:0}
-#pc .pcplot svg{width:100%;height:100%;max-height:50vh;overflow:visible}
+#pc .pcplot svg{width:100%;height:100%;max-height:360px;overflow:visible}
 #pc .pcside{display:flex;flex-direction:column;gap:10px}
 #pc .pctl{font-size:10px;color:var(--ink-3);letter-spacing:.04em;text-transform:uppercase}
 #pc .pcpick{display:flex;flex-direction:column;gap:5px}
@@ -214,12 +215,12 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 #pc .pccap{font-size:12px;line-height:1.5;color:var(--ink);min-height:70px;
   border-left:2px solid var(--flow);padding-left:12px}
 #pc .pcnote{font-size:10.5px;line-height:1.5;color:var(--ink-3)}
-#pc .pcq{font-size:clamp(14px,1.5vw,20px);line-height:1.4;color:var(--ink);font-weight:600}
+#pc .pcq{font-size:19.2px;line-height:1.4;color:var(--ink);font-weight:600}
 #pc .pcq .muted{font-weight:400;color:var(--ink-3)}
 
 /* generic broadcast */
 .bcwrap{flex:1;display:grid;grid-template-columns:1fr 290px;gap:28px;min-height:0;align-items:center}
-.bcwrap svg{width:100%;height:100%;max-height:46vh;overflow:visible}
+.bcwrap svg{width:100%;height:100%;max-height:331px;overflow:visible}
 .bcside{display:flex;flex-direction:column;gap:10px}
 .bctl{font-size:10px;color:var(--ink-3);letter-spacing:.04em;text-transform:uppercase}
 .bcpick{display:flex;flex-direction:column;gap:5px}
@@ -287,10 +288,13 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 #s21 .hint{font-size:9px;color:var(--ink-3);margin-top:2px;line-height:1.3}
 #s21 .res{display:flex;flex-direction:column;justify-content:space-between;gap:12px;min-height:0}
 #s21 .hl{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+#s21 .big .n .pct{color:var(--ink-3);font-weight:600}
 #s21 .ledger{display:flex;flex-direction:column;gap:5px}
-#s21 .lrow{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-2);
+#s21 .lrow{display:grid;grid-template-columns:1fr 72px 104px;gap:8px;font-size:12px;color:var(--ink-2);
   font-variant-numeric:tabular-nums;padding:3px 0}
 #s21 .lrow.sub{color:var(--ink-3);font-size:11.5px;padding-left:14px}
+#s21 .lrow span:nth-child(2),#s21 .lrow span:nth-child(3){text-align:right}
+#s21 .lrow span:nth-child(2){opacity:.72}
 #s21 .lrow.tot{border-top:1px solid var(--rule);padding-top:7px;margin-top:3px;color:var(--ink);font-weight:600}
 #s21 .lrow.net{border-top:1px solid var(--flow);color:var(--flow)}
 #s21 .bars{display:flex;flex-direction:column;gap:11px}
@@ -305,7 +309,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 #s21 .be .l{font-size:11px;color:var(--ink-2);line-height:1.5;margin-top:4px}
 
 #s24 .coverwrap{display:flex;flex-direction:column;align-items:center;gap:10px}
-#s24 .cover{max-height:44vh;max-width:100%;height:auto;display:block;
+#s24 .cover{max-height:317px;max-width:100%;height:auto;display:block;
   border:1px solid var(--rule);box-shadow:0 10px 34px rgba(0,0,0,.55)}
 #s24 .attrib{font-size:9px;line-height:1.45;color:var(--ink-3);max-width:40ch;text-align:center}
 #s24 .attrib i{font-style:italic}
@@ -329,7 +333,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 #sum .beads li.grp.a4{border-bottom-color:var(--a4)}
 #sum .beads li .w{color:var(--worker);font-weight:600}
 #sum .beads li .c{color:var(--company);font-weight:600}
-#sum .para{columns:2;column-gap:36px;font-size:clamp(9.4px,0.88vw,11.9px);line-height:1.66;
+#sum .para{columns:2;column-gap:36px;font-size:11.26px;line-height:1.66;
   color:var(--ink-2);text-align:left;margin:0}
 #sum .para b{color:var(--ink);font-weight:600}
 #sum .para .w{color:var(--worker);font-weight:600}
@@ -348,12 +352,12 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 </style>
 </head>
 <body>
-<div class="deck" id="deck">
+<div id="stage"><div class="deck" id="deck">
 <!-- TITLE -->
 <section class="slide active a1" id="t">
   <div class="wrap">
     <h1>When the river runs dry</h1>
-    <p class="sub" style="font-size:clamp(14px,1.5vw,20px);color:var(--ink-2);max-width:34ch;margin-top:14px">Learning and critical thinking in an automated world</p>
+    <p class="sub" style="font-size:19.2px;color:var(--ink-2);max-width:34ch;margin-top:14px">Learning and critical thinking in an automated world</p>
     <div class="who">
       <b>Dr. Sean MacNiven</b><br>
       Head of Research <br>
@@ -413,7 +417,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
     </div>
     <div class="aboutfoot">
       <div>
-        <div class="muted" style="font-size:clamp(12px,1.25vw,16px);line-height:1.45">I live and work at the intersection of industry, academia and solo entrepreneurship.</div>
+        <div class="muted" style="font-size:16px;line-height:1.45">I live and work at the intersection of industry, academia and solo entrepreneurship.</div>
         <div class="degs">
           <span class="dl">Degrees in</span>
           <span class="deg">Computer science and mathematics</span>
@@ -705,7 +709,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
         </svg>
       </div>
       <div style="display:flex;flex-direction:column;justify-content:center">
-        <p class="sub" style="margin:0;font-size:clamp(13px,1.35vw,18px);line-height:1.45;color:var(--ink)">For a century experts fell out of the pipeline, honed by thousands of cases and problem solving challenges. Remove the work, and we have to compensate deliberately, or risk losing it.</p>
+        <p class="sub" style="margin:0;font-size:17.28px;line-height:1.45;color:var(--ink)">For a century experts fell out of the pipeline, honed by thousands of cases and problem solving challenges. Remove the work, and we have to compensate deliberately, or risk losing it.</p>
         <div class="land">Which is awkward, because deliberate learning is the thing every organisation I have ever engaged with is terrible at.</div>
       </div>
     </div>
@@ -973,7 +977,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
       <div class="pcside">
         <div class="pctl">Assemble for</div>
         <div class="pcpick">
-          <button class="on" data-p="0">Junior, six weeks in</button>
+          <button data-p="0">Junior, six weeks in</button>
           <button data-p="1">Specialist, moving to HANA</button>
           <button data-p="2">Senior, first time on call</button>
         </div>
@@ -1257,7 +1261,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
       <div class="bcside">
         <div class="bctl">What is being broadcast</div>
         <div class="bcpick">
-          <button class="on" data-k="case">A case</button>
+          <button data-k="case">A case</button>
           <button data-k="opp">A learning opportunity</button>
           <button data-k="need">A learning need</button>
         </div>
@@ -1563,17 +1567,17 @@ button.primary{border-color:var(--worker);color:var(--worker)}
     <div class="res">
       <div class="headline">
         <div class="stat green" style="grid-column:1 / -1">
-          <div class="n" id="netN">0</div>
+          <div class="n"><span id="netN">&mdash;</span> <span id="netPct" class="pct">&mdash;</span></div>
           <div class="l">Net saving per year, after paying to run the models locally, in whatever currency you entered</div>
         </div>
       </div>
       <div class="ledger">
-        <div class="lrow"><span>AI spend today</span><span id="rowNow">0</span></div>
-        <div class="lrow sub"><span>less saved on input, from curation</span><span id="rowIn">0</span></div>
-        <div class="lrow sub"><span>less saved on output, from tighter answers</span><span id="rowOut">0</span></div>
-        <div class="lrow tot"><span>AI spend after</span><span id="rowAfter">0</span></div>
-        <div class="lrow sub"><span>plus cost of running models locally</span><span id="rowLocal">0</span></div>
-        <div class="lrow tot net"><span>Net saving</span><span id="rowNet">0</span></div>
+        <div class="lrow"><span>AI spend today</span><span id="pctNow">&mdash;</span><span id="rowNow">&mdash;</span></div>
+        <div class="lrow sub"><span>less saved on input, from curation</span><span id="pctIn">&mdash;</span><span id="rowIn">&mdash;</span></div>
+        <div class="lrow sub"><span>less saved on output, from tighter answers</span><span id="pctOut">&mdash;</span><span id="rowOut">&mdash;</span></div>
+        <div class="lrow tot"><span>AI spend after</span><span id="pctAfter">&mdash;</span><span id="rowAfter">&mdash;</span></div>
+        <div class="lrow sub"><span>plus cost of running models locally</span><span id="pctLocal">&mdash;</span><span id="rowLocal">&mdash;</span></div>
+        <div class="lrow tot net"><span>Net saving</span><span id="pctNet">&mdash;</span><span id="rowNet">&mdash;</span></div>
       </div>
       <div class="be"><div class="n" id="beN">1.02x</div><div class="l" id="beL"></div></div>
     </div>
@@ -1663,30 +1667,57 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 
 <!-- 25 -->
 <section class="slide a4">
-  <div class="act"><span class="dot"></span>Close, callback</div>
-  <h1>Bainbridge's operators were left monitoring a system they could no longer run, and the only question that matters is whether ours will still be able to tell when it is wrong.</h1>
+  <div class="act"><span class="dot"></span>Close, why anyone would build it</div>
+  <h1>No turkey votes for Christmas. Engineers will invest in this because the Duo becomes the unit of work, and a Duo cannot be taken apart.</h1>
   <div class="body">
-    <svg viewBox="0 0 900 134" style="width:100%;max-height:134px;margin-bottom:12px">
-      <rect x="150" y="24" width="270" height="86" class="ln" fill="rgba(255,255,255,.03)"/>
-      <circle cx="196" cy="52" r="8" class="lng"/><circle cx="230" cy="52" r="8" class="lng"/>
-      <circle cx="264" cy="52" r="8" class="lng"/><circle cx="298" cy="52" r="8" class="lnr"/>
-      <circle cx="332" cy="52" r="8" class="lng"/><circle cx="366" cy="52" r="8" class="lng"/>
-      <path d="M176,80 L394,80" class="lnd"/>
-      <path d="M176,94 L330,94" class="lnd"/>
-      <text x="285" y="16" class="txs" text-anchor="middle">a system running correctly, almost always</text>
-      <circle cx="530" cy="66" r="18" class="lnw"/>
-      <path d="M530,84 L530,110 M512,120 L530,110 L548,120" class="lnw"/>
-      <path d="M424,64 L506,62" class="lnd"/>
-      <text x="580" y="54" class="txs" font-size="11">Watching. Not practising.</text>
-      <text x="580" y="74" class="txs" font-size="11">Called on only when it fails,</text>
-      <text x="580" y="94" class="txs" font-size="11">which is when skill matters most</text>
-      <text x="580" y="114" class="txr" font-size="11">and is least available.</text>
+    <svg viewBox="0 0 900 214" style="width:100%;max-height:214px">
+      <defs>
+        <pattern id="lost" width="6" height="6" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+          <line x1="0" y1="0" x2="0" y2="6" stroke="#C86B5A" stroke-width="1.5" opacity=".6"/>
+        </pattern>
+      </defs>
+
+      <text x="242" y="14" class="txs" font-size="10" text-anchor="end">What actually produces the work</text>
+
+      <text x="242" y="40" class="tx" text-anchor="end" font-size="11.5">A generic model</text>
+      <rect x="254" y="26" width="150" height="20" rx="2" fill="rgba(74,163,255,.30)" stroke="#4AA3FF" stroke-width="1.1"/>
+      <text x="418" y="40" class="txs" font-size="10">competent, and the same on every desk</text>
+
+      <text x="242" y="82" class="txw" text-anchor="end" font-size="11.5">An engineer alone</text>
+      <rect x="254" y="68" width="232" height="20" rx="2" fill="rgba(240,171,0,.22)" stroke="#F0AB00" stroke-width="1.1"/>
+      <text x="500" y="82" class="txs" font-size="10">expert, and rate limited by being one person</text>
+
+      <text x="242" y="130" class="txw" text-anchor="end" font-size="13" font-weight="600">The Duo</text>
+      <rect x="254" y="112" width="150" height="28" rx="2" fill="rgba(74,163,255,.30)" stroke="#4AA3FF" stroke-width="1.1"/>
+      <rect x="404" y="112" width="286" height="28" rx="2" fill="rgba(240,171,0,.34)" stroke="#F0AB00" stroke-width="1.3"/>
+      <text x="329" y="130" class="txc" text-anchor="middle" font-size="9.5">the model</text>
+      <text x="547" y="130" class="txw" text-anchor="middle" font-size="10">what this engineer's method adds</text>
+
+      <text x="242" y="184" class="txr" text-anchor="end" font-size="11.5">After the engineer leaves</text>
+      <rect x="254" y="166" width="150" height="28" rx="2" fill="rgba(74,163,255,.30)" stroke="#4AA3FF" stroke-width="1.1"/>
+      <rect x="404" y="166" width="286" height="28" rx="2" fill="url(#lost)" stroke="#C86B5A" stroke-width="1.1" stroke-dasharray="4 4"/>
+      <text x="547" y="184" class="txr" text-anchor="middle" font-size="10">gone with them</text>
+      <line x1="690" y1="106" x2="690" y2="200" class="lnd" stroke-dasharray="3 4"/>
+      <text x="702" y="184" class="txs" font-size="10">the drop is the argument</text>
     </svg>
-    <div class="big">She wrote that the most reliable automated systems are the ones that need the greatest investment in the people watching them.</div>
-    <div class="land muted">Forty three years, and we have built the most reliable automated systems in history while reducing the investment in the people watching them. The architecture I have described is one attempt at the other half of her sentence.</div>
+
+    <div class="cols c3" style="margin-top:2px">
+      <div class="card amber"><div class="h">The pairing is what gets measured</div><div class="d">Performance belongs to the Duo. At review time nobody attempts to separate what the engineer did from what their model did, because the work was done by the pair.</div></div>
+      <div class="card blue"><div class="h">The method is what makes it personal</div><div class="d">A generic model is the same on every desk. What lifts it is one engineer's accumulated way of working, and that lives in the procedural store, encrypted to them.</div></div>
+      <div class="card red"><div class="h">Removing the engineer removes both</div><div class="d">The model does not keep the method. It reverts to generic, and the organisation keeps the short bar rather than the long one.</div></div>
+    </div>
+
+    <div class="land">This is the answer to the obvious question. Nobody helps build the system that replaces them, so the architecture has to make the engineer harder to remove, and it does.</div>
   </div>
   <div class="src">
-    <ol><li><span class="k">1</span><b>Bainbridge, L. (1983).</b> Ironies of Automation. Automatica, 19(6), 775 to 779. The closing argument of the paper is that successful automation increases rather than decreases the need for operator training.</li></ol>
+    <p class="caveat">The strongest claim on this slide is also the most attackable, and it is worth stating its limit before someone else does. Firing the engineer is a real and now visible cost. It is not permanent irreplaceability.</p>
+    <ol>
+      <li><span class="k">1</span><b>What the architecture enforces, and what it does not.</b> The encrypted procedural store genuinely prevents the method being extracted and retained after the engineer leaves. Measuring the Duo as one unit at review time is a management commitment rather than something the architecture can impose. Say that plainly if asked.</li>
+      <li><span class="k">2</span><b>The honest limit.</b> A replacement engineer pairs with their own model and accumulates a method over time, so the loss is a cost and a delay rather than a permanent moat. What changes is that the cost becomes visible. Today that knowledge walks out of the door invisibly and nothing in any system records that it has gone.</li>
+      <li><span class="k">3</span><b>Why this is not leverage against the employer.</b> Betriebsverfassungsgesetz paragraph 2(1) asks the works council and the employer to serve employee wellbeing and the interests of the business together. The engineer gains protection, the organisation gains the output of the pairing, and neither is obtained by taking something from the other.</li>
+      <li><span class="k">4</span><b>The bars are illustrative.</b> No measured ratio is being claimed between a generic model, an engineer working alone, and the pairing. The shape is the argument.</li>
+      <li><span class="k">5</span><b>Bainbridge, L. (1983).</b> Ironies of Automation. Automatica, 19(6), 775 to 779. Her closing argument, that the most reliable automated systems need the greatest investment in the people watching them, is the same claim from the organisation's side rather than the engineer's.</li>
+    </ol>
   </div>
 </section>
 
@@ -1752,10 +1783,11 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 
         <li class="grp a4">Act four &middot; policy</li>
         <li>The third gap</li>
+        <li>The Duo is the unit of work</li>
         <li>Published, open access</li>
       </ol>
     </div>
-    <p class="para">Practice used to make perfect, but the exercises are evaporating: the <span class="w">70</span> in <b>70-20-10</b> is being automated away, and with it the graded battery of cases that produced expertise as a by-product. Run the simulation and a career freezes at whatever title it had reached when the channel collapsed beneath it. <b>Bainbridge</b> described exactly this in <span class="r">1983</span>, in five pages about power stations, and the evidence has now caught up with her, in confidence effects on critical thinking and in payroll data showing entry level work vanishing precisely where AI automates rather than augments. It matters because some skills are worth nothing in themselves and everything as foundations, and it is the <span class="w">load-bearing</span> kind we are quietly automating. So expertise has to be built on purpose, which turns a staffing apocalypse into a learning problem. <b>KCS</b> made knowledge a deliberate by-product of interaction but left expertise idiosyncratic and accidental, and what most organisations still call learning is <span class="g">just-in-case</span> in a building where everything else became <span class="g">just-in-time</span>. So break the course into <span class="g">modules</span> whose <span class="g">objectives</span> are capabilities with observable evidence, prerequisites, an owner and an expiry date, and make them addressable. The course survives this: from a catalogue of two hundred modules, <span class="g">one course is assembled for one engineer</span>, guided by what that engineer has actually done. Then one mechanism serves everything: a <span class="c">broadcast</span> goes out, every model <span class="c">bids</span> locally with a single score, and <span class="c">identity is revealed only on accept</span>. That one mechanic solves case assignment, swarming, learning, mentoring and internal mobility alike. But all of it depends on knowing what each person cannot yet do, and a central register of that is an <span class="r">admission ticket to the next round of layoffs</span>. So invert it: one register of four thousand becomes four thousand registers of one. That pairing of an engineer and their own model is the <span class="w">Support Duo</span>, and the model is <span class="w">Alise</span>. Alise curates cases from work otherwise out of reach, so learning continues after the channel has gone. Every case then produces two things, the <span class="c">episodic record</span> the company keeps and the <span class="w">procedural method</span> the engineer keeps, because KCS captures the responder's knowledge but never their method. Only <span class="c">one scalar</span> crosses the <b>trust boundary</b>, and since a feature vector is a profile, it never leaves either. <b>Erasure</b> destroys the key rather than the record, so a permanent worker-held history and a right to be forgotten can both hold at once. The same split also makes the system cheaper, because the local model assembles context for free and only a curated prompt crosses the network. This is the safe version, because co-determination came first and the architecture serves the business as squarely as the person, and it is also a gap in European law that nobody in Brussels is addressing. The company takes the record, the resolution and the throughput, and the engineer walks out with their method intact. Bainbridge's operators were left monitoring a system they could no longer run. The only question that matters is whether ours will still be able to tell when it is wrong.</p></div>
+    <p class="para">Practice used to make perfect, but the exercises are evaporating: the <span class="w">70</span> in <b>70-20-10</b> is being automated away, and with it the graded battery of cases that produced expertise as a by-product. Run the simulation and a career freezes at whatever title it had reached when the channel collapsed beneath it. <b>Bainbridge</b> described exactly this in <span class="r">1983</span>, in five pages about power stations, and the evidence has now caught up with her, in confidence effects on critical thinking and in payroll data showing entry level work vanishing precisely where AI automates rather than augments. It matters because some skills are worth nothing in themselves and everything as foundations, and it is the <span class="w">load-bearing</span> kind we are quietly automating. So expertise has to be built on purpose, which turns a staffing apocalypse into a learning problem. <b>KCS</b> made knowledge a deliberate by-product of interaction but left expertise idiosyncratic and accidental, and what most organisations still call learning is <span class="g">just-in-case</span> in a building where everything else became <span class="g">just-in-time</span>. So break the course into <span class="g">modules</span> whose <span class="g">objectives</span> are capabilities with observable evidence, prerequisites, an owner and an expiry date, and make them addressable. The course survives this: from a catalogue of two hundred modules, <span class="g">one course is assembled for one engineer</span>, guided by what that engineer has actually done. Then one mechanism serves everything: a <span class="c">broadcast</span> goes out, every model <span class="c">bids</span> locally with a single score, and <span class="c">identity is revealed only on accept</span>. That one mechanic solves case assignment, swarming, learning, mentoring and internal mobility alike. But all of it depends on knowing what each person cannot yet do, and a central register of that is an <span class="r">admission ticket to the next round of layoffs</span>. So invert it: one register of four thousand becomes four thousand registers of one. That pairing of an engineer and their own model is the <span class="w">Support Duo</span>, and the model is <span class="w">Alise</span>. Alise curates cases from work otherwise out of reach, so learning continues after the channel has gone. Every case then produces two things, the <span class="c">episodic record</span> the company keeps and the <span class="w">procedural method</span> the engineer keeps, because KCS captures the responder's knowledge but never their method. Only <span class="c">one scalar</span> crosses the <b>trust boundary</b>, and since a feature vector is a profile, it never leaves either. <b>Erasure</b> destroys the key rather than the record, so a permanent worker-held history and a right to be forgotten can both hold at once. The same split also makes the system cheaper, because the local model assembles context for free and only a curated prompt crosses the network. This is the safe version, because co-determination came first and the architecture serves the business as squarely as the person, and it is also a gap in European law that nobody in Brussels is addressing. The company takes the record, the resolution and the throughput, and the engineer walks out with their method intact. That is also why anyone would build it: the <span class="w">Duo becomes the unit of work</span>, measured together and never split apart, so removing the engineer removes the method that made a generic model personal. Bainbridge's operators were left monitoring a system they could no longer run. The only question that matters is whether ours will still be able to tell when it is wrong.</p></div>
 
     <div class="strip">
       <div class="step"><div class="k" style="color:var(--company)">Broadcast</div><div class="v">a need goes out<br>with no names on it</div></div>
@@ -1789,10 +1821,24 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 <div class="rail" id="rail"></div>
 <div class="bar"><span id="pos">1 / 27</span><span class="mid">When the river runs dry &middot; Consortium for Service Innovation</span><span>N for sources</span></div>
 <div class="ov" id="ov"><h2>Sources</h2><div id="ovBody"></div><div class="hint">N or Escape to close</div></div>
-</div>
+</div></div>
 <script>
 (function(){
   var g=function(id){return document.getElementById(id);};
+
+  // scale the fixed 1280x720 stage to fill whatever screen it is shown on
+  (function(){
+    var stage=g("stage");
+    function fit(){
+      var s=Math.min(window.innerWidth/1280, window.innerHeight/720);
+      stage.style.transform="translate(-50%,-50%) scale("+s+")";
+    }
+    window.addEventListener("resize",fit,{passive:true});
+    if (window.visualViewport) window.visualViewport.addEventListener("resize",fit,{passive:true});
+    document.addEventListener("fullscreenchange",fit);
+    fit();
+  })();
+
   var slides=[].slice.call(document.querySelectorAll(".slide"));
   var acts=slides.map(function(s){return s.classList.contains("a1")?1:s.classList.contains("a2")?2:s.classList.contains("a3")?3:4;});
   var i=0, rail=g("rail");
@@ -1811,8 +1857,8 @@ button.primary{border-color:var(--worker);color:var(--worker)}
     if (window.__duoStop) window.__duoStop();
     if (window.__bcStop) window.__bcStop();
     if (window.__pcStop) window.__pcStop();
-    if (slides[i].querySelector("#pcSvg") && window.__pcPlay) window.__pcPlay();
-    if (slides[i].querySelector("#bcSvg") && window.__bcPlay) window.__bcPlay();
+    if (slides[i].querySelector("#pcSvg") && window.__pcIdle) window.__pcIdle();
+    if (slides[i].querySelector("#bcSvg") && window.__bcIdle) window.__bcIdle();
   }
   function sources(){
     if (ov.classList.contains("open")){ov.classList.remove("open");return;}
@@ -1828,6 +1874,11 @@ button.primary{border-color:var(--worker);color:var(--worker)}
       case "ArrowLeft": case "PageUp": e.preventDefault(); show(i-1); break;
       case "Home": show(0); break;
       case "End": show(slides.length-1); break;
+      case "f": case "F":
+        e.preventDefault();
+        if (document.fullscreenElement) document.exitFullscreen();
+        else document.documentElement.requestFullscreen();
+        break;
       case "t": case "T": e.preventDefault(); if(e.shiftKey) window.__timerReset(); else window.__timerToggle(); break;
       case "n": case "N": sources(); break;
       case "Escape": ov.classList.remove("open"); break;
@@ -1909,6 +1960,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
       g("fDotLbl").setAttribute("y",py(cur[1])+(right?22:5));
       g("fDotLbl").setAttribute("text-anchor",right?"end":"start");
       g("fDotLbl").textContent=title(cur[0]);
+      me.forEach(function(m){ m.t.setAttribute("opacity", Math.abs(m.s-cur[0])<0.085 ? "0" : "1"); });
       if(stuck&&cur[1]-uE(cur[0])>0.02){
         g("fGap").setAttribute("opacity","1");
         g("fGap").setAttribute("x1",px(cur[0]));g("fGap").setAttribute("x2",px(cur[0]));
@@ -2079,6 +2131,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
       g("gDotLbl").setAttribute("y",py(cur[1])+(right?22:5));
       g("gDotLbl").setAttribute("text-anchor",right?"end":"start");
       g("gDotLbl").textContent=title(cur[0]);
+      me.forEach(function(m){ m.t.setAttribute("opacity", Math.abs(m.s-cur[0])<0.085 ? "0" : "1"); });
 
       if(stuck&&cur[1]-uE(cur[0])>0.02){
         g("gGap").setAttribute("opacity","1");
@@ -2208,7 +2261,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
     ];
 
     var TRAY=g("pcTray"), FLY=g("pcFly");
-    var prof=0, raf=null, t0=null;
+    var prof=null, raf=null, t0=null;
 
     function trayPos(i,total){
       var w=Math.min(96, (840-(total-1)*8)/total);
@@ -2287,7 +2340,17 @@ button.primary{border-color:var(--worker);color:var(--worker)}
       if(t<6.5) raf=requestAnimationFrame(frame);
     }
 
+    function idle(){
+      if(raf){cancelAnimationFrame(raf); raf=null;}
+      prof=null;
+      document.querySelectorAll("#pc .pcpick button").forEach(function(b){ b.classList.remove("on"); });
+      TRAY.innerHTML=""; FLY.innerHTML="";
+      cells.forEach(function(c){ c.el.setAttribute("stroke","#33414F"); c.el.setAttribute("fill","rgba(255,255,255,.035)"); });
+      ["pcRule","pcTrayLbl","pcTraySub","pcCount"].forEach(function(k){ g(k).setAttribute("opacity","0"); });
+      g("pcCap").textContent="Choose an engineer on the right. The catalogue is the same for all three.";
+    }
     function play(){
+      if(prof===null){ idle(); return; }
       if(raf) cancelAnimationFrame(raf);
       t0=null; flyEls=build();
       raf=requestAnimationFrame(frame);
@@ -2301,10 +2364,11 @@ button.primary{border-color:var(--worker);color:var(--worker)}
         play();
       });
     });
-    g("pcPlay").addEventListener("click", play);
+    g("pcPlay").addEventListener("click", function(){ if(prof!==null) play(); });
     window.__pcPlay=play;
+    window.__pcIdle=idle;
     window.__pcStop=function(){ if(raf){cancelAnimationFrame(raf); raf=null;} };
-    play();
+    idle();
   })();
 
   // generic broadcast animation
@@ -2354,7 +2418,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
               "Only numbers come back. The person who asked has not advertised a weakness to anyone.",
               "The best answer is offered. Direction reversed, mechanism identical."]}
     };
-    var mode="case", raf=null, t0=null, cScore=0;
+    var mode=null, raf=null, t0=null, cScore=0;
     var cl=function(v,a,b){return Math.max(a,Math.min(b,v));};
     function originPt(){ var o=MODES[mode].origin; return o<0?{x:0,y:0}:agents[o]; }
     function isOriginDot(k){ return MODES[mode].origin===k; }
@@ -2488,10 +2552,26 @@ button.primary{border-color:var(--worker);color:var(--worker)}
     document.querySelectorAll(".bcpick button").forEach(function(btn){
       btn.addEventListener("click",function(){ setMode(btn.getAttribute("data-k")); });
     });
-    g("bcPlay").addEventListener("click", play);
+    function idle(){
+      if(raf){cancelAnimationFrame(raf); raf=null;}
+      mode=null;
+      document.querySelectorAll(".bcpick button").forEach(function(b){ b.classList.remove("on"); });
+      g("bcR0").setAttribute("opacity","0"); g("bcR1").setAttribute("opacity","0");
+      dots.forEach(function(d){ d.setAttribute("stroke","#33414F"); d.setAttribute("fill","#12171C"); d.setAttribute("r","7"); });
+      lines.forEach(function(l){ l.setAttribute("opacity","0"); });
+      scores.forEach(function(t){ t.setAttribute("opacity","0"); t.textContent=""; });
+      cLine.setAttribute("opacity","0");
+      g("bcCScore").setAttribute("opacity","0"); g("bcCScore").textContent="";
+      g("bcWin").setAttribute("opacity","0");
+      g("bcCirc").setAttribute("r",30); g("bcCirc").setAttribute("stroke","#33414F");
+      g("bcC1").textContent=""; g("bcC2").textContent="";
+      g("bcCap").textContent="Choose what is being broadcast. The geometry stays the same whichever you pick.";
+    }
+    g("bcPlay").addEventListener("click", function(){ if(mode) play(); });
     window.__bcPlay=play;
+    window.__bcIdle=idle;
     window.__bcStop=function(){ if(raf){cancelAnimationFrame(raf); raf=null;} };
-    play();
+    idle();
   })();
 
   // token simulator
@@ -2510,8 +2590,9 @@ button.primary{border-color:var(--worker);color:var(--worker)}
       g("fteV").textContent=(+el.fte.value).toFixed(2);
       g("hwV").textContent=Math.round(+el.hw.value);
       if (blank){
-        g("netN").textContent="\u2014";
-        ["rowNow","rowIn","rowOut","rowAfter","rowLocal","rowNet"].forEach(function(k){g(k).textContent="\u2014";});
+        g("netN").textContent="\u2014"; g("netPct").textContent="";
+        ["rowNow","rowIn","rowOut","rowAfter","rowLocal","rowNet",
+         "pctNow","pctIn","pctOut","pctAfter","pctLocal","pctNet"].forEach(function(k){g(k).textContent="\u2014";});
         g("engV").textContent = el.eng.value.trim()==="" ? "\u2014" : (+el.eng.value).toLocaleString("en-GB");
         g("beN").textContent="Over to you";
         g("beL").textContent="Put your own headcount and spend in the two fields above, or press Reset for the Uber figures.";
@@ -2528,6 +2609,14 @@ button.primary{border-color:var(--worker);color:var(--worker)}
       var local=(fte*fteC/1000)*eng + hw*eng + 0.30*eng;
       var net=gross-local;
 
+      function pct(v){ var a=Math.abs(v/total*100); return (a<10?a.toFixed(1):Math.round(a))+"%"; }
+      g("pctNow").textContent="100%";
+      g("pctIn").textContent="-"+pct(inSave);
+      g("pctOut").textContent="-"+pct(outSave);
+      g("pctAfter").textContent=pct(total-gross);
+      g("pctLocal").textContent="+"+pct(local);
+      g("pctNet").textContent=(net<0?"-":"")+pct(net);
+      g("netPct").textContent=(net<0?"-":"")+pct(net);
       g("engV").textContent=eng.toLocaleString("en-GB");
       g("netN").textContent=eur(net);
       g("netN").style.color = net<0 ? "#C86B5A" : "#5FD4A0";
