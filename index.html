@@ -165,6 +165,36 @@ button{background:transparent;border:1px solid var(--rule);color:var(--ink-2);fo
 button:hover{border-color:var(--ink-3);color:var(--ink)}
 button.primary{border-color:var(--worker);color:var(--worker)}
 
+/* workforce pyramid sim */
+#s5 .stage{flex:1;display:grid;grid-template-columns:1fr 306px;gap:28px;min-height:0;margin-top:10px}
+#s5 .plot{min-height:0}
+#s5 .plot svg{width:100%;height:100%}
+#s5 .side{display:flex;flex-direction:column;justify-content:space-between;gap:9px;min-height:0}
+#s5 .phase{font-size:10px;color:var(--ink-3);letter-spacing:.04em;text-transform:uppercase}
+#s5 label{display:flex;justify-content:space-between;align-items:baseline;font-size:11.5px;
+  color:var(--ink-2);margin:6px 0;gap:10px}
+#s5 label .v{color:var(--ink);font-weight:600}
+#s5 input[type=range]{width:100%;height:3px;appearance:none;background:var(--rule);border-radius:2px;outline:none;margin:0}
+#s5 input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;border-radius:50%;background:var(--a1);cursor:pointer;border:none}
+#s5 input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--a1);cursor:pointer;border:none}
+#s5 .bands{display:flex;gap:3px;margin-top:9px}
+#s5 .bands div{flex:1;border:1px solid var(--rule);padding:4px 5px;font-size:9px;color:var(--ink-3);
+  line-height:1.3;text-align:center;border-radius:2px}
+#s5 .bands div.on{border-color:var(--anx);color:var(--anx);background:rgba(200,107,90,.08)}
+#s5 .row{display:flex;gap:8px;margin-top:9px}
+#s5 .st{border-left:2px solid var(--rule);padding-left:12px}
+#s5 .st .l{font-size:10px;color:var(--ink-3);margin-bottom:3px}
+#s5 .st .n{font-size:23px;font-weight:600;line-height:1.15}
+#s5 .st .d{font-size:10px;color:var(--ink-2);margin-top:4px;line-height:1.45}
+#s5 .repl{display:flex;gap:16px;border-top:1px solid var(--rule);padding-top:9px}
+#s5 .repl div{flex:1;display:flex;align-items:baseline;gap:7px}
+#s5 .repl .k{font-size:15px;font-weight:600;color:var(--ink)}
+#s5 .repl .t{font-size:9px;color:var(--ink-3);line-height:1.3}
+#s5 .spark{border-top:1px solid var(--rule);padding-top:9px}
+#s5 .spark .l{font-size:10px;color:var(--ink-3);margin-bottom:5px}
+#s5 .spark svg{width:100%;height:66px;display:block}
+#s5 .vd{border-top:1px solid var(--rule);padding-top:9px;font-size:11.5px;line-height:1.5;min-height:62px}
+
 /* duo flow sim */
 #s3b .stage{flex:1;display:grid;grid-template-columns:1fr 306px;gap:28px;min-height:0;margin-top:10px}
 #s3b .plot{min-height:0}
@@ -328,11 +358,11 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 #sum .thread{border-right:1px solid var(--rule);padding-right:26px}
 #sum .tl{font-size:10px;color:var(--ink-3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:11px}
 #sum .beads{margin:0;padding:0;list-style:none;counter-reset:bd}
-#sum .beads li{counter-increment:bd;position:relative;padding-left:18px;margin-bottom:4px;
-  font-size:10.6px;line-height:1.32;color:var(--ink-2)}
+#sum .beads li{counter-increment:bd;position:relative;padding-left:18px;margin-bottom:3px;
+  font-size:10.6px;line-height:1.28;color:var(--ink-2)}
 #sum .beads li::before{content:counter(bd);position:absolute;left:0;top:1px;
   font-size:8.5px;color:var(--ink-3);opacity:.6;font-variant-numeric:tabular-nums}
-#sum .beads li.grp{counter-increment:none;padding-left:0;margin:11px 0 6px;
+#sum .beads li.grp{counter-increment:none;padding-left:0;margin:9px 0 5px;
   font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);
   border-bottom:1px solid var(--rule);padding-bottom:4px}
 #sum .beads li.grp:first-child{margin-top:0}
@@ -459,10 +489,74 @@ button.primary{border-color:var(--worker);color:var(--worker)}
   </div>
 </section>
 
+<!-- 4 Bainbridge reveal -->
+<section class="slide a1" id="s4">
+  <div class="qwrap">
+    <p class="q"><span class="pre">Take away the easy parts of the job, and</span> <q>automation can make the difficult parts of the human operator's task more difficult.</q></p>
+    <div class="cite">
+      <div class="n">Lisanne Bainbridge, Ironies of Automation</div>
+      <div class="d">Automatica, Volume 19, Issue 6, pages 775 to 779. Five pages about process control rooms and power stations. By 2016 it had roughly 1,800 citations and the rate was still climbing. The opening clause here is paraphrased; the quoted portion is hers.</div>
+    </div>
+  </div>
+  <div class="year">
+    <div class="y">1983</div>
+    <div class="ago">Forty three years ago</div>
+  </div>
+  <div class="src">
+    <ol>
+      <li><span class="k">1</span><b>Bainbridge, L. (1983).</b> Ironies of Automation. Automatica, 19(6), 775 to 779.</li>
+      <li><span class="k">2</span><b>On the wording.</b> The original sentence reads "By taking away the easy parts of his task, automation can make the difficult parts of the human operator's task more difficult." The opening clause is paraphrased here in modern phrasing; the second clause is verbatim.</li>
+      <li><span class="k">3</span><b>Citation count.</b> Strauch's analysis records roughly 1,800 citations by November 2016, far ahead of comparable work, and still accelerating.</li>
+      <li><span class="k">4</span><b>Also in the same paper.</b> Bainbridge argues that operators need more training rather than less, because they must be ready for rare but crucial interventions, and that the most reliable automated systems may need the greatest investment in operator training.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="slide a1">
+  <div class="act"><span class="dot"></span>Act one, the evidence</div>
+  <h1>The evidence has now caught up with her, in confidence effects on critical thinking and in payroll data showing entry level work vanishing where AI automates rather than augments.</h1>
+  <div class="body">
+    <svg viewBox="0 0 900 92" style="width:100%;max-height:92px;margin-bottom:10px">
+      <text x="30" y="16" class="txs">Employment change, 22 to 25 year olds, late 2022 to mid 2026</text>
+      <text x="30" y="46" class="txs" font-size="10">Least AI-exposed</text>
+      <rect x="430" y="34" width="112" height="16" class="lng" fill="rgba(95,212,160,.25)"/>
+      <text x="552" y="46" class="txg" font-size="11">+10%</text>
+      <text x="30" y="76" class="txs" font-size="10">Most AI-exposed</text>
+      <rect x="306" y="64" width="124" height="16" class="lnr" fill="rgba(200,107,90,.25)"/>
+      <text x="298" y="76" class="txr" font-size="11" text-anchor="end">-11%</text>
+      <line x1="430" y1="24" x2="430" y2="86" class="ln"/>
+      <text x="600" y="66" class="txs" font-size="10">21 percentage points apart,</text>
+      <text x="600" y="80" class="txs" font-size="10">a relative decline of about 19 percent</text>
+    </svg>
+    <div class="cols c2">
+      <div>
+        <div class="stat blue"><div class="n">319 / 936</div><div class="l">Knowledge workers surveyed, and first-hand examples of AI use at work. Microsoft Research and Carnegie Mellon, CHI 2025.</div></div>
+        <div class="card blue" style="margin-top:16px"><div class="h">Confidence moves effort, in both directions</div><div class="d">Higher confidence in the AI predicted less critical thinking. Higher confidence in one's own ability predicted more. The work shifts from producing an answer to checking one.</div></div>
+      </div>
+      <div>
+        <div class="stat red"><div class="n">19%</div><div class="l">The employment gap for 22 to 25 year olds in the most AI-exposed occupations, as of the August 2026 update.</div></div>
+        <div class="card red" style="margin-top:16px"><div class="h">Only where AI automates, not where it augments</div><div class="d">Employment in the two most exposed quintiles fell around 11 percent from late 2022 to mid 2026, while the least exposed grew around 10 percent. Experienced workers stayed stable.</div></div>
+      </div>
+    </div>
+    <div class="land">Stanford's own headline is that there is no widespread displacement. What the data shows is a change in who can get in at the start.</div>
+  </div>
+  <div class="src">
+    <p class="caveat">Both are self-reported or administrative rather than experimental. Neither measures critical thinking directly, and neither establishes causation.</p>
+    <ol>
+      <li><span class="k">1</span><b>Lee, H-P., Sarkar, A., Tankelevitch, L., Drosos, I., Rintel, S., Banks, R. and Wilson, N. (2025).</b> The Impact of Generative AI on Critical Thinking. CHI 2025, Yokohama. 319 knowledge workers using GenAI at least weekly, 936 retained examples.</li>
+      <li><span class="k">2</span><b>Scope of the Lee et al. finding.</b> It measures the enaction of critical thinking as self-reported, not critical thinking itself. Participants reported enacting it in 555 of 936 examples, about 59 percent. The study does not establish that AI degrades thinking ability.</li>
+      <li><span class="k">3</span><b>Brynjolfsson, E., Chandar, B. and Chen, R.</b> Canaries in the Coal Mine? Six Facts about the Recent Employment Effects of Artificial Intelligence. Stanford Digital Economy Lab, ADP payroll data.</li>
+      <li><span class="k">4</span><b>The figure has moved between versions.</b> 13 percent in August 2025, 16 percent in November 2025, and about 19 percent in the August 2026 update. The figure used here is from the August 2026 version.</li>
+      <li><span class="k">5</span><b>The automation versus augmentation split</b> is measured empirically using the extent to which observed LLM queries substitute for or complement occupational tasks.</li>
+    </ol>
+  </div>
+</section>
+
 <!-- 2 -->
 <section class="slide a1">
   <div class="act"><span class="dot"></span>Act one, the problem</div>
-  <h1>Practice used to make perfect, but the exercises are evaporating.</h1>
+  <h1>Practice makes perfect.</h1>
   <div class="body">
     <svg viewBox="0 0 900 250" style="width:100%;max-height:250px">
       <defs>
@@ -574,111 +668,82 @@ button.primary{border-color:var(--worker);color:var(--worker)}
       <li><span class="k">2</span><b>Lave, J. and Wenger, E. (1991).</b> Situated Learning: Legitimate Peripheral Participation. Cambridge University Press. The zigzag is the reach past what you can do, the fall back, and the retry.</li>
       <li><span class="k">3</span><b>What the falling channel represents.</b> The range of work the organisation can still put in front of a person to learn on. Erode the easy end and that range collapses. The person has not changed. What they can be given has.</li>
       <li><span class="k">4</span><b>How the climb is simulated.</b> Skill advances only while the work sits inside the band, and freezes when it does not. The collapse follows a 1.5 power curve so erosion accelerates. Band width, growth rate and the five titles are chosen for illustration.</li>
-      <li><span class="k">5</span><b>What this does not show.</b> Some removed work returns as review and approval rather than disappearing, which is why the Lee finding on effort shifting from producing to checking appears two slides later.</li>
+      <li><span class="k">5</span><b>What this does not show.</b> Some removed work returns as review and approval rather than disappearing, which is what the Lee finding on effort shifting from producing to checking describes.</li>
     </ol>
   </div>
 </section>
 
-<!-- 4 Bainbridge reveal -->
-<section class="slide a1" id="s4">
-  <div class="qwrap">
-    <p class="q"><span class="pre">Take away the easy parts of the job, and</span> <q>automation can make the difficult parts of the human operator's task more difficult.</q></p>
-    <div class="cite">
-      <div class="n">Lisanne Bainbridge, Ironies of Automation</div>
-      <div class="d">Automatica, Volume 19, Issue 6, pages 775 to 779. Five pages about process control rooms and power stations. By 2016 it had roughly 1,800 citations and the rate was still climbing. The opening clause here is paraphrased; the quoted portion is hers.</div>
+<!-- 6 what it does to the whole organisation -->
+<section class="slide a1" id="s5">
+  <div class="act"><span class="dot"></span>Act one, the consequence</div>
+  <h1>Run that across a whole organisation and its shape changes. The bottom is cut back to the work that is left. The top is never replenished.</h1>
+  <div class="stage">
+    <div class="plot">
+      <svg id="pySvg" viewBox="0 0 700 330">
+        <circle cx="132" cy="11" r="3" fill="#4AA3FF"/><text x="141" y="15" class="txs" font-size="9.5">joining</text>
+        <circle cx="200" cy="11" r="3" fill="#5FD4A0"/><text x="209" y="15" class="txs" font-size="9.5">promoted</text>
+        <circle cx="284" cy="11" r="3" fill="#C86B5A"/><text x="293" y="15" class="txs" font-size="9.5">leaving: another job, retirement, or redundancy</text>
+        <text x="592" y="15" class="txs" font-size="9.5">today</text>
+        <line x1="628" y1="11" x2="648" y2="11" stroke="#6F7F8D" stroke-width="1" stroke-dasharray="3 3"/>
+        <g id="pyGhost"></g>
+        <g id="pyBars"></g>
+        <g id="pyNames"></g>
+        <g id="pyNums"></g>
+        <g id="pyDelta"></g>
+        <g id="pyParts"></g>
+        <line x1="112" y1="316" x2="112" y2="49" class="lnd" opacity=".4"/>
+      </svg>
+    </div>
+    <div class="side">
+      <div>
+        <div class="phase" id="pyPhase">Ready</div>
+        <label for="pyA">Cases the machine has taken <span class="v" id="pyAV">45%</span></label>
+        <input type="range" id="pyA" min="0" max="100" step="1" value="45">
+        <div class="bands">
+          <div id="pyB1">to 60%<br>the easy ones</div>
+          <div id="pyB2">60 to 80%<br>mid level too</div>
+          <div id="pyB3">80%+<br>expert work too</div>
+        </div>
+        <div class="row"><button id="pyRun5" class="primary">Run 5 years</button><button id="pyRun10" class="primary">Run 10 years</button><button id="pyReset">Reset</button></div>
+      </div>
+      <div class="st" id="pyBox">
+        <div class="l" id="pyBoxL">Expert and Chief Expert, after ten years</div>
+        <div class="n" id="pyN">600</div>
+        <div class="d" id="pyD">Starting from 600.</div>
+      </div>
+      <div class="repl">
+        <div><span class="k" id="pyUp">26</span><span class="t">promoted into Expert<br>this year</span></div>
+        <div><span class="k" id="pyOut">66</span><span class="t">left Expert or above<br>this year</span></div>
+      </div>
+      <div class="spark">
+        <div class="l">Expert and above, year by year</div>
+        <svg viewBox="0 0 280 66" preserveAspectRatio="none">
+          <line x1="0" y1="62" x2="280" y2="62" stroke="#33414F" stroke-width="1"/>
+          <path id="pySparkB" fill="none" stroke="#6F7F8D" stroke-width="1.2" stroke-dasharray="3 3"/>
+          <path id="pySpark" fill="none" stroke="#F0AB00" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="vd" id="pyVd">Set a level of automation, then run five or ten years of it.</div>
     </div>
   </div>
-  <div class="year">
-    <div class="y">1983</div>
-    <div class="ago">Forty three years ago</div>
-  </div>
   <div class="src">
+    <p class="caveat">This is a model, not a measurement. It shows the shape of the argument rather than a forecast for any particular organisation.</p>
     <ol>
-      <li><span class="k">1</span><b>Bainbridge, L. (1983).</b> Ironies of Automation. Automatica, 19(6), 775 to 779.</li>
-      <li><span class="k">2</span><b>On the wording.</b> The original sentence reads "By taking away the easy parts of his task, automation can make the difficult parts of the human operator's task more difficult." The opening clause is paraphrased here in modern phrasing; the second clause is verbatim.</li>
-      <li><span class="k">3</span><b>Citation count.</b> Strauch's analysis records roughly 1,800 citations by November 2016, far ahead of comparable work, and still accelerating.</li>
-      <li><span class="k">4</span><b>Also in the same paper.</b> Bainbridge argues that operators need more training rather than less, because they must be ready for rare but crucial interventions, and that the most reliable automated systems may need the greatest investment in operator training.</li>
-    </ol>
-  </div>
-</section>
-<!-- 5 -->
-<section class="slide a1">
-  <div class="act"><span class="dot"></span>Act one</div>
-  <h1>The evidence has now caught up with her, in confidence effects on critical thinking and in payroll data showing entry level work vanishing where AI automates rather than augments.</h1>
-  <div class="body">
-    <svg viewBox="0 0 900 92" style="width:100%;max-height:92px;margin-bottom:10px">
-      <text x="30" y="16" class="txs">Employment change, 22 to 25 year olds, late 2022 to mid 2026</text>
-      <text x="30" y="46" class="txs" font-size="10">Least AI-exposed</text>
-      <rect x="430" y="34" width="112" height="16" class="lng" fill="rgba(95,212,160,.25)"/>
-      <text x="552" y="46" class="txg" font-size="11">+10%</text>
-      <text x="30" y="76" class="txs" font-size="10">Most AI-exposed</text>
-      <rect x="306" y="64" width="124" height="16" class="lnr" fill="rgba(200,107,90,.25)"/>
-      <text x="298" y="76" class="txr" font-size="11" text-anchor="end">-11%</text>
-      <line x1="430" y1="24" x2="430" y2="86" class="ln"/>
-      <text x="600" y="66" class="txs" font-size="10">21 percentage points apart,</text>
-      <text x="600" y="80" class="txs" font-size="10">a relative decline of about 19 percent</text>
-    </svg>
-    <div class="cols c2">
-      <div>
-        <div class="stat blue"><div class="n">319 / 936</div><div class="l">Knowledge workers surveyed, and first-hand examples of AI use at work. Microsoft Research and Carnegie Mellon, CHI 2025.</div></div>
-        <div class="card blue" style="margin-top:16px"><div class="h">Confidence moves effort, in both directions</div><div class="d">Higher confidence in the AI predicted less critical thinking. Higher confidence in one's own ability predicted more. The work shifts from producing an answer to checking one.</div></div>
-      </div>
-      <div>
-        <div class="stat red"><div class="n">19%</div><div class="l">The employment gap for 22 to 25 year olds in the most AI-exposed occupations, as of the August 2026 update.</div></div>
-        <div class="card red" style="margin-top:16px"><div class="h">Only where AI automates, not where it augments</div><div class="d">Employment in the two most exposed quintiles fell around 11 percent from late 2022 to mid 2026, while the least exposed grew around 10 percent. Experienced workers stayed stable.</div></div>
-      </div>
-    </div>
-    <div class="land">Stanford's own headline is that there is no widespread displacement. What the data shows is a change in who can get in at the start.</div>
-  </div>
-  <div class="src">
-    <p class="caveat">Both are self-reported or administrative rather than experimental. Neither measures critical thinking directly, and neither establishes causation.</p>
-    <ol>
-      <li><span class="k">1</span><b>Lee, H-P., Sarkar, A., Tankelevitch, L., Drosos, I., Rintel, S., Banks, R. and Wilson, N. (2025).</b> The Impact of Generative AI on Critical Thinking. CHI 2025, Yokohama. 319 knowledge workers using GenAI at least weekly, 936 retained examples.</li>
-      <li><span class="k">2</span><b>Scope of the Lee et al. finding.</b> It measures the enaction of critical thinking as self-reported, not critical thinking itself. Participants reported enacting it in 555 of 936 examples, about 59 percent. The study does not establish that AI degrades thinking ability.</li>
-      <li><span class="k">3</span><b>Brynjolfsson, E., Chandar, B. and Chen, R.</b> Canaries in the Coal Mine? Six Facts about the Recent Employment Effects of Artificial Intelligence. Stanford Digital Economy Lab, ADP payroll data.</li>
-      <li><span class="k">4</span><b>The figure has moved between versions.</b> 13 percent in August 2025, 16 percent in November 2025, and about 19 percent in the August 2026 update. The figure used here is from the August 2026 version.</li>
-      <li><span class="k">5</span><b>The automation versus augmentation split</b> is measured empirically using the extent to which observed LLM queries substitute for or complement occupational tasks.</li>
+      <li><span class="k">1</span><b>What the model does.</b> Five grades hold a starting population of four thousand, shaped as a normal support pyramid. Each simulated year, people join at the bottom, a proportion of each grade is promoted into the grade above, and a proportion of every grade leaves for another employer or retires. Five or ten years are projected.</li>
+      <li><span class="k">2</span><b>Where automation enters.</b> Promotion is not an entitlement. It depends on having done enough work of the right difficulty to be ready. Automation removes that work from the bottom of the difficulty range upward, so it removes the readiness that feeds each promotion, starting with the first one and working up.</li>
+      <li><span class="k">3</span><b>The three bands.</b> Up to 60 percent, only the easiest work has gone, so only the first promotion is affected. From 60 to 80 percent, mid-level work goes with it and the middle promotions slow. Above 80 percent, expert-level work goes too and the last promotion slows as well. The boundaries are chosen for the argument and are not measured.</li>
+      <li><span class="k">4</span><b>Voluntary departure rates are held constant.</b> Nine percent a year at the bottom rising to thirteen percent at Chief Expert, where retirement is added to ordinary turnover. A grade whose promotion route has closed loses people faster, because an engineer who cannot progress goes somewhere that will let them.</li>
+      <li><span class="k">5</span><b>Headcount follows the work, so redundancy is modelled.</b> Each grade is established against the work that still exists at its level. When the case volume at a grade falls, hiring into it falls with it and any surplus above the new establishment is released over the following years. This is why the junior grade empties rather than filling up with people who have nothing to do. The direction matches what Brynjolfsson and colleagues observe in payroll data for the most AI exposed occupations.</li>
+      <li><span class="k">6</span><b>Hiring experts from outside is not modelled, on purpose.</b> It moves experts between employers and does not create any. When every organisation runs the same automation, the pool being competed over is the one this model is draining.</li>
+      <li><span class="k">7</span><b>Starting distribution and rates.</b> 1,600, 1,100, 700, 400 and 200 across the five grades, with promotion rates set so that the pyramid holds steady at zero automation. Every number is adjustable and none of them is observed.</li>
     </ol>
   </div>
 </section>
 
-<!-- 6 -->
-<section class="slide a1">
-  <div class="act"><span class="dot"></span>Act one, the hinge</div>
-  <h1>This matters because some skills are worth nothing in themselves and everything as foundations. The additive kind is what we are quietly automating.</h1>
-  <div class="body">
-    <div class="cols c2">
-      <div>
-        <div class="card"><div class="h">Self-contained</div><div class="d">Exists for its own sake. Nothing rests on it. Automating it is pure gain, and nobody mourns double declutching or doing long division by hand.</div></div>
-        <svg viewBox="0 0 320 120" style="width:100%;margin-top:14px">
-          <rect x="110" y="66" width="100" height="34" class="ln" fill="rgba(255,255,255,.03)"/>
-          <text x="160" y="88" class="txs" text-anchor="middle">a skill</text>
-          <path d="M110,56 L210,56" class="lnd"/>
-          <text x="160" y="44" class="txs" text-anchor="middle">nothing above it</text>
-        </svg>
-      </div>
-      <div>
-        <div class="card amber"><div class="h">Additive</div><div class="d">Not valuable in itself. It is what later judgement is built on. Automate it and the structure above stays standing for years, then does not.</div></div>
-        <svg viewBox="0 0 320 120" style="width:100%;margin-top:14px">
-          <rect x="110" y="66" width="100" height="34" class="lnw" fill="rgba(240,171,0,.08)"/>
-          <text x="160" y="88" class="txw" text-anchor="middle">a skill</text>
-          <rect x="88" y="38" width="144" height="22" class="ln"/>
-          <rect x="66" y="12" width="188" height="22" class="ln"/>
-          <text x="160" y="53" class="txs" text-anchor="middle">pattern recognition</text>
-          <text x="160" y="27" class="txs" text-anchor="middle">judgement under uncertainty</text>
-        </svg>
-      </div>
-    </div>
-    <div class="land">A tier one case alone is most valuable in the engineer it helps evolve. We focus on optimisation of the former at our peril, if we do not also consider its value to the latter.</div>
-  </div>
-  <div class="src">
-    <p class="caveat">The distinction on this slide is original to this work. It organises the argument and is not offered as an established taxonomy.</p>
-    <ol>
-      <li><span class="k">1</span><b>Self-contained and additive</b> are my labels. The nearest established relative is the literature on prerequisite structures and knowledge dependency in curriculum design, which formalises the idea that some competencies gate others.</li>
-      <li><span class="k">2</span><b>Bainbridge, L. (1983).</b> Ironies of Automation. The underlying claim, that removing routine practice degrades the capability needed for the exceptional case, is hers.</li>
-    </ol>
-  </div>
-</section>
+
+
+
+
 
 <!-- 7 -->
 <section class="slide a1">
@@ -727,7 +792,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
   <div class="src">
     <p class="caveat">This slide asserts a mechanism rather than a finding. No source establishes that expertise will fail to appear; the argument is that the route by which it previously appeared is being removed.</p>
     <ol>
-      <li><span class="k">1</span><b>The evidentiary basis</b> is the preceding two slides: Bainbridge on practice loss, Lee and colleagues on effort shifting from producing to checking, and Brynjolfsson and colleagues on entry level employment in AI exposed occupations.</li>
+      <li><span class="k">1</span><b>The evidentiary basis</b> is act one in full: Bainbridge on practice loss, Lee and colleagues on effort shifting from producing to checking, Brynjolfsson and colleagues on entry level employment in AI exposed occupations, and the two simulations on what that does to a career and to a workforce.</li>
       <li><span class="k">2</span><b>Not claimed.</b> That expertise cannot be built deliberately, or that it has already failed. Only that it will now require design where it previously required volume.</li>
     </ol>
   </div>
@@ -1766,10 +1831,10 @@ button.primary{border-color:var(--worker);color:var(--worker)}
       <div class="tl">The red thread</div>
       <ol class="beads">
         <li class="grp a1">Act one &middot; the problem</li>
+        <li>Bainbridge said it in 1983</li>
         <li>The exercises are evaporating</li>
         <li>Careers freeze where they stood</li>
-        <li>Bainbridge said it in 1983</li>
-        <li>Load-bearing skills go first</li>
+        <li>The pyramid hollows out</li>
 
         <li class="grp a2">Act two &middot; learning</li>
         <li>KCS secured only half of it</li>
@@ -1792,7 +1857,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
         <li>Published, open access</li>
       </ol>
     </div>
-    <p class="para">Practice used to make perfect, but the exercises are evaporating: the <span class="w">70</span> in <b>70-20-10</b> is being automated away, and with it the graded battery of cases that produced expertise as a by-product. Run the simulation and a career freezes at whatever title it had reached when the channel collapsed beneath it. <b>Bainbridge</b> described exactly this in <span class="r">1983</span>, in five pages about power stations. The evidence has caught up with her, in confidence effects on critical thinking and in payroll data showing entry level work vanishing where AI automates rather than augments. It matters because some skills are worth nothing in themselves and everything as foundations. The <span class="w">load-bearing</span> kind is what we are quietly automating. So expertise has to be built on purpose, which turns a staffing apocalypse into a learning problem. <b>KCS</b> made knowledge a deliberate by-product of interaction but left expertise idiosyncratic and accidental, and what most organisations still call learning is <span class="g">just-in-case</span> in a building where everything else became <span class="g">just-in-time</span>. So break the course into <span class="g">modules</span> whose <span class="g">objectives</span> are capabilities with observable evidence, and make them addressable. The course survives this: from a catalogue of two hundred modules, <span class="g">one course is assembled for one engineer</span>, guided by what that engineer has actually done. Learning then runs in both directions, broadcast outward and requested inward. The aggregate of those anonymous requests forms a <span class="g">Learning Loop</span> for people rather than an Evolve Loop for articles. Every one of those flows needs an answer to the same question: who is this for? A central register of what each person cannot yet do is an <span class="r">admission ticket to the next round of layoffs</span>. So invert it: one register of four thousand becomes four thousand registers of one. That pairing of an engineer and their own model is the <span class="w">Support Duo</span>, and the model is <span class="w">Alise</span>. Only now does one mechanism serve everything: a <span class="c">broadcast</span> goes out, every model <span class="c">bids</span> locally with a single score, <span class="c">identity is revealed only on accept</span>, and a case too big for one person goes to the two highest bids. That one mechanic solves case assignment, swarming, learning, mentoring and internal mobility alike. Alise curates cases from work otherwise out of reach, so learning continues after the channel has gone. Every case then produces two things, the <span class="c">episodic record</span> the company keeps and the <span class="w">procedural method</span> the engineer keeps, because KCS captures the responder's knowledge but never their method. Only <span class="c">one scalar</span> crosses the <b>trust boundary</b>, and since a feature vector is a profile, it never leaves either. <b>Erasure</b> destroys the key rather than the record, so a permanent worker-held history and a right to be forgotten can both hold at once. The same split also makes the system cheaper, because the local model assembles context for free and only a curated prompt crosses the network. This is the safe version, because co-determination came first and the architecture serves the business as squarely as the person. The company takes the record, the resolution and the throughput, and the engineer walks out with their method intact. That is also why anyone would build it: the <span class="w">Duo becomes the unit of work</span>, measured together and never split apart, so removing the engineer removes the method that made a generic model personal, and because the method is genuinely theirs, a retiring engineer can hand thirty years of it to a colleague on the day they choose. It is also a gap in European law that nobody in Brussels is addressing. Bainbridge's operators were left monitoring a system they could no longer run. The only question that matters is whether ours will still be able to tell when it is wrong.</p></div>
+    <p class="para"><b>Bainbridge</b> said it in <span class="r">1983</span>, in five pages about power stations. Practice used to make perfect, and the exercises are evaporating: the <span class="w">70</span> in <b>70-20-10</b> is being automated away, and with it the graded battery of cases that produced expertise as a by-product. Run the simulation and a career freezes at whatever title it had reached when the channel collapsed beneath it. Run it across a whole organisation and the pyramid <span class="r">hollows out</span>: the bottom is cut back to the work that is left, people leave at the rate they always did, and the expert grades are never replenished. The evidence has caught up with her, in confidence effects on critical thinking and in payroll data showing entry level work vanishing where AI automates rather than augments. It matters because some skills are worth nothing in themselves and everything as foundations. The <span class="w">load-bearing</span> kind is what we are quietly automating. So expertise has to be built on purpose, which turns a staffing apocalypse into a learning problem. <b>KCS</b> made knowledge a deliberate by-product of interaction but left expertise idiosyncratic and accidental, and what most organisations still call learning is <span class="g">just-in-case</span> in a building where everything else became <span class="g">just-in-time</span>. So break the course into <span class="g">modules</span> whose <span class="g">objectives</span> are capabilities with observable evidence, and make them addressable. The course survives this: from a catalogue of two hundred modules, <span class="g">one course is assembled for one engineer</span>, guided by what that engineer has actually done. Learning then runs in both directions, broadcast outward and requested inward. The aggregate of those anonymous requests forms a <span class="g">Learning Loop</span> for people rather than an Evolve Loop for articles. Every one of those flows needs an answer to the same question: who is this for? A central register of what each person cannot yet do is an <span class="r">admission ticket to the next round of layoffs</span>. So invert it: one register of four thousand becomes four thousand registers of one. That pairing of an engineer and their own model is the <span class="w">Support Duo</span>, and the model is <span class="w">Alise</span>. Only now does one mechanism serve everything: a <span class="c">broadcast</span> goes out, every model <span class="c">bids</span> locally with a single score, <span class="c">identity is revealed only on accept</span>, and a case too big for one person goes to the two highest bids. That one mechanic solves case assignment, swarming, learning, mentoring and internal mobility alike. Alise curates cases from work otherwise out of reach, so learning continues after the channel has gone. Every case then produces two things, the <span class="c">episodic record</span> the company keeps and the <span class="w">procedural method</span> the engineer keeps, because KCS captures the responder's knowledge but never their method. Only <span class="c">one scalar</span> crosses the <b>trust boundary</b>, and since a feature vector is a profile, it never leaves either. <b>Erasure</b> destroys the key rather than the record, so a permanent worker-held history and a right to be forgotten can both hold at once. The same split also makes the system cheaper, because the local model assembles context for free and only a curated prompt crosses the network. This is the safe version, because co-determination came first and the architecture serves the business as squarely as the person. The company takes the record, the resolution and the throughput, and the engineer walks out with their method intact. That is also why anyone would build it: the <span class="w">Duo becomes the unit of work</span>, measured together and never split apart, so removing the engineer removes the method that made a generic model personal, and because the method is genuinely theirs, a retiring engineer can hand thirty years of it to a colleague on the day they choose. It is also a gap in European law that nobody in Brussels is addressing. Bainbridge's operators were left monitoring a system they could no longer run. The only question that matters is whether ours will still be able to tell when it is wrong.</p></div>
 
     <div class="strip">
       <div class="step"><div class="k" style="color:var(--company)">Broadcast</div><div class="v">a need goes out<br>with no names on it</div></div>
@@ -1817,7 +1882,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
       <li><span class="k">5</span><b>Consortium for Service Innovation.</b> KCS Principles, Core Concepts and Practices Guide, and Intelligent Swarming. CC BY-NC-ND 4.0.</li>
       <li><span class="k">6</span><b>Uber, 2026.</b> Entire annual AI budget exhausted in four months across roughly 5,000 engineers. The Information, via Fortune, Forbes and TechCrunch.</li>
       <li><span class="k">7</span><b>MacNiven, S.</b> A Right to One's Own Method, Zenodo DOI 10.5281/zenodo.22738329, and the Alise Data Model Specification.</li>
-      <li><span class="k">8</span><b>Original to this work, and not drawn from published sources:</b> EDUSNACKS, the Learning Loop, the self-contained and additive distinction, the model ops and hardware cost estimates, and the claim that aggregate anonymous signals reveal where capability is thin.</li>
+      <li><span class="k">8</span><b>Original to this work, and not drawn from published sources:</b> EDUSNACKS, the Learning Loop, the workforce projection, the model ops and hardware cost estimates, and the claim that aggregate anonymous signals reveal where capability is thin.</li>
     </ol>
   </div>
 </section>
@@ -1863,8 +1928,10 @@ button.primary{border-color:var(--worker);color:var(--worker)}
     if (window.__duoStop) window.__duoStop();
     if (window.__bcStop) window.__bcStop();
     if (window.__pcStop) window.__pcStop();
+    if (window.__pyStop) window.__pyStop();
     if (slides[i].querySelector("#pcSvg") && window.__pcIdle) window.__pcIdle();
     if (slides[i].querySelector("#bcSvg") && window.__bcIdle) window.__bcIdle();
+    if (slides[i].querySelector("#pySvg") && window.__pyIdle) window.__pyIdle();
   }
   function sources(){
     if (ov.classList.contains("open")){ov.classList.remove("open");return;}
@@ -1872,6 +1939,10 @@ button.primary{border-color:var(--worker);color:var(--worker)}
     ovBody.innerHTML = s ? s.innerHTML : '<p class="none">No sources on this slide.</p>';
     ov.classList.add("open");
   }
+  // a clicked button keeps focus, which would swallow the arrow keys
+  document.addEventListener("click",function(e){
+    if (e.target && e.target.tagName==="BUTTON") e.target.blur();
+  });
   document.addEventListener("keydown",function(e){
     var t=e.target.tagName;
     if (t==="INPUT"||t==="BUTTON") return;
@@ -2701,6 +2772,212 @@ button.primary{border-color:var(--worker);color:var(--worker)}
       scores:agents.map(function(a){return a.score;}), cScore:cScore, holder:M()?M().holder:-1, origin:M()?M().origin:-1}; };
     window.__bcStop=function(){ if(raf){cancelAnimationFrame(raf); raf=null;} };
     idle();
+  })();
+
+  // workforce pyramid simulation
+  (function(){
+    var svg=g("pySvg"); if(!svg) return;
+    var SVGNS="http://www.w3.org/2000/svg";
+    var LV=["Junior Specialist","Specialist","Senior Specialist","Expert","Chief Expert"];
+    var START=[1600,1100,700,400,200];
+    var ATTR=[0.09,0.08,0.08,0.10,0.13];
+    var PROMO=[0.13131,0.11091,0.09429,0.06500];
+    var NEED=[0.60,0.65,0.70,0.75];
+    var CUT=[[0.05,0.72],[0.48,0.85],[0.65,0.94],[0.80,1.00]];
+    var STAG=0.13, CAPFLOOR=0.06, SHED=0.35;
+    var INTAKE=354, YEARS=10, SCALE=320/1700, X0=128, LANE=112, LEAVE0=590, LEAVE1=658;
+    var cl=function(v,a,b){return Math.max(a,Math.min(b,v));};
+    function rowY(lv){ return 34+(4-lv)*56; }          // top of the bar
+    function midY(lv){ return rowY(lv)+15; }
+
+    var GH=g("pyGhost"), BR=g("pyBars"), NM=g("pyNames"), NU=g("pyNums"), DL=g("pyDelta"), PT=g("pyParts");
+    var bars=[], nums=[], dels=[];
+    for(var k=0;k<5;k++){
+      var gh=document.createElementNS(SVGNS,"rect");
+      gh.setAttribute("x",X0); gh.setAttribute("y",rowY(k)); gh.setAttribute("height",30);
+      gh.setAttribute("width",START[k]*SCALE); gh.setAttribute("fill","none");
+      gh.setAttribute("stroke","#6F7F8D"); gh.setAttribute("stroke-width","1"); gh.setAttribute("stroke-dasharray","3 3");
+      GH.appendChild(gh);
+      var b=document.createElementNS(SVGNS,"rect");
+      b.setAttribute("x",X0); b.setAttribute("y",rowY(k)); b.setAttribute("height",30);
+      b.setAttribute("width",START[k]*SCALE);
+      b.setAttribute("fill","rgba(240,171,0,.30)"); b.setAttribute("stroke","#F0AB00"); b.setAttribute("stroke-width","1.1");
+      BR.appendChild(b); bars.push(b);
+      var t=document.createElementNS(SVGNS,"text");
+      t.setAttribute("x",96); t.setAttribute("y",midY(k)+4); t.setAttribute("text-anchor","end");
+      t.setAttribute("class","tx"); t.setAttribute("font-size","11.5"); t.textContent=LV[k];
+      NM.appendChild(t);
+      var n=document.createElementNS(SVGNS,"text");
+      n.setAttribute("x",505); n.setAttribute("y",midY(k)+4); n.setAttribute("text-anchor","end");
+      n.setAttribute("class","tx"); n.setAttribute("font-size","12"); n.setAttribute("font-weight","600");
+      NU.appendChild(n); nums.push(n);
+      var d=document.createElementNS(SVGNS,"text");
+      d.setAttribute("x",574); d.setAttribute("y",midY(k)+4); d.setAttribute("text-anchor","end");
+      d.setAttribute("font-family","inherit"); d.setAttribute("font-size","11"); d.setAttribute("fill","#6F7F8D");
+      DL.appendChild(d); dels.push(d);
+    }
+
+    function step(st,a){
+      var i, im=[], r=[];
+      for(i=0;i<4;i++){ im[i]=cl((a-CUT[i][0])/(CUT[i][1]-CUT[i][0]),0,1); r[i]=cl((1-im[i])/NEED[i],0,1); }
+      im[4]=im[3];
+      // each grade is established against the work that still exists at its level
+      var capF=[], cap=[], shed=[];
+      for(i=0;i<5;i++){ capF[i]=CAPFLOOR+(1-CAPFLOOR)*(1-im[i]); cap[i]=START[i]*capF[i]; }
+      var intake=INTAKE*capF[0];
+      for(i=0;i<5;i++) shed[i]=Math.max(0, st[i]-cap[i])*SHED;
+      var leave=[], promo=[0,0,0,0];
+      for(i=0;i<5;i++) leave[i]=st[i]*(ATTR[i]+(i<4?STAG*(1-r[i]):0))+shed[i];
+      // promotion is pulled by the vacancies above, and capped by who is ready
+      var demand=leave[4];
+      for(i=3;i>=0;i--){ promo[i]=Math.min(st[i]*PROMO[i]*r[i], demand); if(i) demand=leave[i]+promo[i]; }
+      var n=st.slice();
+      n[0]=st[0]+intake-promo[0]-leave[0];
+      for(i=1;i<5;i++) n[i]=st[i]+promo[i-1]-(i<4?promo[i]:0)-leave[i];
+      for(i=0;i<5;i++) n[i]=Math.max(0,n[i]);
+      return {st:n, promo:promo, leave:leave, intake:intake};
+    }
+    function series(a,h){
+      var st=START.slice(), out=[{st:st.slice(),promo:[0,0,0,0],leave:[0,0,0,0,0],intake:0}], i;
+      for(i=0;i<h;i++){ var r=step(st,a); st=r.st; out.push(r); }
+      return out;
+    }
+
+    var SP=g("pySpark"), SPB=g("pySparkB");
+    function sparkPath(ser){
+      var top=680, pts=ser.map(function(r,i){
+        var v=r.st[3]+r.st[4];
+        return (i/YEARS*278+1).toFixed(1)+","+(62-cl(v/top,0,1)*56).toFixed(1);
+      });
+      return "M"+pts.join("L");
+    }
+
+    var a=0.45, YEARS=10, ser=series(a,YEARS), raf=null, t0=null, playing=false;
+    function setHorizon(h){
+      YEARS=h; ser=series(a,YEARS);
+      SPB.setAttribute("d", sparkPath(series(0,YEARS)));
+      g("pyBoxL").textContent="Expert and Chief Expert, after "+(h===5?"five":"ten")+" years";
+    }
+    function fmt(v){ return Math.round(v).toLocaleString("en-GB"); }
+
+    function paintBands(){
+      g("pyB1").classList.toggle("on", a>0);
+      g("pyB2").classList.toggle("on", a>=0.60);
+      g("pyB3").classList.toggle("on", a>=0.80);
+    }
+    function verdict(){
+      var p=Math.round(a*100);
+      if(p<60) return "Only the easiest work has gone. The senior grades still look healthy. The junior grade is already being cut back to the work that is left for it, and the consequence of that will not show at the top for years.";
+      if(p<80) return "Mid-level work is going too. The grades below are cut back to the work that remains, promotion into the senior grades slows, and departures carry on at the rate they always did.";
+      return "Expert work is going as well. Nothing feeds the top of the pyramid any more, so the only remaining source of experts is somebody else's company.";
+    }
+
+    function draw(yr){
+      var i0=Math.floor(yr), i1=Math.min(YEARS,i0+1), f=yr-i0, k;
+      var A=ser[i0].st, B=ser[i1].st;
+      for(k=0;k<5;k++){
+        var v=A[k]+(B[k]-A[k])*f;
+        bars[k].setAttribute("width", Math.max(0,v*SCALE));
+        nums[k].textContent=fmt(v);
+        var d=(v-START[k])/START[k]*100;
+        if(yr<0.25){ dels[k].textContent=""; }
+        else {
+          dels[k].textContent=(d>=0?"+":"")+d.toFixed(0)+"%";
+          dels[k].setAttribute("fill", d<-2?"#C86B5A":(d>2?"#5FD4A0":"#6F7F8D"));
+        }
+        var lost = (v-START[k])/START[k] < -0.18;
+        bars[k].setAttribute("fill", lost?"rgba(200,107,90,.26)":"rgba(240,171,0,.30)");
+        bars[k].setAttribute("stroke", lost?"#C86B5A":"#F0AB00");
+      }
+      var top=(A[3]+A[4])+((B[3]+B[4])-(A[3]+A[4]))*f;
+      g("pyN").textContent=fmt(top);
+      var pc=(top-600)/600*100;
+      g("pyD").textContent="Starting from 600. "+(pc>=0?"Up ":"Down ")+Math.abs(pc).toFixed(0)+" percent.";
+      g("pyN").style.color = pc<-5?"var(--anx)":"var(--ink)";
+      g("pyPhase").textContent="Year "+Math.round(yr)+" of "+YEARS;
+      var rr=ser[Math.max(1,i1)];
+      g("pyUp").textContent=fmt(rr.promo[3]+rr.promo[2]*0);
+      g("pyOut").textContent=fmt(rr.leave[3]+rr.leave[4]);
+      SP.setAttribute("d", sparkPath(ser.slice(0,i1+1)));
+    }
+
+    // particles
+    var parts=[], acc={};
+    function spawn(kind,lv){
+      var c=document.createElementNS(SVGNS,"circle");
+      c.setAttribute("r", kind==="leave"?2.1:2.7);
+      c.setAttribute("fill", kind==="leave"?"#C86B5A":(kind==="join"?"#4AA3FF":"#5FD4A0"));
+      PT.appendChild(c);
+      parts.push({el:c,kind:kind,lv:lv,p:0});
+    }
+    function moveParts(dt){
+      for(var i=parts.length-1;i>=0;i--){
+        var q=parts[i];
+        q.p += dt*(q.kind==="leave"?1.15:0.95);
+        if(q.p>=1){ PT.removeChild(q.el); parts.splice(i,1); continue; }
+        var x,y;
+        if(q.kind==="leave"){ x=LEAVE0+(LEAVE1-LEAVE0)*q.p; y=midY(q.lv); q.el.setAttribute("opacity",(1-q.p).toFixed(2)); }
+        else if(q.kind==="join"){ x=LANE; y=316+(midY(0)-316)*q.p; q.el.setAttribute("opacity","0.9"); }
+        else { x=LANE; y=midY(q.lv)+(midY(q.lv+1)-midY(q.lv))*q.p; q.el.setAttribute("opacity","0.9"); }
+        q.el.setAttribute("cx",x.toFixed(1)); q.el.setAttribute("cy",y.toFixed(1));
+      }
+    }
+    function clearParts(){ while(parts.length){ PT.removeChild(parts[0].el); parts.shift(); } acc={}; }
+    function emit(yr,dt){
+      var i0=Math.min(YEARS,Math.max(1,Math.ceil(yr))), r=ser[i0], k;
+      var PER=1/55;
+      function fire(key,rate){
+        acc[key]=(acc[key]||0)+rate*PER*dt*(YEARS/(YEARS===5?6:9));
+        while(acc[key]>=1){ acc[key]-=1; var s=key.split(":"); spawn(s[0], +s[1]); }
+      }
+      fire("join:0", r.intake);
+      for(k=0;k<4;k++) fire("rise:"+k, r.promo[k]);
+      for(k=0;k<5;k++) fire("leave:"+k, r.leave[k]);
+    }
+
+    var last=0;
+    function frame(ts){
+      if(!t0){ t0=ts; last=ts; }
+      var dt=Math.min(0.05,(ts-last)/1000); last=ts;
+      var yr=cl((ts-t0)/1000/(YEARS===5?6:9)*YEARS,0,YEARS);
+      draw(yr); emit(yr,dt); moveParts(dt);
+      if(yr<YEARS || parts.length) raf=requestAnimationFrame(frame);
+      else { playing=false; g("pyPhase").textContent=(YEARS===5?"Five":"Ten")+" years on"; }
+    }
+
+    function run(h){
+      if(raf) cancelAnimationFrame(raf);
+      if(h) setHorizon(h);
+      clearParts(); ser=series(a,YEARS); t0=null; playing=true;
+      g("pyVd").textContent=verdict();
+      raf=requestAnimationFrame(frame);
+    }
+    function reset(){
+      if(raf){ cancelAnimationFrame(raf); raf=null; }
+      clearParts(); playing=false; ser=series(a,YEARS); draw(0);
+      g("pyPhase").textContent="Ready";
+      for(var k=0;k<5;k++) dels[k].textContent="";
+      SP.setAttribute("d","");
+      g("pyVd").textContent="Set a level of automation, then run five or ten years of it.";
+      g("pyN").style.color="var(--ink)";
+      g("pyN").textContent="600"; g("pyD").textContent="Starting from 600.";
+      g("pyUp").textContent="26"; g("pyOut").textContent="66";
+    }
+
+    g("pyA").addEventListener("input", function(){
+      a=+this.value/100; g("pyAV").textContent=this.value+"%";
+      paintBands(); reset();
+    });
+    g("pyRun5").addEventListener("click", function(){ run(5); });
+    g("pyRun10").addEventListener("click", function(){ run(10); });
+    g("pyReset").addEventListener("click", reset);
+    window.__pyStop=function(){ if(raf){ cancelAnimationFrame(raf); raf=null; } };
+    window.__pyIdle=function(){ window.__pyStop(); reset(); };
+    window.__pyRun=run;
+    window.__pyState=function(){ return {a:a, year:g("pyPhase").textContent, top:g("pyN").textContent,
+      nums:nums.map(function(n){return n.textContent;}), dels:dels.map(function(d){return d.textContent;}),
+      vd:g("pyVd").textContent}; };
+    paintBands(); setHorizon(10); reset();
   })();
 
   // token simulator
