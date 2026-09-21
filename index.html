@@ -421,6 +421,29 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 #sum .spacer{flex:1}
 #sum .doi{font-size:9.5px;color:var(--ink-3);text-align:right;line-height:1.5}
 
+/* SAP context indicator */
+.sap-btn{position:absolute;top:16px;right:176px;z-index:26;
+  background:rgba(0,112,242,.10);border:1.2px solid #0070F2;color:#0070F2;
+  font-size:9.5px;font-weight:700;letter-spacing:.08em;
+  padding:3px 9px 3px 7px;border-radius:10px;cursor:pointer;user-select:none;
+  display:none;align-items:center;gap:5px;line-height:1;transition:background .15s}
+.sap-btn:hover{background:rgba(0,112,242,.20)}
+.sap-btn svg{width:32px;height:16px;display:block;flex-shrink:0}
+.sap-ov{position:absolute;right:54px;top:38px;width:370px;max-height:600px;overflow:auto;
+  background:var(--panel);border:1px solid #0070F2;padding:16px 18px;z-index:28;
+  opacity:0;visibility:hidden;transition:opacity .16s ease,visibility .16s;
+  box-shadow:0 8px 32px rgba(0,0,0,.45)}
+.sap-ov.open{opacity:1;visibility:visible}
+.sap-ov h3{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#0070F2;
+  margin:0 0 10px;display:flex;align-items:center;gap:7px}
+.sap-ov h3 svg{width:32px;height:16px;flex-shrink:0}
+.sap-ov ul{margin:0;padding:0;list-style:none}
+.sap-ov li{font-size:11.5px;line-height:1.55;color:var(--ink-2);margin-bottom:9px;
+  padding-left:10px;border-left:2px solid rgba(0,112,242,.3)}
+.sap-ov li b{color:var(--ink);font-weight:600}
+.sap-ov .src-link{font-size:9px;color:var(--ink-3);margin-top:2px;display:block}
+.sap-ov .sap-hint{font-size:9.5px;color:var(--ink-3);margin-top:12px;border-top:1px solid var(--rule);padding-top:8px}
+
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -453,7 +476,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
       <li><span class="k">1</span><b>Dr. Sean MacNiven.</b> Head of Research, Technology and Transformation Office, Customer Support, SAP SE. Visiting professor, Leeds Beckett University Business School. Honorary professor, Glasgow Caledonian University.</li>
       <li><span class="k">2</span><b>Presented at the Executive Symposium 2026, Consortium for Service Innovation, 22 to 23 September 2026.</b> KCS (now Knowledge-Centered Success, rebranded April 2026) and Intelligent Swarming are referenced throughout with attribution, under CC BY-NC-ND 4.0. The Consortium has announced that agentic AI integration is now a first-class topic alongside both methodologies.</li>
       <li><span class="k">3</span><b>Working paper.</b> A Right to One's Own Method: Worker-paired AI memory and the recording paradox in Union law. Zenodo, DOI 10.5281/zenodo.22738329. Published open access.</li>
-      <li><span class="k">4</span><b>Declaration of interest.</b> Independent consulting is carried out under a contractual permission from SAP. Nothing in this talk is offered commercially.</li>
+      <li><span class="k">4</span><b>Declaration of interest.</b> Independent consulting is carried out under a contractual permission from SAP. The independent work, including the Brussels engagement, is conducted from a communications science perspective and is academic rather than commercial in nature. I am developing tools that implement the architecture described here. The general architecture was developed in my capacity as an academic researcher and is published open access. The SAP Support Duo and Alise are a specific implementation of that general architecture within SAP's customer support organisation. The prior art is the general architecture, published freely for anyone to examine, adopt or improve. Nothing in this talk is offered commercially.</li>
     </ol>
   </div>
 </section>
@@ -516,7 +539,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
   <div class="src">
     <ol>
       <li><span class="k">1</span><b>Affiliations as stated.</b> SAP SE, Customer Support, Technology and Transformation Office. Visiting professor, Leeds Beckett University Business School. Honorary professor, Glasgow Caledonian University.</li>
-      <li><span class="k">2</span><b>Declaration of interest.</b> I hold a contractual permission from SAP for independent consulting alongside employment. Prior consulting has included the European Commission, universities and companies. Nothing in this talk is offered for sale. The policy argument is published open access and the architecture is described there.</li>
+      <li><span class="k">2</span><b>Declaration of interest.</b> I hold a contractual permission from SAP for independent consulting alongside employment. The independent work, including the engagement with representatives in Brussels, is conducted from a communications science perspective and is academic rather than commercial in nature. The Brussels engagement is informal academic engagement, raising the issues of ownership of the digital assets described in this talk, not lobbying. Prior consulting has included the European Commission, universities and companies. I am developing tools that implement the architecture described here. The general architecture &mdash; Cyber-Human Duos as a unit of work, the inversion from centralised to decentralised capability registers, the application of broadcast, bid and accept to human-AI pairings, the two-store split between episodic and procedural records, the trust boundary and one-scalar-crosses constraint, anonymous scalar reputation, identity on acceptance, erasure by key destruction, EDUSNACKS, the Learning Loop, and the right to one's own method &mdash; was developed in my capacity as an academic researcher and is published open access (Zenodo, DOI 10.5281/zenodo.22738329). The SAP Support Duo and Alise are a specific implementation of that general architecture within SAP's customer support organisation. The prior art is the general architecture, published freely for anyone to examine, adopt or improve. Nothing in this talk is offered for sale.</li>
       <li><span class="k">3</span><b>KCS</b> is a service delivery methodology of the Consortium for Service Innovation, referenced throughout this talk with attribution.</li>
     </ol>
   </div>
@@ -1931,7 +1954,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
     <ol>
       <li><span class="k">1</span><b>MacNiven, S.</b> A Right to One's Own Method. Zenodo, DOI 10.5281/zenodo.22738329. Published open access, setting out the regulatory gap and its implications for European policy.</li>
       <li><span class="k">2</span><b>Scope of what has been built.</b> The module and objective model has been developed inside SAP and has not yet been run on another estate. The aggregate signal claim behind the Learning Loop is a design intent rather than a measured result.</li>
-      <li><span class="k">3</span><b>Declaration of interest.</b> I consult independently under a contractual permission from SAP. Nothing here is offered commercially.</li>
+      <li><span class="k">3</span><b>Declaration of interest.</b> I consult independently under a contractual permission from SAP, from a communications science perspective. I am developing tools that implement this architecture. The general architecture is the prior art, developed as an academic and published open access. The SAP Support Duo and Alise are a specific implementation within SAP. Nothing here is offered commercially.</li>
     </ol>
   </div>
 </section>
@@ -2007,8 +2030,10 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 <div class="timer" id="timer" title="Click to start or pause. Shift-click to reset. T and Shift-T do the same."><span class="dot"></span><span id="tElapsed">00:00</span><span class="tgt">/ 30:00</span></div>
 <div class="attrib">The ideas, designs and solutions presented here were developed by Prof. Dr. Sean MacNiven (Head of Research, Technology and Transformation Office, Customer Support, SAP SE | Honorary Professor, Glasgow Caledonian University | Visiting Professor Leeds-Beckett University).<br>To discuss further, please connect via LinkedIn on <a href="https://www.linkedin.com/in/seanmacniven" target="_blank" rel="noopener">https://www.linkedin.com/in/seanmacniven</a>.</div>
 <div class="rail" id="rail"></div>
-<div class="bar"><span id="pos">1 / 27</span><span class="mid">When the river runs dry &middot; Executive Symposium 2026 &middot; Consortium for Service Innovation</span><span>N for sources</span></div>
+<div class="bar"><span id="pos">1 / 27</span><span class="mid">When the river runs dry &middot; Executive Symposium 2026 &middot; Consortium for Service Innovation</span><span>N sources &middot; S for SAP context</span></div>
 <div class="ov" id="ov"><h2>Sources</h2><div id="ovBody"></div><div class="hint">N or Escape to close</div></div>
+<div class="sap-btn" id="sapBtn" title="SAP context for this slide. Press S to toggle."><svg viewBox="0 0 44 20" xmlns="http://www.w3.org/2000/svg"><rect width="44" height="20" rx="2.5" fill="#0070F2"/><text x="22" y="14.5" font-family="Arial,Helvetica,sans-serif" font-size="12.5" font-weight="700" fill="#fff" text-anchor="middle" letter-spacing=".6">SAP</text></svg>context</div>
+<div class="sap-ov" id="sapOv"><h3><svg viewBox="0 0 44 20" xmlns="http://www.w3.org/2000/svg"><rect width="44" height="20" rx="2.5" fill="#0070F2"/><text x="22" y="14.5" font-family="Arial,Helvetica,sans-serif" font-size="12.5" font-weight="700" fill="#fff" text-anchor="middle" letter-spacing=".6">SAP</text></svg>Context for this slide</h3><ul id="sapBody"></ul><div class="sap-hint">S or click badge to close &middot; all data from public sources</div></div>
 </div></div>
 <script>
 (function(){
@@ -2041,6 +2066,8 @@ button.primary{border-color:var(--worker);color:var(--worker)}
     ticks.forEach(function(t,x){t.classList.toggle("on",x<=i);});
     g("pos").textContent=(i+1)+" / "+slides.length;
     ov.classList.remove("open");
+    sapOv.classList.remove("open");
+    sapBtn.style.display=sapCtx[i]?"flex":"none";
     if (window.__flowStop) window.__flowStop();
     if (window.__duoStop) window.__duoStop();
     if (window.__bcStop) window.__bcStop();
@@ -2077,9 +2104,36 @@ button.primary{border-color:var(--worker);color:var(--worker)}
         break;
       case "t": case "T": e.preventDefault(); if(e.shiftKey) window.__timerReset(); else window.__timerToggle(); break;
       case "n": case "N": sources(); break;
-      case "Escape": ov.classList.remove("open"); break;
+      case "s": case "S": sapToggle(); break;
+      case "Escape": ov.classList.remove("open"); sapOv.classList.remove("open"); break;
     }
   });
+
+  // SAP context data – all from public sources (SAP News, press releases, earnings calls, official blogs)
+  var sapCtx={
+    3:'<li><b>Skills shift velocity.</b> In SAP procurement data, AI proficiency surged to 68.2% as the top skills priority by 2025, from near-zero in 2022. Traditional competencies all fell.<span class="src-link">SAP News, Sep 2026</span></li><li><b>97% not ready.</b> SAP/Oxford Economics: 97% of businesses say they are not fully ready for agentic AI despite racing to adopt it.<span class="src-link">SAP Canada News, Sep 2026</span></li>',
+    4:'<li><b>SAP Workforce Upskilling Assistant</b> (Aug 2026). Delivers personalised micro-learning in Teams, Slack and SuccessFactors. Adaptive contextual nudges in the flow of work. The 70 reimagined as a designed channel.<span class="src-link">SAP Africa News, Aug 2026</span></li>',
+    5:'<li><b>400+ AI agents by autumn 2026.</b> SAP roadmap across 50+ domain-specific Joule Assistants. Gartner: agentic workloads consume 5&ndash;30&times; more tokens per task. The automation slider is moving across every SAP customer operation right now.<span class="src-link">SAP Sapphire 2026; Gartner, 2026</span></li>',
+    7:'<li><b>SuccessFactors: 5 AI learning innovations in 2026.</b> Learning Skills Agent (Q4), Learning Compliance Agent (Q3), Intelligent Q&amp;A (Q2). Technology to deliver deliberate learning at scale is arriving &mdash; the question is whether it arrives fast enough.<span class="src-link">SAP SuccessFactors roadmap, 2026</span></li>',
+    11:'<li><b>SuccessFactors Learning:</b> Personalised recommendations on the new Learning Home Page, tailored to skills, role and growth portfolio. AI-Assisted Proficiency Ratings bridge inferred skills and formal competency tracking. The module and objective model described here is the same shape.<span class="src-link">SAP Japan; NageshPolu blog, Sep 2026</span></li>',
+    12:'<li><b>SAP Opportunity Marketplace:</b> AI-generated recommendations for learning, mentors, assignments, jobs and dynamic teams. Talent Intelligence Hub as the shared skills layer. This is the centralised version of what the Duo architecture does locally.<span class="src-link">SAP India product page</span></li>',
+    14:'<li><b>SAP Autonomous HCM</b> includes People Prediction: surfacing workforce issues before they become critical. The Learning Loop is a privacy-preserving local implementation of the same capability &mdash; without the central profile.<span class="src-link">ERP.today, 2026</span></li>',
+    17:'<li><b>SAP EU AI Cloud</b> (Nov 2025): 4 deployment options including fully on-premises. SAP + NVIDIA partnership (2026) for local enterprise AI in regulated industries. Joule deployable from within customer infrastructure. The local-first architecture described here is technically feasible today.<span class="src-link">DailySynapse; SAP Estonia product page</span></li>',
+    20:'<li><b>SAP Autonomous Finance:</b> &ldquo;The agent proposes, the human confirms. That is not a temporary limitation; it is a deliberate design decision.&rdquo; Same principle as the Duo: keep humans doing the work, because that is how they learn.<span class="src-link">SAP official blog, 2026</span></li>',
+    22:'<li><b>SAP sovereignty model:</b> technical, operational, data, legal. The trust boundary here is sovereignty applied at the individual level. What SAP does for organisations between jurisdictions, the Duo does for individuals within one.<span class="src-link">Capgemini / SAP Sovereign Cloud</span></li>',
+    25:'<li><b>Uber:</b> exhausted entire 2026 AI budget by April across 5,000 engineers. After governance: cost per session down 52%, usage up 7&times;, spend flat. Salesforce: reportedly $300M/year on Claude alone.<span class="src-link">Uber Engineering, Aug 2026; Axios; 36kr.com</span></li><li><b>SAP + NVIDIA / Prior Labs (~&euro;1B):</b> SAP investing in its own inference infrastructure. The architectural move described here, made for commercial reasons by others.<span class="src-link">StartupFortune; ITBrief</span></li>',
+    27:'<li><b>SAP research (Sep 2026):</b> AI can sub-optimise organisations by strengthening individuals while straining the whole. Three themes: intensity, context, prediction. The Duo addresses this: the pairing is the unit, not the individual or the machine.<span class="src-link">SAP News, Sep 2026</span></li>'
+  };
+  var sapBtn=g("sapBtn"), sapOv=g("sapOv"), sapBody=g("sapBody");
+  function sapToggle(){
+    if(sapOv.classList.contains("open")){sapOv.classList.remove("open");return;}
+    if(!sapCtx[i])return;
+    ov.classList.remove("open");
+    sapBody.innerHTML=sapCtx[i];
+    sapOv.classList.add("open");
+  }
+  sapBtn.addEventListener("click",sapToggle);
+  sapBtn.style.display="none";
 
   // two stores markers
   document.querySelectorAll("#s19 .mk").forEach(function(b){
