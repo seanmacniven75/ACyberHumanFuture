@@ -186,17 +186,17 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 #s5 .st .l{font-size:10px;color:var(--ink-3);margin-bottom:3px}
 #s5 .st .n{font-size:23px;font-weight:600;line-height:1.15}
 #s5 .st .d{font-size:10px;color:var(--ink-2);margin-top:4px;line-height:1.45}
-#s5 .repl{display:flex;gap:16px;border-top:1px solid var(--rule);padding-top:9px}
+#s5 .repl{display:flex;gap:12px;border-top:1px solid var(--rule);padding-top:6px}
 #s5 .repl div{flex:1;display:flex;align-items:baseline;gap:7px}
 #s5 .repl .k{font-size:15px;font-weight:600;color:var(--ink)}
 #s5 .repl .t{font-size:9px;color:var(--ink-3);line-height:1.3}
-#s5 .spark{border-top:1px solid var(--rule);padding-top:9px}
-#s5 .spark .l{font-size:10px;color:var(--ink-3);margin-bottom:5px}
-#s5 .spark svg{width:100%;height:66px;display:block}
-#s5 .vd{border-top:1px solid var(--rule);padding-top:9px;font-size:11.5px;line-height:1.5;min-height:62px}
+#s5 .spark{border-top:1px solid var(--rule);padding-top:5px}
+#s5 .spark .l{font-size:9px;color:var(--ink-3);margin-bottom:3px}
+#s5 .spark svg{width:100%;height:50px;display:block}
+#s5 .vd{border-top:1px solid var(--rule);padding-top:6px;font-size:10.5px;line-height:1.4;min-height:0}
 
 /* workforce pyramid sim, with the Duo */
-#s5b .stage{flex:1;display:grid;grid-template-columns:1fr 306px;gap:28px;min-height:0;margin-top:10px}
+#s5b .stage{flex:1;display:grid;grid-template-columns:1fr 348px;gap:22px;min-height:0;margin-top:8px}
 #s5b .plot{min-height:0}
 #s5b .plot svg{width:100%;height:100%}
 #s5b .side{display:flex;flex-direction:column;justify-content:space-between;gap:9px;min-height:0}
@@ -216,18 +216,59 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 #s5b .st .l{font-size:10px;color:var(--ink-3);margin-bottom:3px}
 #s5b .st .n{font-size:23px;font-weight:600;line-height:1.15}
 #s5b .st .d{font-size:10px;color:var(--ink-2);margin-top:4px;line-height:1.45}
-#s5b .repl{display:flex;gap:16px;border-top:1px solid var(--rule);padding-top:9px}
+#s5b .repl{display:flex;gap:12px;border-top:1px solid var(--rule);padding-top:6px}
 #s5b .repl div{flex:1;display:flex;align-items:baseline;gap:7px}
 #s5b .repl .k{font-size:15px;font-weight:600;color:var(--ink)}
 #s5b .repl .t{font-size:9px;color:var(--ink-3);line-height:1.3}
-#s5b .spark{border-top:1px solid var(--rule);padding-top:9px}
-#s5b .spark .l{font-size:10px;color:var(--ink-3);margin-bottom:5px}
-#s5b .spark svg{width:100%;height:66px;display:block}
-#s5b .vd{border-top:1px solid var(--rule);padding-top:9px;font-size:11.5px;line-height:1.5;min-height:62px}
+#s5b .spark{border-top:1px solid var(--rule);padding-top:5px}
+#s5b .spark .l{font-size:9px;color:var(--ink-3);margin-bottom:3px}
+#s5b .spark svg{width:100%;height:50px;display:block}
+#s5b .vd{border-top:1px solid var(--rule);padding-top:6px;font-size:10.5px;line-height:1.4;min-height:0}
 
 #s5b .wrow{display:flex;justify-content:space-between;font-size:10px;color:var(--ink-3);margin-top:7px}
 #s5b .wrow b{color:var(--worker);font-weight:600}
 #s5b .st .n .was{font-size:12px;font-weight:400;color:var(--anx);margin-left:9px}
+/* org-params panel — collapsible */
+#s5b .side{overflow-y:auto}
+#s5b .org{border-bottom:1px solid var(--rule);padding-bottom:6px;margin-bottom:2px}
+#s5b .ogt{display:flex;justify-content:space-between;align-items:center;font-size:9.5px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.04em;cursor:pointer;user-select:none}
+#s5b .ogt::before{content:"▸";margin-right:5px;font-size:8px;transition:transform .15s}
+#s5b .ogt.open::before{transform:rotate(90deg)}
+#s5b .orgbody{max-height:0;overflow:hidden;transition:max-height .25s ease}
+#s5b .orgbody.open{max-height:300px}
+#s5b .ogt button{font-size:8.5px;padding:2px 7px;border:1px solid var(--rule);border-radius:2px;background:none;color:var(--ink-3);cursor:pointer}
+#s5b .ogt button:hover{border-color:var(--company);color:var(--company)}
+#s5b .ol{font-size:9px;color:var(--ink-3);margin-bottom:2px;margin-top:5px}
+#s5b .og5{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;margin-bottom:2px}
+#s5b .og4{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-bottom:2px}
+#s5b .og2{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:baseline;margin-bottom:2px}
+#s5b .og2 label{font-size:9.5px;color:var(--ink-2)}
+#s5b .ob{font-size:7.5px;color:var(--ink-3);text-align:center;margin-bottom:1px;line-height:1.2}
+#s5b input[type=number]{width:100%;background:var(--panel);border:1px solid var(--rule);color:var(--ink);font:inherit;font-size:10.5px;padding:3px 2px;border-radius:2px;text-align:center;box-sizing:border-box}
+#s5b input[type=number]:focus{border-color:var(--worker);outline:none}
+/* org inputs panel */
+#s5b .orgtog{font-size:9.5px;color:var(--ink-3);cursor:pointer;display:flex;align-items:center;gap:5px;
+  border-top:1px solid var(--rule);padding-top:7px;user-select:none}
+#s5b .orgtog::before{content:"▶";font-size:7px;transition:transform .2s;display:inline-block}
+#s5b .orgtog.open::before{transform:rotate(90deg)}
+#s5b .orgpanel{display:none;margin-top:6px}
+#s5b .orgpanel.open{display:block}
+#s5b .orgpanel .gt{font-size:9.5px;color:var(--ink-3);border-bottom:1px solid var(--rule);
+  padding-bottom:3px;margin-bottom:6px;margin-top:8px}
+#s5b .orgpanel .gt:first-child{margin-top:0}
+#s5b .orgpanel label{font-size:10px;color:var(--ink-2);display:flex;justify-content:space-between;
+  align-items:baseline;margin-bottom:2px}
+#s5b .orgpanel input[type=number]{width:100%;background:var(--panel);border:1px solid var(--rule);
+  color:var(--ink);font:inherit;font-size:11px;padding:4px 7px;border-radius:2px;margin-bottom:5px}
+#s5b .orgpanel .bandgrid{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px}
+#s5b .orgpanel .bandgrid label{font-size:9.5px;margin-bottom:1px}
+#s5b .orgpanel .bandgrid input[type=number]{margin-bottom:2px;padding:3px 6px}
+#s5b .orgpanel .ratepair{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px}
+#s5b .orgpanel .ratepair label{font-size:9.5px;margin-bottom:1px}
+#s5b .orgpanel .ratepair input[type=number]{margin-bottom:2px;padding:3px 6px}
+#s5b .orgpanel .orghint{font-size:8.5px;color:var(--ink-3);margin-top:2px;line-height:1.3}
+#s5b .orgpanel .orgrow{display:flex;gap:6px;margin-top:7px}
+#s5b .orgpanel .orgrow button{font-size:9.5px;padding:3px 8px}
 /* duo flow sim */
 #s3b .stage{flex:1;display:grid;grid-template-columns:1fr 306px;gap:28px;min-height:0;margin-top:10px}
 #s3b .plot{min-height:0}
@@ -763,12 +804,19 @@ button.primary{border-color:var(--worker);color:var(--worker)}
           <div id="pyB2">60 to 80%<br>mid level too</div>
           <div id="pyB3">80%+<br>expert work too</div>
         </div>
+        <label for="pyShed">Surplus released per year <span class="v" id="pyShedV">35%</span></label>
+        <input type="range" id="pyShed" min="0" max="50" step="1" value="35">
         <div class="row"><button id="pyRun5" class="primary">Run 5 years</button><button id="pyRun10" class="primary">Run 10 years</button><button id="pyReset">Reset</button></div>
       </div>
       <div class="st" id="pyBox">
         <div class="l" id="pyBoxL">Expert and Chief Expert, after ten years</div>
         <div class="n" id="pyN">600</div>
         <div class="d" id="pyD">Starting from 600.</div>
+      </div>
+      <div class="st" style="margin-top:4px">
+        <div class="l">Total headcount, all bands</div>
+        <div class="n" style="font-size:18px"><span id="pyTot">4,000</span></div>
+        <div class="d" id="pyTotD">Starting from 4,000.</div>
       </div>
       <div class="repl">
         <div><span class="k" id="pyUp">26</span><span class="t">promoted into Expert<br>this year</span></div>
@@ -792,7 +840,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
       <li><span class="k">2</span><b>Where automation enters.</b> Promotion is not an entitlement. It depends on having done enough work of the right difficulty to be ready. Automation removes that work from the bottom of the difficulty range upward, so it removes the readiness that feeds each promotion, starting with the first one and working up.</li>
       <li><span class="k">3</span><b>The three bands.</b> Up to 60 percent, only the easiest work has gone, so only the first promotion is affected. From 60 to 80 percent, mid-level work goes with it and the middle promotions slow. Above 80 percent, expert-level work goes too and the last promotion slows as well. The boundaries are chosen for the argument and are not measured.</li>
       <li><span class="k">4</span><b>Voluntary departure rates are held constant.</b> Nine percent a year at the bottom rising to thirteen percent at Chief Expert, where retirement is added to ordinary turnover. A grade whose promotion route has closed loses people faster, because an engineer who cannot progress goes somewhere that will let them.</li>
-      <li><span class="k">5</span><b>Headcount follows the work, so redundancy is modelled.</b> Each grade is established against the work that still exists at its level. When the case volume at a grade falls, hiring into it falls with it and any surplus above the new establishment is released over the following years. This is why the junior grade empties rather than filling up with people who have nothing to do. The direction matches what Brynjolfsson and colleagues observe in payroll data for the most AI exposed occupations.</li>
+      <li><span class="k">5</span><b>Headcount follows the work, so redundancy is modelled.</b> Each grade is established against the work that still exists at its level. When the case volume at a grade falls, hiring into it falls with it and any surplus above the new establishment is released over the following years. The "surplus released per year" slider (default 35%) controls how fast that happens: at zero, nobody is forced out and the workforce shrinks only through natural attrition and stagnation departures. The total headcount display shows the sum across all five bands, since a collapsing base is easily missed when watching only the top. The direction matches what Brynjolfsson and colleagues observe in payroll data for the most AI exposed occupations.</li>
       <li><span class="k">6</span><b>Hiring experts from outside is not modelled, on purpose.</b> It moves experts between employers and does not create any. When every organisation runs the same automation, the pool being competed over is the one this model is draining.</li>
       <li><span class="k">7</span><b>Starting distribution and rates.</b> 1,600, 1,100, 700, 400 and 200 across the five grades, with promotion rates set so that the pyramid holds steady at zero automation. Every number is adjustable and none of them is observed.</li>
       <li><span class="k">8</span><b>The scale of the automation pipeline is now visible.</b> SAP's roadmap to 400 AI agents by autumn 2026 across 50 domain-specific assistants is one company's contribution to the automation volume the model here projects. Gartner reports agentic workloads consuming 5 to 30 times more tokens per task than a standard chatbot, because an agent plans, calls tools, checks results and retries. The question is not whether the automation slider moves, but how fast and how far.</li>
@@ -1454,12 +1502,46 @@ button.primary{border-color:var(--worker);color:var(--worker)}
       </svg>
     </div>
     <div class="side">
+      <div class="org">
+        <div class="ogt" id="pzOrgTog">Your organisation <button id="pzOrgReset" type="button">Reset defaults</button></div>
+        <div class="orgbody" id="pzOrgBody">
+        <div class="ol">Band sizes (headcount)</div>
+        <div class="og5">
+          <div><div class="ob">Junior</div><input type="number" id="pzS0" value="1600" min="0" step="50"></div>
+          <div><div class="ob">Specialist</div><input type="number" id="pzS1" value="1100" min="0" step="50"></div>
+          <div><div class="ob">Senior</div><input type="number" id="pzS2" value="700" min="0" step="50"></div>
+          <div><div class="ob">Expert</div><input type="number" id="pzS3" value="400" min="0" step="50"></div>
+          <div><div class="ob">Chief</div><input type="number" id="pzS4" value="200" min="0" step="50"></div>
+        </div>
+        <div class="og2">
+          <label for="pzIntake">Annual intake (new joiners)</label>
+          <input type="number" id="pzIntake" value="354" min="0" step="10" style="width:62px">
+        </div>
+        <div class="ol">Annual attrition % per band</div>
+        <div class="og5">
+          <div><div class="ob">Junior</div><input type="number" id="pzAtr0" value="9" min="0" max="50" step="0.5"></div>
+          <div><div class="ob">Specialist</div><input type="number" id="pzAtr1" value="8" min="0" max="50" step="0.5"></div>
+          <div><div class="ob">Senior</div><input type="number" id="pzAtr2" value="8" min="0" max="50" step="0.5"></div>
+          <div><div class="ob">Expert</div><input type="number" id="pzAtr3" value="10" min="0" max="50" step="0.5"></div>
+          <div><div class="ob">Chief</div><input type="number" id="pzAtr4" value="13" min="0" max="50" step="0.5"></div>
+        </div>
+        <div class="ol">Annual promotion rate % (into next band)</div>
+        <div class="og4">
+          <div><div class="ob">Jr → Spec</div><input type="number" id="pzPro0" value="13.1" min="0" max="100" step="0.5"></div>
+          <div><div class="ob">Spec → Sr</div><input type="number" id="pzPro1" value="11.1" min="0" max="100" step="0.5"></div>
+          <div><div class="ob">Sr → Exp</div><input type="number" id="pzPro2" value="9.4" min="0" max="100" step="0.5"></div>
+          <div><div class="ob">Exp → Ch</div><input type="number" id="pzPro3" value="6.5" min="0" max="100" step="0.5"></div>
+        </div>
+        </div>
+      </div>
       <div>
         <div class="phase" id="pzPhase">Ready</div>
         <label for="pzA">Cases the machine has taken <span class="v" id="pzAV">75%</span></label>
         <input type="range" id="pzA" min="0" max="100" step="1" value="75">
         <label for="pzW">Held back by the Duo, to teach with <span class="v" id="pzWV">10%</span></label>
         <input type="range" id="pzW" min="0" max="25" step="1" value="10">
+        <label for="pzShed">Surplus released per year <span class="v" id="pzShedV">35%</span></label>
+        <input type="range" id="pzShed" min="0" max="50" step="1" value="35">
         <div class="wrow"><span>People now work <b id="pzHuman">33%</b> of all cases</span><span id="pzCost">held back: 7.5% of all work</span></div>
         <div class="row"><button id="pzRun5" class="primary">Run 5 years</button><button id="pzRun10" class="primary">Run 10 years</button><button id="pzReset">Reset</button></div>
       </div>
@@ -1467,6 +1549,11 @@ button.primary{border-color:var(--worker);color:var(--worker)}
         <div class="l" id="pzBoxL">Expert and Chief Expert, after ten years</div>
         <div class="n"><span id="pzN">600</span><span class="was" id="pzWas"></span></div>
         <div class="d" id="pzD">Starting from 600.</div>
+      </div>
+      <div class="st" style="margin-top:4px">
+        <div class="l">Total headcount, all bands</div>
+        <div class="n" style="font-size:18px"><span id="pzTot">4,000</span></div>
+        <div class="d" id="pzTotD">Starting from 4,000.</div>
       </div>
       <div class="repl">
         <div><span class="k" id="pzUp">26</span><span class="t">promoted into Expert<br>this year</span></div>
@@ -1485,14 +1572,14 @@ button.primary{border-color:var(--worker);color:var(--worker)}
     </div>
   </div>
   <div class="src">
-    <p class="caveat">The same model as act one, with one addition. It shows the shape of the argument rather than a forecast for any particular organisation.</p>
+    <p class="caveat">The same model as act one, with one addition. It shows the shape of the argument rather than a forecast for any particular organisation. The "Your organisation" panel lets you replace the default pyramid, intake, attrition and promotion rates with your own numbers.</p>
     <ol>
       <li><span class="k">1</span><b>What holding back means.</b> A case the machine could close is instead routed to an engineer who is ready for it, with the model scaffolding the parts they cannot do yet. The slider is the share of the automated volume treated that way.</li>
       <li><span class="k">2</span><b>Why a held-back case is worth more than an ordinary one.</b> It is chosen. The Duo knows what its engineer has evidenced and what they have not, so it can pick the case that sits just past the edge of their current ability. A curated case therefore removes more of the readiness deficit than the same case arriving at random, and the model applies a multiplier for that. The multiplier is chosen for the argument and is not measured.</li>
       <li><span class="k">3</span><b>The cost is real and it is shown.</b> Work held back is work people do rather than machines, so part of the automation saving is given up. The panel reports the share of all cases people now handle. That figure is the training budget, stated in the only unit that matters.</li>
       <li><span class="k">4</span><b>Headcount follows the work here too.</b> Because people are doing more of the work, the establishment falls less far and fewer posts are made redundant. Some of the recovery in the chart is that effect rather than the learning effect, which is why the red marker shows where each grade lands at the same automation level with nothing held back.</li>
       <li><span class="k">5</span><b>Why this needs the Duo rather than a training department.</b> Choosing the case requires knowing what one particular engineer cannot yet do. Holding that centrally is the register described in act three, which is why the selection happens on the engineer's own machine and only the request for a case crosses the boundary.</li>
-      <li><span class="k">6</span><b>Everything else is unchanged from the act one projection.</b> Same starting pyramid, same departure rates, same promotion rates, same bands, same five or ten year horizons. Press N on that slide for the full list of assumptions.</li>
+      <li><span class="k">6</span><b>Internal model constants — not user-editable.</b> Readiness thresholds (0.60, 0.65, 0.70, 0.75): the share of the normal case volume an engineer must still be handling before their promotion rate is considered unblocked. Automation impact curves: band-specific ranges at which automation begins affecting each grade's readiness (5–72%, 48–85%, 65–94%, 80–100%). Stagnation penalty: 13% additional attrition per year when a promotion route is blocked. Curation multiplier: 2.5× — a case selected by Alise removes 2.5 times as much of the readiness deficit as an unselected case arriving at random. Maximum relief: 80% — curation cannot fully substitute for volume. All are chosen to make the argument visible rather than to reproduce any measured organisation. The shedding rate (surplus released per year) is now a slider, default 35%. At zero, nobody is forced out and the workforce shrinks only through natural attrition and the stagnation penalty. The total headcount display shows the sum across all five bands.</li>
     </ol>
   </div>
 </section>
@@ -3018,7 +3105,8 @@ button.primary{border-color:var(--worker);color:var(--worker)}
     var PROMO=[0.13131,0.11091,0.09429,0.06500];
     var NEED=[0.60,0.65,0.70,0.75];
     var CUT=[[0.05,0.72],[0.48,0.85],[0.65,0.94],[0.80,1.00]];
-    var STAG=0.13, CAPFLOOR=0.06, SHED=0.35;
+    var STAG=0.13, CAPFLOOR=0.06;
+    function pyShed(){ var v=parseFloat(g("pyShed").value); return Math.max(0,Math.min(50,isNaN(v)?35:v))/100; }
     var INTAKE=354, YEARS=10, SCALE=320/1700, X0=128, LANE=112, LEAVE0=590, LEAVE1=658;
     var cl=function(v,a,b){return Math.max(a,Math.min(b,v));};
     function rowY(lv){ return 34+(4-lv)*56; }          // top of the bar
@@ -3052,6 +3140,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
     }
 
     function step(st,a){
+      var SHED=pyShed();
       var i, im=[], r=[];
       for(i=0;i<4;i++){ im[i]=cl((a-CUT[i][0])/(CUT[i][1]-CUT[i][0]),0,1); r[i]=cl((1-im[i])/NEED[i],0,1); }
       im[4]=im[3];
@@ -3125,9 +3214,15 @@ button.primary{border-color:var(--worker);color:var(--worker)}
       }
       var top=(A[3]+A[4])+((B[3]+B[4])-(A[3]+A[4]))*f;
       g("pyN").textContent=fmt(top);
-      var pc=(top-600)/600*100;
+      var totStart=4000, pc=(top-600)/600*100;
       g("pyD").textContent="Starting from 600. "+(pc>=0?"Up ":"Down ")+Math.abs(pc).toFixed(0)+" percent.";
       g("pyN").style.color = pc<-5?"var(--anx)":"var(--ink)";
+      var totNow=0; for(k=0;k<5;k++) totNow+=A[k]+(B[k]-A[k])*f;
+      g("pyTot").textContent=fmt(totNow);
+      var tpc=(totNow-totStart)/totStart*100;
+      if(yr<0.25) g("pyTotD").textContent="Starting from "+fmt(totStart)+".";
+      else g("pyTotD").textContent="Starting from "+fmt(totStart)+". "+(tpc>=0?"":"Down ")+Math.abs(tpc).toFixed(0)+"%.";
+      g("pyTot").style.color=tpc<-5?"var(--anx)":"var(--ink)";
       g("pyPhase").textContent="Year "+Math.round(yr)+" of "+YEARS;
       var rr=ser[Math.max(1,i1)];
       g("pyUp").textContent=fmt(rr.promo[3]+rr.promo[2]*0);
@@ -3196,12 +3291,15 @@ button.primary{border-color:var(--worker);color:var(--worker)}
       g("pyN").style.color="var(--ink)";
       g("pyN").textContent="600"; g("pyD").textContent="Starting from 600.";
       g("pyUp").textContent="26"; g("pyOut").textContent="66";
+      g("pyTot").textContent="4,000"; g("pyTotD").textContent="Starting from 4,000.";
+      g("pyTot").style.color="var(--ink)";
     }
 
     g("pyA").addEventListener("input", function(){
       a=+this.value/100; g("pyAV").textContent=this.value+"%";
       paintBands(); reset();
     });
+    g("pyShed").addEventListener("input", function(){ g("pyShedV").textContent=this.value+"%"; reset(); });
     g("pyRun5").addEventListener("click", function(){ run(5); });
     g("pyRun10").addEventListener("click", function(){ run(10); });
     g("pyReset").addEventListener("click", reset);
@@ -3219,29 +3317,42 @@ button.primary{border-color:var(--worker);color:var(--worker)}
     var svg=g("pzSvg"); if(!svg) return;
     var SVGNS="http://www.w3.org/2000/svg";
     var LV=["Junior Specialist","Specialist","Senior Specialist","Expert","Chief Expert"];
-    var START=[1600,1100,700,400,200];
-    var ATTR=[0.09,0.08,0.08,0.10,0.13];
-    var PROMO=[0.13131,0.11091,0.09429,0.06500];
+    // Defaults — also used by the "Reset to defaults" button
+    var DEF_START=[1600,1100,700,400,200];
+    var DEF_ATTR=[9,8,8,10,13];
+    var DEF_PROMO=[13.1,11.1,9.4,6.5];
+    var DEF_INTAKE=354;
+    // Read live org parameters from the input panel
+    function readOrg(){
+      return {
+        START:[0,1,2,3,4].map(function(i){ return Math.max(0,+g("pzS"+i).value||0); }),
+        INTAKE:Math.max(0,+g("pzIntake").value||0),
+        ATTR:[0,1,2,3,4].map(function(i){ return Math.max(0,+g("pzAtr"+i).value||0)/100; }),
+        PROMO:[0,1,2,3].map(function(i){ return Math.max(0,+g("pzPro"+i).value||0)/100; })
+      };
+    }
+    // Internal model constants — not user-editable; documented in the sources panel
     var NEED=[0.60,0.65,0.70,0.75];
     var CUT=[[0.05,0.72],[0.48,0.85],[0.65,0.94],[0.80,1.00]];
-    var STAG=0.13, CAPFLOOR=0.06, SHED=0.35, CURATION=2.5, RELIEF_MAX=0.80;
-    var INTAKE=354, SCALE=320/1700, X0=128, LANE=112, LEAVE0=590, LEAVE1=658;
+    var STAG=0.13, CAPFLOOR=0.06, CURATION=2.5, RELIEF_MAX=0.80;
+    function pzShed(){ var v=parseFloat(g("pzShed").value); return Math.max(0,Math.min(50,isNaN(v)?35:v))/100; }
+    var SCALE=320/1700, X0=128, LANE=112, LEAVE0=590, LEAVE1=658;
     var cl=function(v,a,b){return Math.max(a,Math.min(b,v));};
     function rowY(lv){ return 34+(4-lv)*56; }
     function midY(lv){ return rowY(lv)+15; }
 
     var GH=g("pzGhost"), BR=g("pzBars"), MK=g("pzMarks"), NM=g("pzNames"),
         NU=g("pzNums"), DL=g("pzDelta"), PT=g("pzParts");
-    var bars=[], nums=[], dels=[], marks=[];
+    var bars=[], nums=[], dels=[], marks=[], ghosts=[];
     for(var k=0;k<5;k++){
       var gh=document.createElementNS(SVGNS,"rect");
       gh.setAttribute("x",X0); gh.setAttribute("y",rowY(k)); gh.setAttribute("height",30);
-      gh.setAttribute("width",START[k]*SCALE); gh.setAttribute("fill","none");
+      gh.setAttribute("width",DEF_START[k]*SCALE); gh.setAttribute("fill","none");
       gh.setAttribute("stroke","#6F7F8D"); gh.setAttribute("stroke-width","1"); gh.setAttribute("stroke-dasharray","3 3");
-      GH.appendChild(gh);
+      GH.appendChild(gh); ghosts.push(gh);
       var b=document.createElementNS(SVGNS,"rect");
       b.setAttribute("x",X0); b.setAttribute("y",rowY(k)); b.setAttribute("height",30);
-      b.setAttribute("width",START[k]*SCALE);
+      b.setAttribute("width",DEF_START[k]*SCALE);
       b.setAttribute("fill","rgba(240,171,0,.30)"); b.setAttribute("stroke","#F0AB00"); b.setAttribute("stroke-width","1.1");
       BR.appendChild(b); bars.push(b);
       var m=document.createElementNS(SVGNS,"line");
@@ -3262,7 +3373,15 @@ button.primary{border-color:var(--worker);color:var(--worker)}
       DL.appendChild(d); dels.push(d);
     }
 
+    // Refresh ghost bars when org parameters change
+    function refreshGhosts(){
+      var org=readOrg();
+      for(var k=0;k<5;k++) ghosts[k].setAttribute("width",org.START[k]*SCALE);
+    }
+
     function step(st,a,w){
+      var org=readOrg(), START=org.START, INTAKE=org.INTAKE, ATTR=org.ATTR, PROMO=org.PROMO;
+      var SHED=pzShed();
       var i, aCap=a*(1-w), imc=[], iml=[], r=[];
       for(i=0;i<4;i++) imc[i]=cl((aCap-CUT[i][0])/(CUT[i][1]-CUT[i][0]),0,1);
       imc[4]=imc[3];
@@ -3283,15 +3402,18 @@ button.primary{border-color:var(--worker);color:var(--worker)}
       return {st:n, promo:promo, leave:leave, intake:intake};
     }
     function series(a,w,h){
-      var st=START.slice(), out=[{st:st.slice(),promo:[0,0,0,0],leave:[0,0,0,0,0],intake:0}], i;
+      var org=readOrg(), st=org.START.slice();
+      var out=[{st:st.slice(),promo:[0,0,0,0],leave:[0,0,0,0,0],intake:0}], i;
       for(i=0;i<h;i++){ var r=step(st,a,w); st=r.st; out.push(r); }
       return out;
     }
+    function startTop(){ var org=readOrg(); return org.START[3]+org.START[4]; }
 
     var SP=g("pzSpark"), SPB=g("pzSparkB"), SPN=g("pzSparkN");
     var a=0.75, w=0.10, YEARS=10, ser=null, serN=null, raf=null, t0=null;
     function sparkPath(sr){
-      var top=680, pts=sr.map(function(r,i){
+      var top=startTop()*1.15;
+      var pts=sr.map(function(r,i){
         var v=r.st[3]+r.st[4];
         return (i/YEARS*278+1).toFixed(1)+","+(62-cl(v/top,0,1)*56).toFixed(1);
       });
@@ -3321,6 +3443,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
     }
 
     function draw(yr){
+      var org=readOrg(), START=org.START;
       var i0=Math.floor(yr), i1=Math.min(YEARS,i0+1), f=yr-i0, k;
       var A=ser[i0].st, B=ser[i1].st;
       var showMark = yr>0.25 && w>0;
@@ -3343,9 +3466,17 @@ button.primary{border-color:var(--worker);color:var(--worker)}
       g("pzN").textContent=fmt(top);
       var nTop=serN[i1].st[3]+serN[i1].st[4];
       g("pzWas").textContent = (yr>0.25 && w>0) ? ("against "+fmt(nTop)+" with none held back") : "";
-      var pc=(top-600)/600*100;
-      g("pzD").textContent="Starting from 600. "+(pc>=0?"Up ":"Down ")+Math.abs(pc).toFixed(0)+" percent.";
+      var stTop=startTop();
+      var pc=(top-stTop)/stTop*100;
+      g("pzD").textContent="Starting from "+fmt(stTop)+". "+(pc>=0?"Up ":"Down ")+Math.abs(pc).toFixed(0)+" percent.";
       g("pzN").style.color = pc<-5?"var(--anx)":"var(--ink)";
+      var org=readOrg(), totStart=0, totNow=0;
+      for(k=0;k<5;k++){ totStart+=org.START[k]; totNow+=A[k]+(B[k]-A[k])*f; }
+      g("pzTot").textContent=fmt(totNow);
+      var tpc=(totNow-totStart)/totStart*100;
+      if(yr<0.25) g("pzTotD").textContent="Starting from "+fmt(totStart)+".";
+      else g("pzTotD").textContent="Starting from "+fmt(totStart)+". "+(tpc>=0?"":"Down ")+Math.abs(tpc).toFixed(0)+"%.";
+      g("pzTot").style.color=tpc<-5?"var(--anx)":"var(--ink)";
       g("pzPhase").textContent="Year "+Math.round(yr)+" of "+YEARS;
       var rr=ser[Math.max(1,i1)];
       g("pzUp").textContent=fmt(rr.promo[3]);
@@ -3403,21 +3534,50 @@ button.primary{border-color:var(--worker);color:var(--worker)}
     }
     function reset(){
       if(raf){ cancelAnimationFrame(raf); raf=null; }
-      clearParts(); recompute(); draw(0);
+      refreshGhosts(); clearParts(); recompute(); draw(0);
       g("pzPhase").textContent="Ready";
       for(var k=0;k<5;k++){ dels[k].textContent=""; marks[k].setAttribute("opacity","0"); }
       SP.setAttribute("d",""); SPN.setAttribute("d","");
       g("pzVd").textContent="Set both, then run five or ten years of it.";
       g("pzN").style.color="var(--ink)";
-      g("pzN").textContent="600"; g("pzWas").textContent=""; g("pzD").textContent="Starting from 600.";
-      g("pzUp").textContent="26"; g("pzOut").textContent="66";
+      var stTop=startTop(), org=readOrg();
+      g("pzN").textContent=fmt(stTop); g("pzWas").textContent=""; g("pzD").textContent="Starting from "+fmt(stTop)+".";
+      g("pzUp").textContent=fmt(org.START[3]*org.PROMO[3]);
+      g("pzOut").textContent=fmt((org.START[3]+org.START[4])*((org.ATTR[3]+org.ATTR[4])/2));
+      var totStart=0; for(var j=0;j<5;j++) totStart+=org.START[j];
+      g("pzTot").textContent=fmt(totStart); g("pzTotD").textContent="Starting from "+fmt(totStart)+".";
+      g("pzTot").style.color="var(--ink)";
     }
 
     g("pzA").addEventListener("input", function(){ a=+this.value/100; g("pzAV").textContent=this.value+"%"; reset(); });
     g("pzW").addEventListener("input", function(){ w=+this.value/100; g("pzWV").textContent=this.value+"%"; reset(); });
+    g("pzShed").addEventListener("input", function(){ g("pzShedV").textContent=this.value+"%"; reset(); });
     g("pzRun5").addEventListener("click", function(){ run(5); });
     g("pzRun10").addEventListener("click", function(){ run(10); });
     g("pzReset").addEventListener("click", reset);
+
+    // Org panel toggle
+    g("pzOrgTog").addEventListener("click", function(e){
+      if(e.target.tagName==="BUTTON") return;
+      this.classList.toggle("open");
+      g("pzOrgBody").classList.toggle("open");
+    });
+    // Org input changes trigger a reset
+    ["pzS0","pzS1","pzS2","pzS3","pzS4","pzIntake",
+     "pzAtr0","pzAtr1","pzAtr2","pzAtr3","pzAtr4",
+     "pzPro0","pzPro1","pzPro2","pzPro3"].forEach(function(id){
+      g(id).addEventListener("change", reset);
+      g(id).addEventListener("input", reset);
+    });
+    // Reset org inputs to defaults
+    g("pzOrgReset").addEventListener("click", function(){
+      DEF_START.forEach(function(v,i){ g("pzS"+i).value=v; });
+      g("pzIntake").value=DEF_INTAKE;
+      DEF_ATTR.forEach(function(v,i){ g("pzAtr"+i).value=v; });
+      DEF_PROMO.forEach(function(v,i){ g("pzPro"+i).value=v; });
+      reset();
+    });
+
     window.__pzStop=function(){ if(raf){ cancelAnimationFrame(raf); raf=null; } };
     window.__pzIdle=function(){ window.__pzStop(); reset(); };
     window.__pzState=function(){ return {a:a, w:w, years:YEARS, phase:g("pzPhase").textContent,
