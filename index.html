@@ -101,6 +101,8 @@ svg{display:block;overflow:visible}
 .rail i.on{opacity:1}
 .rail i.k1.on{background:var(--a1)} .rail i.k2.on{background:var(--a2)}
 .rail i.k3.on{background:var(--a3)} .rail i.k4.on{background:var(--a4)}
+.slide[data-next]::after{content:"Next: " attr(data-next);position:absolute;bottom:6px;left:54px;
+  font-size:9.5px;color:var(--ink-3);opacity:.35;letter-spacing:.01em;pointer-events:none}
 .bar{position:absolute;left:54px;right:54px;bottom:40px;display:flex;
   justify-content:space-between;gap:18px;font-size:10.5px;color:var(--ink-3)}
 .bar .mid{flex:1;text-align:center}
@@ -491,7 +493,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 <body>
 <div id="stage"><div class="deck" id="deck">
 <!-- TITLE -->
-<section class="slide active a1" id="t">
+<section class="slide active a1" id="t" data-next="About me">
   <div class="wrap">
     <h1>When the river runs dry</h1>
     <p class="sub" style="font-size:19.2px;color:var(--ink-2);max-width:34ch;margin-top:14px">What happens to expertise when AI takes the work that built it?</p>
@@ -523,7 +525,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 </section>
 
 <!-- 1 -->
-<section class="slide a1">
+<section class="slide a1" data-next="Bainbridge, 1983">
   <div class="act"><span class="dot"></span>Act one</div>
   <h1>About Me: I run dedicated organisational and process research inside SAP's customer support organisation. I am also active as a visiting professor in the business school of Leeds Beckett University and an honorary professor at Glasgow Caledonian University in the UK.</h1>
   <div class="body">
@@ -582,7 +584,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 </section>
 
 <!-- 4 Bainbridge reveal -->
-<section class="slide a1" id="s4">
+<section class="slide a1" id="s4" data-next="The evidence catches up">
   <div class="qwrap">
     <p class="q"><span class="pre">Take away the easy parts of the job, and</span> <q>automation can make the difficult parts of the human operator's task more difficult.</q></p>
     <div class="cite">
@@ -606,7 +608,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 </section>
 
 <!-- 5 -->
-<section class="slide a1">
+<section class="slide a1" data-next="Practice makes perfect">
   <div class="act"><span class="dot"></span>Act one, the evidence</div>
   <h1>The evidence has now caught up with her, in confidence effects on critical thinking and in payroll data showing entry level work vanishing where AI automates rather than augments.</h1>
   <div class="body">
@@ -649,7 +651,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 </section>
 
 <!-- 2 -->
-<section class="slide a1">
+<section class="slide a1" data-next="The career channel">
   <div class="act"><span class="dot"></span>Act one, the problem</div>
   <h1>Practice makes perfect.</h1>
   <div class="body">
@@ -701,7 +703,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
   </div>
 </section>
 <!-- 3 flow simulation -->
-<section class="slide a1" id="s3">
+<section class="slide a1" id="s3" data-next="Run it across an organisation">
   <div class="act"><span class="dot"></span>Act one</div>
   <h1>Here is what happens to a career when the easy cases stop arriving: the channel that used to teach people collapses beneath them and they freeze at whatever title they had reached.</h1>
   <div class="stage">
@@ -769,7 +771,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 </section>
 
 <!-- 6 what it does to the whole organisation -->
-<section class="slide a1" id="s5">
+<section class="slide a1" id="s5" data-next="A learning problem">
   <div class="act"><span class="dot"></span>Act one, the consequence</div>
   <h1>Run that across a whole organisation and its shape changes. The bottom is cut back to the work that is left. The top is never replenished.</h1>
   <div class="stage">
@@ -849,7 +851,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 
 
 <!-- 7 -->
-<section class="slide a1">
+<section class="slide a1" data-next="KCS got halfway">
   <div class="act"><span class="dot"></span>The turn</div>
   <h1>If the foundation for learning evaporates through automation, expertise has to be built on purpose. This turns a future staffing apocalypse into a learning problem.</h1>
   <div class="body">
@@ -901,7 +903,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
   </div>
 </section>
 <!-- 8 KCS -->
-<section class="slide a2">
+<section class="slide a2" data-next="The wrong answer">
   <div class="act"><span class="dot"></span>Act two, learning</div>
   <h1>KCS makes knowledge a deliberate by-product of interaction, but expertise remains idiosyncratic and accidental. As of April 2026 this is Knowledge-Centered Success, not just service, explicitly designed for an AI era.</h1>
   <div class="body">
@@ -945,7 +947,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 </section>
 
 <!-- 9 -->
-<section class="slide a2">
+<section class="slide a2" data-next="Where learning actually happens">
   <div class="act"><span class="dot"></span>Act two</div>
   <h1>What most organisations call "learning" is scheduled, packaged and generalised "courses". Virtually always offered out of context, either mandated, or to be executed if or when time allows.</h1>
   <div class="body">
@@ -989,7 +991,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 </section>
 
 <!-- 10 -->
-<section class="slide a2">
+<section class="slide a2" data-next="Modules as capabilities">
   <div class="act"><span class="dot"></span>Act two</div>
   <h1>Beyond the most basic foundations, the course is seldom the right unit or medium for learning. The majority of learning is on the job, in context and ideally, when actually needed. The 70-20-10 model captures the essence of the problem, while personal relevance heightens learning capabilities further.</h1>
   <div class="body">
@@ -1017,7 +1019,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 </section>
 
 <!-- 11 -->
-<section class="slide a2">
+<section class="slide a2" data-next="A personal curriculum">
   <div class="act"><span class="dot"></span>Act two</div>
   <h1>Break it into modules whose objectives are written as capabilities with observable evidence.</h1>
   <div class="body">
@@ -1097,7 +1099,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 
 <!-- 13 -->
 <!-- personalised course -->
-<section class="slide a2" id="pc">
+<section class="slide a2" id="pc" data-next="Many-to-many">
   <div class="act"><span class="dot"></span>Act two</div>
   <h1>Courses still matter. Built from modules, a course can be assembled to fit one engineer, guided by what that engineer actually needs.</h1>
   <div class="body">
@@ -1140,7 +1142,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
   </div>
 </section>
 
-<section class="slide a2">
+<section class="slide a2" data-next="The Learning Loop">
   <div class="act"><span class="dot"></span>Act two, the core move</div>
   <h1>Once objectives are addressable, learning becomes demand-driven and many-to-many, so the organisation can find who needs something and a person can ask for what they need.</h1>
   <div class="body">
@@ -1184,7 +1186,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 
 
 <!-- 16 -->
-<section class="slide a2">
+<section class="slide a2" data-next="Who is this for?">
   <div class="act"><span class="dot"></span>Act two</div>
   <h1>The aggregate of those anonymous signals shows where capability is thin. That is a Learning Loop for people rather than an Evolve Loop for articles.</h1>
   <div class="body">
@@ -1214,7 +1216,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
   </div>
 </section>
 <!-- 15 -->
-<section class="slide a2">
+<section class="slide a2" data-next="A register is a layoff ticket">
   <div class="act"><span class="dot"></span>Act two, the question</div>
   <h1>Every one of those flows needs an answer to the same question: who is this for?</h1>
   <div class="body">
@@ -1240,7 +1242,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 </section>
 
 <!-- 17 -->
-<section class="slide a3">
+<section class="slide a3" data-next="Invert it">
   <div class="act"><span class="dot"></span>Act three, architecture</div>
   <h1>BUT...and here is the challenge...all of it depends on knowing what each person is able to do. Today, that would require building, storing and maintaining a central register of every employee's skills and weaknesses. An ambition that in the EU would be illegal, and where not, arguably extremely unethical. And yet, there is no personalisation without knowing the person...RIGHT?</h1>
   <div class="body">
@@ -1287,7 +1289,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 </section>
 
 <!-- 18 -->
-<section class="slide a3">
+<section class="slide a3" data-next="Broadcast, bid, accept">
   <div class="act"><span class="dot"></span>Act three</div>
   <h1>TURN THAT FROWN UPSIDE DOWN: Profiles and matching decentralised. Models belong to, and are accessible only by the person modelled.</h1>
   <div class="body">
@@ -1356,7 +1358,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 </section>
 
 <!-- 19b duo flow -->
-<section class="slide a3">
+<section class="slide a3" data-next="The Duo projection">
   <div class="act"><span class="dot"></span>Act three, the mechanism</div>
   <h1>Now the question from act two has an answer: a Duo can be matched to a need without anyone holding a profile of it.</h1>
   <div class="body">
@@ -1398,7 +1400,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
     </ol>
   </div>
 </section>
-<section class="slide a3" id="s3b">
+<section class="slide a3" id="s3b" data-next="Held-back cases">
   <div class="act"><span class="dot"></span>Act three</div>
   <h1>The channel does not come back, so Alise builds a narrow one, curating cases from work that is otherwise out of reach.</h1>
   <div class="stage">
@@ -1473,7 +1475,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 </section>
 
 <!-- 21 the same projection, with the Duo -->
-<section class="slide a3" id="s5b">
+<section class="slide a3" id="s5b" data-next="Two stores, two owners">
   <div class="act"><span class="dot"></span>Act three, the consequence</div>
   <h1>Run the workforce projection again, with the Duo holding cases back to teach with. The top of the pyramid keeps being fed.</h1>
   <div class="stage">
@@ -1580,7 +1582,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 </section>
 
 <!-- 19 two stores -->
-<section class="slide a3" id="s19">
+<section class="slide a3" id="s19" data-next="One scalar crosses">
   <div class="act"><span class="dot"></span>Act three, the heart of it</div>
   <h1>Every case then produces two things, a record of what happened which the company keeps and the method by which it was done which the engineer keeps, because KCS captures the responder's knowledge but never their method.</h1>
   <div class="stage"><div class="fig">
@@ -1637,7 +1639,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 </section>
 <!-- 20 -->
 <!-- trust boundary -->
-<section class="slide a3">
+<section class="slide a3" data-next="Erasure">
   <div class="act"><span class="dot"></span>Act three, the architecture</div>
   <h1>One scalar crosses the network, and nothing else. Every other claim in this talk rests on that single constraint.</h1>
   <div class="body">
@@ -1692,7 +1694,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 </section>
 
 <!-- erasure -->
-<section class="slide a3">
+<section class="slide a3" data-next="Cheaper to run">
   <div class="act"><span class="dot"></span>Act three, the architecture</div>
   <h1>An append-only record cannot satisfy a deletion obligation by deleting, so it satisfies it by destroying the key instead.</h1>
   <div class="body">
@@ -1731,7 +1733,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
   </div>
 </section>
 
-<section class="slide a3" id="s20">
+<section class="slide a3" id="s20" data-next="Your own numbers">
   <div class="act"><span class="dot"></span>Act three</div>
   <h1>That same split also makes the system cheaper, because the local model assembles context for free and only a curated prompt ever crosses the network.</h1>
   <div class="body">
@@ -1760,7 +1762,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 </section>
 
 <!-- 21 token simulator -->
-<section class="slide a3" id="s21">
+<section class="slide a3" id="s21" data-next="The safe version">
   <div class="act"><span class="dot"></span>Act three</div>
   <h1>I will not tell you what you would save, but here is the model so you can find out for yourselves.</h1>
   <div class="stage">
@@ -1831,7 +1833,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
   </section>
 
 <!-- 22 -->
-<section class="slide a4">
+<section class="slide a4" data-next="The unit of work">
   <div class="act"><span class="dot"></span>Act four, policy</div>
   <h1>This is the safe version because co-determination was engaged before there was anything to approve, and because it extends your own Trust principle one layer down to the method itself.</h1>
   <div class="body">
@@ -1863,7 +1865,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 </section>
 
 <!-- 29 Duo as the unit of work -->
-<section class="slide a4">
+<section class="slide a4" data-next="The third gap">
   <div class="act"><span class="dot"></span>Close, why anyone would build it</div>
   <h1>No turkey votes for Christmas. Engineers will invest in this because the Duo becomes the unit of work, and a Duo cannot be taken apart.</h1>
   <div class="body">
@@ -1923,7 +1925,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 </section>
 
 <!-- 30 third gap -->
-<section class="slide a4">
+<section class="slide a4" data-next="The ask">
   <div class="act"><span class="dot"></span>Act four</div>
   <h1>It is also a gap in European law that nobody in Brussels is currently addressing.</h1>
   <div class="body">
@@ -1954,7 +1956,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 </section>
 
 <!-- 31 the ask -->
-<section class="slide a4">
+<section class="slide a4" data-next="Next steps">
   <div class="act"><span class="dot"></span>The ask</div>
   <h1>So the concept stands: Inverting how and where personal profiles are stored and processed, literally, changes the game played.</h1>
   <div class="body">
@@ -2039,7 +2041,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 </section>
 
 <!-- 32 next steps -->
-<section class="slide a4">
+<section class="slide a4" data-next="The summary">
   <div class="act"><span class="dot"></span>Next steps</div>
   <h1>The argument is published. The next thing to do is test it.</h1>
   <div class="body">
