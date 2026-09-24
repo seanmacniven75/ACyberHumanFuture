@@ -353,8 +353,11 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 .tbwrap{flex:1;display:grid;grid-template-columns:1fr 280px;gap:24px;min-height:0;align-items:center}
 .tbwrap svg{width:100%;height:100%;max-height:370px;overflow:visible}
 .tbside{display:flex;flex-direction:column;gap:10px}
-.tbcap{font-size:12.5px;line-height:1.6;color:var(--ink);min-height:130px;border-left:2px solid var(--worker);padding-left:12px;
-  transition:opacity .4s ease}
+.tbcap{font-size:12px;line-height:1.5;color:var(--ink);min-height:130px;border-left:2px solid var(--worker);padding-left:12px}
+.tbcap ul{margin:5px 0 0;padding-left:15px;list-style:none}
+.tbcap li{position:relative;padding-left:0;margin-bottom:3px;color:var(--ink-2);font-size:11.5px;line-height:1.45}
+.tbcap li::before{content:"\2022";color:var(--worker);position:absolute;left:-13px}
+.tbcap .step-title{font-weight:600;font-size:12.5px;color:var(--ink);margin-bottom:1px}
 .tbplay{align-self:flex-start;font-size:10.5px;padding:5px 11px}
 .tbnote{font-size:10.5px;line-height:1.5;color:var(--ink-3)}
 
@@ -1766,7 +1769,7 @@ button.primary{border-color:var(--worker);color:var(--worker)}
         <text id="tbBriefLbl" x="710" y="188" text-anchor="middle" font-size="11"
               font-weight="600" fill="#F0AB00" font-family="inherit" opacity="0">Case brief</text>
         <text id="tbBriefSub" x="710" y="202" text-anchor="middle" font-size="9"
-              fill="#6F7F8D" font-family="inherit" opacity="0">anonymous</text>
+              fill="#6F7F8D" font-family="inherit" opacity="0">from the organisation</text>
 
         <!-- outgoing score -->
         <rect id="tbScoreBox" x="520" y="168" width="100" height="44" rx="2"
@@ -1794,12 +1797,13 @@ button.primary{border-color:var(--worker);color:var(--worker)}
           One authoritative store. Everything else derived and rebuildable from it.</text>
       </svg>
       <div class="tbside">
-        <div class="tbcap" id="tbCap">Click Next to walk through the mechanism step by step.</div>
+        <div class="tbcap" id="tbCap"></div>
         <div style="display:flex;gap:8px;align-items:center">
+          <button id="tbPrev" class="tbplay" style="padding:5px 12px;display:none">Prev</button>
           <button id="tbNext" class="tbplay" style="padding:5px 16px">Next</button>
-          <span id="tbStep" style="font-size:10px;color:var(--ink-3)">0 / 15</span>
+          <span id="tbStep" style="font-size:10px;color:var(--ink-3)"></span>
         </div>
-        <div class="tbnote">The same mechanism as the ring on the previous slide, viewed from inside a single dot.</div>
+        <div class="tbnote">Inside one dot on the ring from the previous slide.</div>
       </div>
     </div>
     <div class="land">The temptation to refuse early: it will look efficient to send a small feature vector so ranking can happen centrally. A feature vector is a profile. Accept one and the architecture has quietly become the thing it was built to replace.</div>
@@ -3246,279 +3250,243 @@ button.primary{border-color:var(--worker);color:var(--worker)}
     // STEP-BY-STEP: click Next to advance, each step plays a
     // short transition (~2–3s) then holds until the next click
     // ═══════════════════════════════════════════════════════
-    // ═════ STEPS ═════
-    var TOTAL=15, step=0, raf=null, t0=null;
+    // ═════ 5-STEP WALKTHROUGH ═════
+    var TOTAL=5, step=0, raf=null, t0=null;
     var cl=function(v,a,b){return Math.max(a,Math.min(b,v));};
+    var btnNext=g("tbNext"), btnPrev=g("tbPrev"), stepLbl=g("tbStep");
 
-    function rndScore(){ return +(0.55+Math.random()*0.40).toFixed(2); }
-    function setO(el,v){ el.setAttribute("opacity",v); }
-    function setStroke(el,c,w,o){ el.setAttribute("stroke",c); if(w)el.setAttribute("stroke-width",w); if(o!==undefined)setO(el,o); }
+    score = +(0.55+Math.random()*0.40).toFixed(2);
 
-    // ── step descriptions ──
+    function setO(el,v){ if(el) el.setAttribute("opacity",v); }
+    function setStroke(el,c,w,o){ if(!el)return; el.setAttribute("stroke",c); if(w)el.setAttribute("stroke-width",w); if(o!==undefined)setO(el,o); }
+
+    // ── step captions as HTML with bullets ──
     var STEPS=[
-      /* 0 */ "Click Next to walk through the mechanism. A case brief will be broadcast, scored by Alise inside a single Duo, and \u2014 if accepted \u2014 absorbed into its memory.",
-      /* 1 */ "A new case arrives on the network. The brief describes the problem \u2014 product area, symptoms, priority \u2014 but carries no information about who should handle it.",
-      /* 2 */ "The brief is broadcast outward to every Duo. No names are attached. Nobody is asked to identify themselves. The original stays here on the network.",
-      /* 3 */ "A copy of the brief crosses the trust boundary inward. The original remains on the network \u2014 every Duo receives the same copy. Inside this device, Alise wakes up.",
-      /* 4 */ "The copy is now inside the device. The original need remains on the network, waiting for scores to come back from every Duo. Everything that follows happens locally.",
-      /* 5 */ "Episodic retrieval. Alise queries the episodic memory \u2014 PII-stripped records of every prior case this engineer has worked. SAP owns these records. Have I seen this before?",
-      /* 6 */ "Semantic retrieval. Alise queries the engineer\u2019s procedural knowledge \u2014 methods, prompts, heuristics and solution patterns. The engineer owns this. Do I know how to handle this?",
-      /* 7 */ "The retrieval index decides which episodic records are worth pulling for this particular case. This is why a local model has to run first: the material it draws on never leaves.",
-      /* 8 */ "Alise scores the brief against everything it found \u2014 episodic matches from SAP\u2019s records, semantic matches from the engineer\u2019s knowledge. Two retrieval modes, one number.",
-      /* 9 */ "The score appears: a single measure of fit. That number is all that will ever leave the device. It cannot be reversed into what produced it.",
-      /* 10 */ "The score crosses the trust boundary outward, back to the original brief on the network. One anonymous scalar. The network ranks every Duo\u2019s score without learning what any Duo knows.",
-      /* 11 */ "No profile crossed. No wiki content. No case history. No embeddings. No feature vectors. A feature vector is a profile \u2014 accept one and the architecture becomes the register it was built to replace.",
-      /* 12 */ "The case is accepted. Identity is revealed at this moment and not before. The brief\u2019s customer content is encrypted under a per-case key. The case is now being resolved.",
-      /* 13 */ "Case solved. The resolved case moves into the episodic memory \u2014 a genesis record, hash-chained, signed, append-only. SAP owns this record.",
-      /* 14 */ "The engineer\u2019s procedural knowledge regenerates from the updated episodic records. New methods are added. Decayed skills are marked. The profile evolves from work, not self-description.",
-      /* 15 */ "Alise is a better match for the next broadcast. SAP\u2019s episodic records are richer, the engineer\u2019s procedural knowledge is fresher. The Duo grew by doing the work. No profile was transmitted."
+      "",
+      '<div class="step-title">1 \u2014 Case broadcast</div><ul>'
+        +'<li>Case brief sent from the organisation to every Duo</li>'
+        +'<li>A copy enters this device; original stays on the network</li>'
+        +'<li>Alise wakes up inside the engineer\u2019s device</li></ul>',
+
+      '<div class="step-title">2 \u2014 Alise scores locally</div><ul>'
+        +'<li>Episodic memory queried \u2014 prior cases (SAP-owned)</li>'
+        +'<li>Procedural knowledge queried \u2014 methods (engineer-owned)</li>'
+        +'<li>Retrieval index mediates; Alise computes one score</li></ul>',
+
+      '<div class="step-title">3 \u2014 One scalar crosses</div><ul>'
+        +'<li>Score crosses the trust boundary back to the original brief</li>'
+        +'<li>No profile, no case history, no embeddings leave the device</li>'
+        +'<li>The network ranks all scores without learning what any Duo knows</li></ul>',
+
+      '<div class="step-title">4 \u2014 Case accepted and solved</div><ul>'
+        +'<li>This Duo wins. Identity revealed at this moment only</li>'
+        +'<li>Customer payload encrypted under a per-case key</li>'
+        +'<li>Resolved case absorbed into episodic memory (SAP-owned)</li></ul>',
+
+      '<div class="step-title">5 \u2014 Memory updates</div><ul>'
+        +'<li>Procedural knowledge regenerates from updated records</li>'
+        +'<li>New methods added; decayed skills marked</li>'
+        +'<li>Alise is a better match for the next broadcast</li></ul>'
     ];
 
-    // ── each step is a function that sets up the target state and
-    //    runs a short transition animation (~2s) then holds ──
-
-    function runStep(n){
-      step=n;
-      stepLbl.textContent=n+" / "+TOTAL;
-      btnNext.textContent = n>=TOTAL ? "Reset" : "Next";
-      cap.textContent=STEPS[n];
-      if(raf){cancelAnimationFrame(raf); raf=null;}
-      t0=null;
-      // each step animates for ~2s then holds
-      raf=requestAnimationFrame(function animate(ts){
-        if(!t0) t0=ts;
-        var t=(ts-t0)/1000, p=cl(t/2.0,0,1); // 2s transition
-        renderStep(n,p);
-        if(p<1) raf=requestAnimationFrame(animate);
-        else raf=null;
-      });
-    }
+    // ── render each step with internal sub-animations ──
+    // p goes 0\u21921 over the transition duration; holds at 1
 
     function renderStep(n,p){
-      // p goes 0→1 over 2s for the transition; then holds at 1
 
-      // ── step 1: brief appears on network ──
+      // === STEP 1: case broadcast + copy enters ===
       if(n>=1){
-        setO(brief, n===1?p:0.55);
-        setO(briefLbl, n===1?p:0.55);
-        setO(briefSub, n===1?p*0.7:0.4);
+        // brief appears (fast at step 1, held afterwards)
+        var bIn = n===1 ? cl(p/0.2,0,1) : 1;
+        setO(brief, n===1 ? bIn*0.75 : 0.55);
+        setO(briefLbl, n===1 ? bIn*0.75 : 0.55);
+        setO(briefSub, n===1 ? bIn*0.5 : 0.35);
       }
-
-      // ── step 2: broadcast rings ──
-      if(n===2){
+      if(n===1){
+        // rings (p 0.15..0.6)
         [0,1].forEach(function(k){
           var el=k?pulse1:pulse0;
-          var rp=p-k*0.25;
+          var rp=(p-0.15-k*0.12)/0.45;
           if(rp>0&&rp<1){
             el.setAttribute("r", 16+rp*200);
             el.setAttribute("cx", 710-rp*120);
             el.setAttribute("cy", 190);
-            setO(el, (1-rp)*0.45);
+            setO(el, (1-rp)*0.4);
           } else setO(el,0);
         });
-      } else if(n>2){
+        // copy enters device (p 0.4..0.9)
+        var cp=cl((p-0.4)/0.5,0,1);
+        if(cp>0){
+          var dx=460+(100-460)*cp;
+          var dy=168+(260-168)*cp;
+          var dw=100+(240-100)*cp;
+          var dh=40+(38-40)*cp;
+          docked.setAttribute("x",dx); docked.setAttribute("y",dy);
+          docked.setAttribute("width",dw); docked.setAttribute("height",dh);
+          dockedLbl.setAttribute("x",dx+dw/2); dockedLbl.setAttribute("y",dy+dh*0.47);
+          dockedSub.setAttribute("x",dx+dw/2); dockedSub.setAttribute("y",dy+dh*0.8);
+          setO(docked, cp*0.65);
+          setO(dockedLbl, cp*0.6);
+          setO(dockedSub, cp>0.7?cl((cp-0.7)/0.3,0,1)*0.4:0);
+          dockedSub.textContent="being scored locally";
+          dockedSub.setAttribute("fill","#6F7F8D");
+          setStroke(dev,"#F0AB00","1.3",0.5+0.3*cp);
+        }
+      } else if(n>=2 && n<=4){
         setO(pulse0,0); setO(pulse1,0);
-      }
-
-      // ── step 3: copy enters device ──
-      if(n===3){
-        // docked element slides from boundary (460,168) to docked position (100,260)
-        var dx=460+(100-460)*p;
-        var dy=168+(260-168)*p;
-        var dw=100+(240-100)*p;
-        var dh=40+(38-40)*p;
-        docked.setAttribute("x",dx); docked.setAttribute("y",dy);
-        docked.setAttribute("width",dw); docked.setAttribute("height",dh);
-        dockedLbl.setAttribute("x",dx+dw/2); dockedLbl.setAttribute("y",dy+dh*0.47);
-        dockedSub.setAttribute("x",dx+dw/2); dockedSub.setAttribute("y",dy+dh*0.8);
-        setO(docked, p*0.7);
-        setO(dockedLbl, p*0.65);
-        setO(dockedSub, 0);
-        // dim the original slightly
-        setO(brief, 0.55); setO(briefLbl, 0.55);
-        // device glows
-        setStroke(dev,"#F0AB00","1.4",0.5+0.35*p);
-      }
-      if(n>=4 && n<=12){
-        // keep docked visible
-        setO(docked, 0.65);
-        setO(dockedLbl, 0.65);
-        setO(dockedSub, n>=4?0.45:0);
+        setO(docked,0.6); setO(dockedLbl,0.6); setO(dockedSub,0.4);
         setStroke(dev,"#F0AB00","1.2",0.7);
       }
-      if(n===4){
-        dockedSub.textContent="being scored locally";
-        dockedSub.setAttribute("fill","#6F7F8D");
-        setO(dockedSub, p*0.45);
-      }
 
-      // ── step 5: episodic memory glow + connector pulse ──
-      if(n===5){
-        setO(cords, 0.5+0.45*p);
-        setStroke(cords,"#4AA3FF",0.8+1.0*p);
-        var pulse=0.15+p*(0.5+Math.sin(p*12)*0.2);
-        setO(conn1, pulse);
-        conn1.setAttribute("stroke-width", 1+p*0.8);
-      } else if(n>5 && n<13){
-        setO(cords,0.65); setStroke(cords,"#4AA3FF","1.0");
-        setO(conn1,0.2);
-      }
+      // === STEP 2: Alise scores ===
+      if(n===2){
+        // episodic memory glow (p 0..0.3)
+        var e=cl(p/0.3,0,1);
+        setO(cords, 0.5+0.45*e); setStroke(cords,"#4AA3FF",0.8+1.0*e);
+        var ep=0.15+e*(0.45+Math.sin(p*16)*0.15);
+        setO(conn1, ep); conn1.setAttribute("stroke-width",1+e*0.6);
 
-      // ── step 6: procedural knowledge glow + connector pulse ──
-      if(n===6){
-        setO(wiki, 0.5+0.45*p);
-        setStroke(wiki,"#F0AB00",0.8+1.0*p);
-        var pulse2=0.15+p*(0.5+Math.sin(p*12)*0.2);
-        setO(conn2, pulse2);
-        conn2.setAttribute("stroke-width", 1+p*0.8);
-      } else if(n>6 && n<14){
-        setO(wiki,0.65); setStroke(wiki,"#F0AB00","1.0");
-        setO(conn2,0.2);
-      }
+        // procedural knowledge glow (p 0.25..0.55)
+        var w=cl((p-0.25)/0.3,0,1);
+        setO(wiki, 0.5+0.45*w); setStroke(wiki,"#F0AB00",0.8+1.0*w);
+        var wp=0.15+w*(0.45+Math.sin(p*16)*0.15);
+        setO(conn2, wp); conn2.setAttribute("stroke-width",1+w*0.6);
 
-      // ── step 7: retrieval index glow ──
-      if(n===7){
-        setO(idx, 0.4+0.5*p);
-        setStroke(idx,"#6F7F8D",0.7+0.8*p);
-        setO(conn3, 0.12+p*0.4);
-        setO(conn4, 0.12+p*0.4);
-      } else if(n>7){
-        setO(idx,0.6); setO(conn3,0.2); setO(conn4,0.2);
-      }
+        // retrieval index (p 0.45..0.65)
+        var ri=cl((p-0.45)/0.2,0,1);
+        setO(idx, 0.4+0.5*ri); setStroke(idx,"#6F7F8D",0.7+0.8*ri);
+        setO(conn3, 0.12+ri*0.35); setO(conn4, 0.12+ri*0.35);
 
-      // ── step 8: Alise scores (model glows, breathes) ──
-      if(n===8){
-        var mPulse=0.55+Math.sin(p*10)*0.15;
-        setO(model, 0.4+0.5*p);
-        setStroke(model,"#F0AB00","1.6");
-        setO(modelLbl, mPulse);
-        setO(modelName, 0.6+0.3*p);
-        // docked brief pulses too
-        setO(docked, 0.5+Math.sin(p*8)*0.15);
-      } else if(n>8){
+        // Alise scores (p 0.55..0.85)
+        var m=cl((p-0.55)/0.3,0,1);
+        var mPulse=m>0 ? 0.55+Math.sin(p*12)*0.15 : 0.4;
+        setO(model, 0.4+0.5*m); setStroke(model,"#F0AB00","1.6");
+        setO(modelLbl, mPulse); setO(modelName, 0.6+0.3*m);
+        if(m>0){ setO(docked, 0.5+Math.sin(p*10)*0.12); }
+
+        // score appears (p 0.8..1)
+        var s=cl((p-0.8)/0.2,0,1);
+        if(s>0){ modelScore.textContent=score.toFixed(2); setO(modelScore, s); }
+      } else if(n>2){
+        setO(cords,0.65); setStroke(cords,"#4AA3FF","1.0"); setO(conn1,0.2);
+        setO(wiki,0.65); setStroke(wiki,"#F0AB00","1.0"); setO(conn2,0.2);
+        setO(idx,0.55); setO(conn3,0.18); setO(conn4,0.18);
         setO(model,0.85); setStroke(model,"#F0AB00","1.4");
-        setO(modelLbl,0.6); setO(modelName,0.85);
+        setO(modelLbl,0.55); setO(modelName,0.85);
+        modelScore.textContent=score.toFixed(2);
+        setO(modelScore, n<4?0.85:cl(1-p*0.6,0,1)*0.5);
       }
 
-      // ── step 9: score appears ──
-      if(n===9){
-        modelScore.textContent=score.toFixed(2);
-        setO(modelScore, p);
-      } else if(n>9){
-        modelScore.textContent=score.toFixed(2);
-        setO(modelScore, n<13?0.9:cl(1-p,0,1)*0.5);
-      }
-
-      // ── step 10: score crosses boundary ──
-      if(n===10){
-        setO(cross, p*0.9);
-        setO(scoreBox, p);
+      // === STEP 3: score crosses ===
+      if(n===3){
+        // score crosses (p 0..0.5)
+        var x=cl(p/0.5,0,1);
+        setO(cross, x*0.9); setO(scoreBox, x);
         scoreVal.textContent=score.toFixed(2);
-        setO(scoreVal, p);
-        setO(scoreLbl, p*0.7);
-        // boundary pulses blue
-        setO(bound, 0.5+Math.sin(p*8)*0.25*(1-p*0.5));
+        setO(scoreVal, x); setO(scoreLbl, x*0.7);
+        setO(bound, 0.5+Math.sin(p*10)*0.2*(1-p*0.4));
         setStroke(bound,"#4AA3FF","1.4");
-        // original brief brightens — score returned
-        setO(brief, 0.55+0.15*p);
-        setO(briefLbl, 0.55+0.15*p);
-      } else if(n>10){
-        setO(cross,0.85); setO(scoreBox,0.9);
+        setO(brief, 0.55+0.15*x); setO(briefLbl, 0.55+0.15*x);
+
+        // "what never crosses" (p 0.5..1)
+        var nv=cl((p-0.5)/0.5,0,1);
+        var nPulse=0.25+nv*0.55*(0.85+Math.sin(p*10)*0.15);
+        setO(never, nPulse); setStroke(never,"#C86B5A","1.5");
+      } else if(n>3){
+        setO(cross,0.8); setO(scoreBox,0.85);
         scoreVal.textContent=score.toFixed(2);
-        setO(scoreVal,0.9); setO(scoreLbl,0.7);
-        setO(brief,0.7); setO(briefLbl,0.7);
-        setO(bound,0.65); setStroke(bound,"#4AA3FF","1.2");
+        setO(scoreVal,0.85); setO(scoreLbl,0.65);
+        setO(brief,0.65); setO(briefLbl,0.65);
+        setO(bound,0.6); setStroke(bound,"#4AA3FF","1.2");
+        setO(never,0.55); setStroke(never,"#C86B5A","1.2");
       }
 
-      // ── step 11: "what never crosses" emphasis ──
-      if(n===11){
-        var nPulse=0.25+p*0.6*(0.85+Math.sin(p*8)*0.15);
-        setO(never, nPulse);
-        setStroke(never,"#C86B5A","1.6");
-      } else if(n>11){
-        setO(never,0.6); setStroke(never,"#C86B5A","1.2");
-      }
-
-      // ── step 12: accepted — copy turns blue ──
-      if(n===12){
-        setStroke(docked,"#4AA3FF","1.2",0.5+0.3*p);
-        dockedLbl.textContent="Accepted";
-        dockedLbl.setAttribute("fill","#4AA3FF");
+      // === STEP 4: accepted + case absorbed into episodic memory ===
+      if(n===4){
+        // accepted — copy turns blue (p 0..0.3)
+        var a=cl(p/0.3,0,1);
+        setStroke(docked,"#4AA3FF","1.2",0.5+0.3*a);
+        dockedLbl.textContent="Accepted"; dockedLbl.setAttribute("fill","#4AA3FF");
         setO(dockedLbl, 0.7);
-        dockedSub.textContent="customer payload encrypted";
-        dockedSub.setAttribute("fill","#4AA3FF");
-        setO(dockedSub, 0.5*p);
+        dockedSub.textContent="case resolved"; dockedSub.setAttribute("fill","#4AA3FF");
+        setO(dockedSub, 0.4*a);
         docked.setAttribute("fill","rgba(74,163,255,.08)");
-      }
 
-      // ── step 13: case solved — copy moves into episodic memory ──
-      if(n===13){
-        // interpolate position: docked (100,260) → episodic memory (38,62)
-        var dx=100+(38-100)*p;
-        var dy=260+(62-260)*p;
-        var dw=240+(170-240)*p;
-        var dh=38+(52-38)*p;
-        docked.setAttribute("x",dx); docked.setAttribute("y",dy);
-        docked.setAttribute("width",dw); docked.setAttribute("height",dh);
-        dockedLbl.setAttribute("x",dx+dw/2); dockedLbl.setAttribute("y",dy+dh*0.44);
-        dockedSub.setAttribute("x",dx+dw/2); dockedSub.setAttribute("y",dy+dh*0.75);
-        // fade as it merges
-        var merge=cl((p-0.6)/0.4,0,1);
-        setO(docked, 0.7*(1-merge*0.8));
-        setO(dockedLbl, 0.7*(1-merge));
-        setO(dockedSub, 0.5*(1-merge));
-        // episodic memory absorbs — glow green
-        var absorb=cl((p-0.4)/0.6,0,1);
-        setStroke(cords,"#5FD4A0",0.8+1.4*absorb,0.5+0.45*absorb);
-        // label
-        if(p>0.8){
-          var lIn=cl((p-0.8)/0.2,0,1);
-          setO(fbCordLbl, lIn*0.75);
-          if(fbCordBg) setO(fbCordBg, lIn*0.85);
+        // moves into episodic memory (p 0.35..0.85)
+        var mv=cl((p-0.35)/0.5,0,1);
+        if(mv>0){
+          var dx=100+(38-100)*mv, dy=260+(62-260)*mv;
+          var dw=240+(170-240)*mv, dh=38+(52-38)*mv;
+          docked.setAttribute("x",dx); docked.setAttribute("y",dy);
+          docked.setAttribute("width",dw); docked.setAttribute("height",dh);
+          dockedLbl.setAttribute("x",dx+dw/2); dockedLbl.setAttribute("y",dy+dh*0.44);
+          dockedSub.setAttribute("x",dx+dw/2); dockedSub.setAttribute("y",dy+dh*0.75);
+          var merge=cl((mv-0.6)/0.4,0,1);
+          setO(docked, 0.7*(1-merge*0.8));
+          setO(dockedLbl, 0.7*(1-merge));
+          setO(dockedSub, 0.4*(1-merge));
+          var absorb=cl((mv-0.4)/0.6,0,1);
+          setStroke(cords,"#5FD4A0",0.8+1.4*absorb,0.5+0.45*absorb);
         }
-      } else if(n>13){
+        // label appears (p 0.85..1)
+        if(p>0.85){
+          var lIn=cl((p-0.85)/0.15,0,1);
+          setO(fbCordLbl, lIn*0.7);
+          if(fbCordBg) setO(fbCordBg, lIn*0.8);
+        }
+      } else if(n>4){
         setO(docked,0); setO(dockedLbl,0); setO(dockedSub,0);
-        setO(fbCordLbl,0.65); if(fbCordBg) setO(fbCordBg,0.75);
-        setStroke(cords,"#5FD4A0","1.6",0.85);
+        setO(fbCordLbl,0.6); if(fbCordBg) setO(fbCordBg,0.7);
+        setStroke(cords,"#5FD4A0","1.5",0.85);
       }
 
-      // ── step 14: procedural knowledge regenerates ──
-      if(n===14){
-        setO(fbWiki, p*0.75);
-        setO(fbWikiLbl, p*0.7);
-        if(fbWikiBg) setO(fbWikiBg, p*0.85);
-        setStroke(wiki,"#5FD4A0",0.8+0.8*p);
-        setO(wiki, 0.5+0.4*p);
-      } else if(n>14){
-        setO(fbWiki,0.65); setO(fbWikiLbl,0.6);
-        setStroke(wiki,"#5FD4A0","1.4",0.85);
-      }
+      // === STEP 5: memory updates + Alise improved ===
+      if(n===5){
+        // procedural knowledge regenerates (p 0..0.5)
+        var w2=cl(p/0.5,0,1);
+        setO(fbWiki, w2*0.7); setO(fbWikiLbl, w2*0.65);
+        if(fbWikiBg) setO(fbWikiBg, w2*0.8);
+        setStroke(wiki,"#5FD4A0",0.8+0.8*w2); setO(wiki, 0.5+0.4*w2);
 
-      // ── step 15: Alise improved ──
-      if(n===15){
-        setStroke(model,"#5FD4A0","1.4",0.4+0.5*p);
-        setO(modelName, 0.7+0.25*p);
+        // Alise brightens (p 0.4..1)
+        var al=cl((p-0.4)/0.6,0,1);
+        setStroke(model,"#5FD4A0","1.4",0.4+0.5*al);
+        setO(modelName, 0.7+0.25*al);
         modelLbl.textContent="local model \u00b7 ready for next broadcast";
-        setO(modelLbl, 0.4+0.4*p);
+        setO(modelLbl, 0.4+0.4*al);
       }
     }
 
-    // ── Next button handler ──
+    // ── step transition: 3.5s animation then hold ──
+    function goStep(n){
+      step=n;
+      stepLbl.textContent=n+" / "+TOTAL;
+      cap.innerHTML=STEPS[n];
+      btnNext.textContent = n>=TOTAL ? "Reset" : "Next";
+      btnPrev.style.display = n>1 ? "inline-block" : "none";
+      if(raf){cancelAnimationFrame(raf); raf=null;}
+      t0=null;
+      raf=requestAnimationFrame(function anim(ts){
+        if(!t0) t0=ts;
+        var t=(ts-t0)/1000, p=cl(t/3.5,0,1);
+        renderStep(n,p);
+        if(p<1) raf=requestAnimationFrame(anim);
+        else raf=null;
+      });
+    }
+
+    // ── button handlers ──
     btnNext.addEventListener("click", function(){
-      if(step>=TOTAL){
-        // reset
-        step=0;
-        score=rndScore();
-        resetAll();
-        runStep(0);
-      } else {
-        runStep(step+1);
-      }
+      if(step>=TOTAL){ step=0; score=+(0.55+Math.random()*0.40).toFixed(2); resetAll(); goStep(1); }
+      else goStep(step+1);
+    });
+    btnPrev.addEventListener("click", function(){
+      if(step>1){ resetAll(); for(var s=1;s<step;s++){renderStep(s,1);} goStep(step-1); }
     });
 
-    // ═══════════════════════════════════════════════════════
-    // resetAll / idle / stop
-    // ═══════════════════════════════════════════════════════
+    // ═════════════════════════════════════════════════════
+    // reset / idle / stop
+    // ═════════════════════════════════════════════════════
 
     function resetAll(){
       if(raf){cancelAnimationFrame(raf); raf=null;}
@@ -3532,12 +3500,9 @@ button.primary{border-color:var(--worker);color:var(--worker)}
       docked.setAttribute("width",240); docked.setAttribute("height",38);
       dockedLbl.setAttribute("x",220); dockedLbl.setAttribute("y",277);
       dockedSub.setAttribute("x",220); dockedSub.setAttribute("y",291);
-      dockedLbl.textContent="Case brief";
-      dockedLbl.setAttribute("fill","#F0AB00");
-      dockedSub.textContent="being scored locally";
-      dockedSub.setAttribute("fill","#6F7F8D");
-      docked.setAttribute("fill","rgba(240,171,0,.06)");
-      setStroke(docked,"#F0AB00",".8");
+      dockedLbl.textContent="Case brief"; dockedLbl.setAttribute("fill","#F0AB00");
+      dockedSub.textContent="being scored locally"; dockedSub.setAttribute("fill","#6F7F8D");
+      docked.setAttribute("fill","rgba(240,171,0,.06)"); setStroke(docked,"#F0AB00",".8");
       setStroke(dev,"#F0AB00","1",0.5);
       setO(cords,0.5); setStroke(cords,"#4AA3FF","0.8");
       setO(wiki,0.5); setStroke(wiki,"#F0AB00","0.8");
@@ -3547,20 +3512,21 @@ button.primary{border-color:var(--worker);color:var(--worker)}
       setO(modelScore,0); setO(modelName,0.6);
       setO(conn1,0.15); setO(conn2,0.15); setO(conn3,0.12); setO(conn4,0.12);
       setO(fbCord,0); setO(fbCordLbl,0); setO(fbWiki,0); setO(fbWikiLbl,0);
-      if(fbCordBg) setO(fbCordBg,0);
-      if(fbWikiBg) setO(fbWikiBg,0);
+      if(fbCordBg) setO(fbCordBg,0); if(fbWikiBg) setO(fbWikiBg,0);
       setO(cross,0); setO(scoreBox,0); setO(scoreVal,0); setO(scoreLbl,0);
       setO(bound,0.5); setStroke(bound,"#4AA3FF","1");
       setO(never,0.25); setStroke(never,"#C86B5A","1");
-      cap.textContent=STEPS[0];
-      stepLbl.textContent="0 / "+TOTAL;
-      btnNext.textContent="Next";
     }
 
     function idle(){
       resetAll();
-      step=0;
-      score=rndScore();
+      step=0; score=+(0.55+Math.random()*0.40).toFixed(2);
+      cap.innerHTML=STEPS[1];
+      stepLbl.textContent="";
+      btnNext.textContent="Next";
+      btnPrev.style.display="none";
+      // start at step 1 immediately
+      goStep(1);
     }
 
     window.__tbPlay=function(){ idle(); };
