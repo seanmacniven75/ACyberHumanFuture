@@ -348,6 +348,16 @@ button.primary{border-color:var(--worker);color:var(--worker)}
 .bcnote{font-size:10.5px;line-height:1.5;color:var(--ink-3)}
 .bcplay{align-self:flex-start;font-size:10.5px;padding:5px 11px}
 
+
+/* trust boundary animation */
+.tbwrap{flex:1;display:grid;grid-template-columns:1fr 280px;gap:24px;min-height:0;align-items:center}
+.tbwrap svg{width:100%;height:100%;max-height:370px;overflow:visible}
+.tbside{display:flex;flex-direction:column;gap:10px}
+.tbcap{font-size:12.5px;line-height:1.6;color:var(--ink);min-height:130px;border-left:2px solid var(--worker);padding-left:12px;
+  transition:opacity .4s ease}
+.tbplay{align-self:flex-start;font-size:10.5px;padding:5px 11px}
+.tbnote{font-size:10.5px;line-height:1.5;color:var(--ink-3)}
+
 /* two stores */
 #s19 .stage{flex:1;min-height:0;display:flex;justify-content:center;margin-top:4px}
 #s19 .fig{position:relative;height:100%;aspect-ratio:1280/620}
@@ -1643,44 +1653,158 @@ button.primary{border-color:var(--worker);color:var(--worker)}
   <div class="act"><span class="dot"></span>Act three, the architecture</div>
   <h1>One scalar crosses the network, and nothing else. Every other claim in this talk rests on that single constraint.</h1>
   <div class="body">
-    <svg viewBox="0 0 900 232" style="width:100%;max-height:232px">
-      <defs>
-        <marker id="tb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-          <path d="M0,1 L9,5 L0,9" fill="none" stroke="#4AA3FF" stroke-width="1.25"/></marker>
-      </defs>
-      <rect x="24" y="24" width="430" height="186" class="lnw" fill="rgba(240,171,0,.05)"/>
-      <text x="44" y="46" class="txw" font-weight="600">The engineer's device</text>
-      <rect x="44" y="58" width="184" height="44" class="lnw" fill="rgba(240,171,0,.10)"/>
-      <text x="58" y="78" class="txw" font-size="12" font-weight="600">Case cords</text>
-      <text x="58" y="94" class="txs" font-size="9.5">authoritative, append only</text>
-      <rect x="240" y="58" width="192" height="44" class="ln"/>
-      <text x="254" y="78" class="tx" font-size="12" font-weight="600">Engineer wiki</text>
-      <text x="254" y="94" class="txs" font-size="9.5">derived, prose, always in context</text>
-      <rect x="44" y="112" width="122" height="40" class="ln"/>
-      <text x="56" y="130" class="tx" font-size="11">Projections</text><text x="56" y="145" class="txs" font-size="9.5">derived</text>
-      <rect x="176" y="112" width="122" height="40" class="ln"/>
-      <text x="188" y="130" class="tx" font-size="11">Retrieval index</text><text x="188" y="145" class="txs" font-size="9.5">derived</text>
-      <rect x="308" y="112" width="124" height="40" class="ln"/>
-      <text x="320" y="130" class="tx" font-size="11">Keystore</text><text x="320" y="145" class="txs" font-size="9.5">authoritative</text>
-      <text x="44" y="176" class="txs">One authoritative store. Everything else can be deleted and rebuilt from it.</text>
-      <text x="44" y="196" class="txs">Scoring a broadcast happens here, against all of it.</text>
+    <div class="tbwrap">
+      <svg viewBox="0 0 780 380" id="tbSvg">
+        <defs>
+          <marker id="tbA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,1 L9,5 L0,9" fill="none" stroke="#F0AB00" stroke-width="1.25"/></marker>
+          <marker id="tbB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,1 L9,5 L0,9" fill="none" stroke="#4AA3FF" stroke-width="1.25"/></marker>
+          <marker id="tbG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,1 L9,5 L0,9" fill="none" stroke="#5FD4A0" stroke-width="1.25"/></marker>
+        </defs>
 
-      <path d="M470,10 L470,120 M470,146 L470,214" class="lnc" stroke-dasharray="4 4"/>
-      <text x="478" y="228" class="txc" font-size="10">the trust boundary</text>
+        <!-- engineer's device boundary -->
+        <rect id="tbDev" x="20" y="20" width="420" height="350" rx="3"
+              fill="rgba(240,171,0,.04)" stroke="#F0AB00" stroke-width="1" opacity=".5"/>
+        <text x="38" y="44" font-size="11" font-weight="600" fill="#F0AB00" font-family="inherit"
+              opacity=".7">The engineer&#x2019;s device</text>
 
-      <path d="M458,133 L576,133" class="lnc" marker-end="url(#tb)"/>
-      <rect x="586" y="112" width="120" height="42" class="lnc" fill="rgba(74,163,255,.10)"/>
-      <text x="646" y="132" class="txc" text-anchor="middle" font-size="13" font-weight="600">0.81</text>
-      <text x="646" y="148" class="txs" text-anchor="middle" font-size="9.5">one anonymous scalar</text>
-      <text x="586" y="176" class="txs" font-size="10">plus, on acceptance only, the identity of the accepting Duo</text>
+        <!-- Episodic memory (SAP-owned, blue) — what happened -->
+        <rect id="tbCords" x="38" y="62" width="170" height="52" rx="2"
+              fill="rgba(74,163,255,.08)" stroke="#4AA3FF" stroke-width=".8" opacity=".5"/>
+        <text x="52" y="80" font-size="11.5" font-weight="600" fill="#4AA3FF" font-family="inherit">Episodic memory</text>
+        <text x="52" y="94" font-size="8.5" fill="#6F7F8D" font-family="inherit">PII-stripped prior cases</text>
+        <text x="52" y="106" font-size="8" fill="#4AA3FF" font-family="inherit" opacity=".5">SAP-owned</text>
 
-      <rect x="586" y="30" width="288" height="66" class="lnr" fill="rgba(200,107,90,.06)" stroke-dasharray="5 5"/>
-      <text x="602" y="50" class="txr" font-size="11" font-weight="600">What never crosses</text>
-      <text x="602" y="68" class="txs" font-size="9.5">no profile, no wiki content, no case history,</text>
-      <text x="602" y="84" class="txs" font-size="9.5">no embeddings, no intermediate features</text>
-    </svg>
+        <!-- Procedural knowledge (engineer-owned, gold) — how it was done -->
+        <rect id="tbWiki" x="222" y="62" width="196" height="52" rx="2"
+              fill="rgba(240,171,0,.08)" stroke="#F0AB00" stroke-width=".8" opacity=".5"/>
+        <text x="236" y="80" font-size="11.5" font-weight="600" fill="#F0AB00" font-family="inherit">Procedural knowledge</text>
+        <text x="236" y="94" font-size="8.5" fill="#6F7F8D" font-family="inherit">methods, prompts, heuristics</text>
+        <text x="236" y="106" font-size="8" fill="#F0AB00" font-family="inherit" opacity=".5">engineer-owned</text>
+
+        <!-- derivation arrow: episodic → procedural (always visible, dashed) -->
+        <line x1="208" y1="88" x2="220" y2="88" stroke="#6F7F8D" stroke-width=".8"
+              stroke-dasharray="3 2" opacity=".35" marker-end="url(#tbA)"/>
+
+        <!-- ═══ vertical connectors (dashed, always faintly visible) ═══ -->
+        <!-- episodic memory → Alise -->
+        <line id="tbConn1" x1="123" y1="114" x2="123" y2="130" stroke="#4AA3FF"
+              stroke-width="1" stroke-dasharray="3 3" opacity=".15"/>
+        <!-- procedural knowledge → Alise -->
+        <line id="tbConn2" x1="320" y1="114" x2="320" y2="130" stroke="#F0AB00"
+              stroke-width="1" stroke-dasharray="3 3" opacity=".15"/>
+
+        <!-- ═══ Alise — centred between the two stores ═══ -->
+        <rect id="tbModel" x="60" y="130" width="330" height="64" rx="30"
+              fill="rgba(240,171,0,.06)" stroke="#F0AB00" stroke-width="1" opacity=".4"/>
+        <text id="tbModelName" x="225" y="154" text-anchor="middle" font-size="14"
+              font-weight="700" fill="#F0AB00" font-family="inherit" opacity=".6">Alise</text>
+        <text id="tbModelLbl" x="225" y="170" text-anchor="middle" font-size="10"
+              fill="#F0AB00" font-family="inherit" opacity=".4">local model · episodic + semantic retrieval</text>
+        <text id="tbModelScore" x="225" y="186" text-anchor="middle" font-size="15"
+              font-weight="700" fill="#F0AB00" font-family="inherit" opacity="0"></text>
+
+        <!-- ═══ Alise → Retrieval index / Keystore (below) ═══ -->
+        <line id="tbConn3" x1="150" y1="194" x2="150" y2="210" stroke="#6F7F8D"
+              stroke-width="0.8" stroke-dasharray="3 3" opacity=".12"/>
+        <line id="tbConn4" x1="300" y1="194" x2="300" y2="210" stroke="#6F7F8D"
+              stroke-width="0.8" stroke-dasharray="3 3" opacity=".12"/>
+
+        <!-- Retrieval index (below Alise, left) -->
+        <rect id="tbIdx" x="60" y="210" width="155" height="36" rx="2"
+              fill="none" stroke="#33414F" stroke-width=".7" opacity=".4"/>
+        <text x="74" y="228" font-size="10" fill="#A6B3BF" font-family="inherit">Retrieval index</text>
+        <text x="74" y="240" font-size="8" fill="#6F7F8D" font-family="inherit">derived, vector + lexical</text>
+
+        <!-- Keystore (below Alise, right) -->
+        <rect id="tbKey" x="230" y="210" width="155" height="36" rx="2"
+              fill="none" stroke="#33414F" stroke-width=".7" opacity=".4"/>
+        <text x="244" y="228" font-size="10" fill="#A6B3BF" font-family="inherit">Keystore</text>
+        <text x="244" y="240" font-size="8" fill="#6F7F8D" font-family="inherit">authoritative, per-case keys</text>
+
+        <!-- ═══ docked brief (below everything, inside device) ═══ -->
+        <rect id="tbDocked" x="100" y="260" width="240" height="38" rx="2"
+              fill="rgba(240,171,0,.06)" stroke="#F0AB00" stroke-width=".8" opacity="0"/>
+        <text id="tbDockedLbl" x="220" y="277" text-anchor="middle" font-size="10"
+              font-weight="600" fill="#F0AB00" font-family="inherit" opacity="0">Case brief</text>
+        <text id="tbDockedSub" x="220" y="291" text-anchor="middle" font-size="8.5"
+              fill="#6F7F8D" font-family="inherit" opacity="0">being scored locally</text>
+
+        <!-- ═══ feedback arrows (hidden — appear on Accepted) ═══ -->
+        <!-- brief → episodic memory: left side, upward -->
+        <!-- feedback path hidden — the brief itself now moves into episodic memory -->
+        <path id="tbFbCord" d="M0,0 L0,0" stroke="#5FD4A0" stroke-width="0"
+              fill="none" opacity="0" marker-end="url(#tbG)"/>
+        <rect x="35" y="184" width="118" height="14" rx="2" fill="#12171C" opacity="0" id="tbFbCordBg"/>
+        <text id="tbFbCordLbl" x="94" y="195" text-anchor="middle" font-size="9" font-weight="600"
+              fill="#5FD4A0" font-family="inherit" opacity="0">added to episodic memory</text>
+        <!-- episodic → procedural: dashed, horizontal -->
+        <path id="tbFbWiki" d="M208,88 L220,88" stroke="#5FD4A0" stroke-width="1.2"
+              fill="none" opacity="0" stroke-dasharray="3 2" marker-end="url(#tbG)"/>
+        <rect x="242" y="49" width="152" height="14" rx="2" fill="#12171C" opacity="0" id="tbFbWikiBg"/>
+        <text id="tbFbWikiLbl" x="318" y="60" text-anchor="middle" font-size="9" font-weight="600"
+              fill="#5FD4A0" font-family="inherit" opacity="0">procedural knowledge updates</text>
+
+        <!-- static note bottom -->
+        <text x="38" y="320" font-size="9" fill="#6F7F8D" font-family="inherit" opacity=".45">
+          One authoritative store. Everything else derived and rebuildable from it.</text>
+
+        <!-- the trust boundary -->
+        <line id="tbBound" x1="468" y1="8" x2="468" y2="372" stroke="#4AA3FF"
+              stroke-width="1" stroke-dasharray="4 4" opacity=".5"/>
+        <text x="476" y="368" font-size="10" fill="#4AA3FF" font-family="inherit" opacity=".7">the trust boundary</text>
+
+        <!-- broadcast pulse rings (emanate FROM the brief) -->
+        <circle id="tbPulse0" cx="710" cy="190" r="20" fill="none" stroke="#F0AB00" stroke-width="1.2" opacity="0"/>
+        <circle id="tbPulse1" cx="710" cy="190" r="20" fill="none" stroke="#F0AB00" stroke-width="1.2" opacity="0"/>
+
+        <!-- incoming brief (starts on right, slides left) -->
+        <rect id="tbBrief" x="660" y="168" width="100" height="44" rx="2"
+              fill="rgba(240,171,0,.10)" stroke="#F0AB00" stroke-width="1" opacity="0"/>
+        <text id="tbBriefLbl" x="710" y="188" text-anchor="middle" font-size="11"
+              font-weight="600" fill="#F0AB00" font-family="inherit" opacity="0">Case brief</text>
+        <text id="tbBriefSub" x="710" y="202" text-anchor="middle" font-size="9"
+              fill="#6F7F8D" font-family="inherit" opacity="0">anonymous</text>
+
+        <!-- outgoing score -->
+        <rect id="tbScoreBox" x="520" y="168" width="100" height="44" rx="2"
+              fill="rgba(74,163,255,.10)" stroke="#4AA3FF" stroke-width="1.2" opacity="0"/>
+        <text id="tbScoreVal" x="570" y="192" text-anchor="middle" font-size="16"
+              font-weight="700" fill="#4AA3FF" font-family="inherit" opacity="0"></text>
+        <text id="tbScoreLbl" x="570" y="206" text-anchor="middle" font-size="9"
+              fill="#6F7F8D" font-family="inherit" opacity="0">one scalar</text>
+
+        <!-- what never crosses (dashed red) -->
+        <rect id="tbNever" x="500" y="22" width="260" height="118" rx="2"
+              fill="rgba(200,107,90,.04)" stroke="#C86B5A" stroke-width="1" stroke-dasharray="5 5" opacity=".25"/>
+        <text x="516" y="44" font-size="11" font-weight="600" fill="#C86B5A" font-family="inherit" opacity=".7">What never crosses</text>
+        <text x="516" y="62" font-size="9.5" fill="#6F7F8D" font-family="inherit" opacity=".6">no profile, no wiki content,</text>
+        <text x="516" y="76" font-size="9.5" fill="#6F7F8D" font-family="inherit" opacity=".6">no case history, no embeddings,</text>
+        <text x="516" y="90" font-size="9.5" fill="#6F7F8D" font-family="inherit" opacity=".6">no intermediate features</text>
+        <text x="516" y="108" font-size="9.5" fill="#6F7F8D" font-family="inherit" opacity=".6">no feature vectors of any kind</text>
+
+        <!-- arrow: score leaving device across boundary -->
+        <line id="tbCross" x1="390" y1="162" x2="520" y2="190" stroke="#4AA3FF"
+              stroke-width="1.4" opacity="0" marker-end="url(#tbB)"/>
+
+        <!-- static note bottom -->
+        <text x="38" y="354" font-size="9.5" fill="#6F7F8D" font-family="inherit" opacity=".5">
+          One authoritative store. Everything else derived and rebuildable from it.</text>
+      </svg>
+      <div class="tbside">
+        <div class="tbcap" id="tbCap">Click Next to walk through the mechanism step by step.</div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <button id="tbNext" class="tbplay" style="padding:5px 16px">Next</button>
+          <span id="tbStep" style="font-size:10px;color:var(--ink-3)">0 / 15</span>
+        </div>
+        <div class="tbnote">The same mechanism as the ring on the previous slide, viewed from inside a single dot.</div>
+      </div>
+    </div>
     <div class="land">The temptation to refuse early: it will look efficient to send a small feature vector so ranking can happen centrally. A feature vector is a profile. Accept one and the architecture has quietly become the thing it was built to replace.</div>
   </div>
+
   <div class="src">
     <ol>
       <li><span class="k">1</span><b>MacNiven, S.</b> Alise Data Model Specification, pages 1 and 4. Storage architecture, the trust boundary, and the two retrieval modes.</li>
@@ -2216,11 +2340,13 @@ button.primary{border-color:var(--worker);color:var(--worker)}
     if (window.__flowStop) window.__flowStop();
     if (window.__duoStop) window.__duoStop();
     if (window.__bcStop) window.__bcStop();
+    if (window.__tbStop) window.__tbStop();
     if (window.__pcStop) window.__pcStop();
     if (window.__pyStop) window.__pyStop();
     if (window.__pzStop) window.__pzStop();
     if (slides[i].querySelector("#pcSvg") && window.__pcIdle) window.__pcIdle();
     if (slides[i].querySelector("#bcSvg") && window.__bcIdle) window.__bcIdle();
+    if (slides[i].querySelector("#tbSvg") && window.__tbIdle) window.__tbIdle();
     if (slides[i].querySelector("#pySvg") && window.__pyIdle) window.__pyIdle();
     if (slides[i].querySelector("#pzSvg") && window.__pzIdle) window.__pzIdle();
   }
@@ -3090,6 +3216,356 @@ button.primary{border-color:var(--worker);color:var(--worker)}
       scores:agents.map(function(a){return a.score;}), cScore:cScore, holder:M()?M().holder:-1, origin:M()?M().origin:-1}; };
     window.__bcStop=function(){ if(raf){cancelAnimationFrame(raf); raf=null;} };
     idle();
+  })();
+
+
+  // trust boundary animation — inside a single Duo
+  (function(){
+    var svg=g("tbSvg"); if(!svg) return;
+    var cl=function(v,a,b){return Math.max(a,Math.min(b,v));};
+    var raf=null, t0=null, raf2=null, t0b=null;
+
+    // element refs
+    var dev=g("tbDev"), cords=g("tbCords"), wiki=g("tbWiki"), idx=g("tbIdx"),
+        model=g("tbModel"), modelName=g("tbModelName"), modelLbl=g("tbModelLbl"), modelScore=g("tbModelScore"),
+        docked=g("tbDocked"), dockedLbl=g("tbDockedLbl"), dockedSub=g("tbDockedSub"),
+        conn1=g("tbConn1"), conn2=g("tbConn2"), conn3=g("tbConn3"), conn4=g("tbConn4"),
+        fbCord=g("tbFbCord"), fbCordLbl=g("tbFbCordLbl"), fbCordBg=g("tbFbCordBg"),
+        fbWiki=g("tbFbWiki"), fbWikiLbl=g("tbFbWikiLbl"), fbWikiBg=g("tbFbWikiBg"),
+        pulse0=g("tbPulse0"), pulse1=g("tbPulse1"),
+        brief=g("tbBrief"), briefLbl=g("tbBriefLbl"), briefSub=g("tbBriefSub"),
+        scoreBox=g("tbScoreBox"), scoreVal=g("tbScoreVal"), scoreLbl=g("tbScoreLbl"),
+        never=g("tbNever"), cross=g("tbCross"),
+        bound=g("tbBound"), cap=g("tbCap"),
+        btnAccept=g("tbAccept");
+
+    var score=0.81;
+    var btnNext=g("tbNext"), stepLbl=g("tbStep");
+
+    // ═══════════════════════════════════════════════════════
+    // STEP-BY-STEP: click Next to advance, each step plays a
+    // short transition (~2–3s) then holds until the next click
+    // ═══════════════════════════════════════════════════════
+    // ═════ STEPS ═════
+    var TOTAL=15, step=0, raf=null, t0=null;
+    var cl=function(v,a,b){return Math.max(a,Math.min(b,v));};
+
+    function rndScore(){ return +(0.55+Math.random()*0.40).toFixed(2); }
+    function setO(el,v){ el.setAttribute("opacity",v); }
+    function setStroke(el,c,w,o){ el.setAttribute("stroke",c); if(w)el.setAttribute("stroke-width",w); if(o!==undefined)setO(el,o); }
+
+    // ── step descriptions ──
+    var STEPS=[
+      /* 0 */ "Click Next to walk through the mechanism. A case brief will be broadcast, scored by Alise inside a single Duo, and \u2014 if accepted \u2014 absorbed into its memory.",
+      /* 1 */ "A new case arrives on the network. The brief describes the problem \u2014 product area, symptoms, priority \u2014 but carries no information about who should handle it.",
+      /* 2 */ "The brief is broadcast outward to every Duo. No names are attached. Nobody is asked to identify themselves. The original stays here on the network.",
+      /* 3 */ "A copy of the brief crosses the trust boundary inward. The original remains on the network \u2014 every Duo receives the same copy. Inside this device, Alise wakes up.",
+      /* 4 */ "The copy is now inside the device. The original need remains on the network, waiting for scores to come back from every Duo. Everything that follows happens locally.",
+      /* 5 */ "Episodic retrieval. Alise queries the episodic memory \u2014 PII-stripped records of every prior case this engineer has worked. SAP owns these records. Have I seen this before?",
+      /* 6 */ "Semantic retrieval. Alise queries the engineer\u2019s procedural knowledge \u2014 methods, prompts, heuristics and solution patterns. The engineer owns this. Do I know how to handle this?",
+      /* 7 */ "The retrieval index decides which episodic records are worth pulling for this particular case. This is why a local model has to run first: the material it draws on never leaves.",
+      /* 8 */ "Alise scores the brief against everything it found \u2014 episodic matches from SAP\u2019s records, semantic matches from the engineer\u2019s knowledge. Two retrieval modes, one number.",
+      /* 9 */ "The score appears: a single measure of fit. That number is all that will ever leave the device. It cannot be reversed into what produced it.",
+      /* 10 */ "The score crosses the trust boundary outward, back to the original brief on the network. One anonymous scalar. The network ranks every Duo\u2019s score without learning what any Duo knows.",
+      /* 11 */ "No profile crossed. No wiki content. No case history. No embeddings. No feature vectors. A feature vector is a profile \u2014 accept one and the architecture becomes the register it was built to replace.",
+      /* 12 */ "The case is accepted. Identity is revealed at this moment and not before. The brief\u2019s customer content is encrypted under a per-case key. The case is now being resolved.",
+      /* 13 */ "Case solved. The resolved case moves into the episodic memory \u2014 a genesis record, hash-chained, signed, append-only. SAP owns this record.",
+      /* 14 */ "The engineer\u2019s procedural knowledge regenerates from the updated episodic records. New methods are added. Decayed skills are marked. The profile evolves from work, not self-description.",
+      /* 15 */ "Alise is a better match for the next broadcast. SAP\u2019s episodic records are richer, the engineer\u2019s procedural knowledge is fresher. The Duo grew by doing the work. No profile was transmitted."
+    ];
+
+    // ── each step is a function that sets up the target state and
+    //    runs a short transition animation (~2s) then holds ──
+
+    function runStep(n){
+      step=n;
+      stepLbl.textContent=n+" / "+TOTAL;
+      btnNext.textContent = n>=TOTAL ? "Reset" : "Next";
+      cap.textContent=STEPS[n];
+      if(raf){cancelAnimationFrame(raf); raf=null;}
+      t0=null;
+      // each step animates for ~2s then holds
+      raf=requestAnimationFrame(function animate(ts){
+        if(!t0) t0=ts;
+        var t=(ts-t0)/1000, p=cl(t/2.0,0,1); // 2s transition
+        renderStep(n,p);
+        if(p<1) raf=requestAnimationFrame(animate);
+        else raf=null;
+      });
+    }
+
+    function renderStep(n,p){
+      // p goes 0→1 over 2s for the transition; then holds at 1
+
+      // ── step 1: brief appears on network ──
+      if(n>=1){
+        setO(brief, n===1?p:0.55);
+        setO(briefLbl, n===1?p:0.55);
+        setO(briefSub, n===1?p*0.7:0.4);
+      }
+
+      // ── step 2: broadcast rings ──
+      if(n===2){
+        [0,1].forEach(function(k){
+          var el=k?pulse1:pulse0;
+          var rp=p-k*0.25;
+          if(rp>0&&rp<1){
+            el.setAttribute("r", 16+rp*200);
+            el.setAttribute("cx", 710-rp*120);
+            el.setAttribute("cy", 190);
+            setO(el, (1-rp)*0.45);
+          } else setO(el,0);
+        });
+      } else if(n>2){
+        setO(pulse0,0); setO(pulse1,0);
+      }
+
+      // ── step 3: copy enters device ──
+      if(n===3){
+        // docked element slides from boundary (460,168) to docked position (100,260)
+        var dx=460+(100-460)*p;
+        var dy=168+(260-168)*p;
+        var dw=100+(240-100)*p;
+        var dh=40+(38-40)*p;
+        docked.setAttribute("x",dx); docked.setAttribute("y",dy);
+        docked.setAttribute("width",dw); docked.setAttribute("height",dh);
+        dockedLbl.setAttribute("x",dx+dw/2); dockedLbl.setAttribute("y",dy+dh*0.47);
+        dockedSub.setAttribute("x",dx+dw/2); dockedSub.setAttribute("y",dy+dh*0.8);
+        setO(docked, p*0.7);
+        setO(dockedLbl, p*0.65);
+        setO(dockedSub, 0);
+        // dim the original slightly
+        setO(brief, 0.55); setO(briefLbl, 0.55);
+        // device glows
+        setStroke(dev,"#F0AB00","1.4",0.5+0.35*p);
+      }
+      if(n>=4 && n<=12){
+        // keep docked visible
+        setO(docked, 0.65);
+        setO(dockedLbl, 0.65);
+        setO(dockedSub, n>=4?0.45:0);
+        setStroke(dev,"#F0AB00","1.2",0.7);
+      }
+      if(n===4){
+        dockedSub.textContent="being scored locally";
+        dockedSub.setAttribute("fill","#6F7F8D");
+        setO(dockedSub, p*0.45);
+      }
+
+      // ── step 5: episodic memory glow + connector pulse ──
+      if(n===5){
+        setO(cords, 0.5+0.45*p);
+        setStroke(cords,"#4AA3FF",0.8+1.0*p);
+        var pulse=0.15+p*(0.5+Math.sin(p*12)*0.2);
+        setO(conn1, pulse);
+        conn1.setAttribute("stroke-width", 1+p*0.8);
+      } else if(n>5 && n<13){
+        setO(cords,0.65); setStroke(cords,"#4AA3FF","1.0");
+        setO(conn1,0.2);
+      }
+
+      // ── step 6: procedural knowledge glow + connector pulse ──
+      if(n===6){
+        setO(wiki, 0.5+0.45*p);
+        setStroke(wiki,"#F0AB00",0.8+1.0*p);
+        var pulse2=0.15+p*(0.5+Math.sin(p*12)*0.2);
+        setO(conn2, pulse2);
+        conn2.setAttribute("stroke-width", 1+p*0.8);
+      } else if(n>6 && n<14){
+        setO(wiki,0.65); setStroke(wiki,"#F0AB00","1.0");
+        setO(conn2,0.2);
+      }
+
+      // ── step 7: retrieval index glow ──
+      if(n===7){
+        setO(idx, 0.4+0.5*p);
+        setStroke(idx,"#6F7F8D",0.7+0.8*p);
+        setO(conn3, 0.12+p*0.4);
+        setO(conn4, 0.12+p*0.4);
+      } else if(n>7){
+        setO(idx,0.6); setO(conn3,0.2); setO(conn4,0.2);
+      }
+
+      // ── step 8: Alise scores (model glows, breathes) ──
+      if(n===8){
+        var mPulse=0.55+Math.sin(p*10)*0.15;
+        setO(model, 0.4+0.5*p);
+        setStroke(model,"#F0AB00","1.6");
+        setO(modelLbl, mPulse);
+        setO(modelName, 0.6+0.3*p);
+        // docked brief pulses too
+        setO(docked, 0.5+Math.sin(p*8)*0.15);
+      } else if(n>8){
+        setO(model,0.85); setStroke(model,"#F0AB00","1.4");
+        setO(modelLbl,0.6); setO(modelName,0.85);
+      }
+
+      // ── step 9: score appears ──
+      if(n===9){
+        modelScore.textContent=score.toFixed(2);
+        setO(modelScore, p);
+      } else if(n>9){
+        modelScore.textContent=score.toFixed(2);
+        setO(modelScore, n<13?0.9:cl(1-p,0,1)*0.5);
+      }
+
+      // ── step 10: score crosses boundary ──
+      if(n===10){
+        setO(cross, p*0.9);
+        setO(scoreBox, p);
+        scoreVal.textContent=score.toFixed(2);
+        setO(scoreVal, p);
+        setO(scoreLbl, p*0.7);
+        // boundary pulses blue
+        setO(bound, 0.5+Math.sin(p*8)*0.25*(1-p*0.5));
+        setStroke(bound,"#4AA3FF","1.4");
+        // original brief brightens — score returned
+        setO(brief, 0.55+0.15*p);
+        setO(briefLbl, 0.55+0.15*p);
+      } else if(n>10){
+        setO(cross,0.85); setO(scoreBox,0.9);
+        scoreVal.textContent=score.toFixed(2);
+        setO(scoreVal,0.9); setO(scoreLbl,0.7);
+        setO(brief,0.7); setO(briefLbl,0.7);
+        setO(bound,0.65); setStroke(bound,"#4AA3FF","1.2");
+      }
+
+      // ── step 11: "what never crosses" emphasis ──
+      if(n===11){
+        var nPulse=0.25+p*0.6*(0.85+Math.sin(p*8)*0.15);
+        setO(never, nPulse);
+        setStroke(never,"#C86B5A","1.6");
+      } else if(n>11){
+        setO(never,0.6); setStroke(never,"#C86B5A","1.2");
+      }
+
+      // ── step 12: accepted — copy turns blue ──
+      if(n===12){
+        setStroke(docked,"#4AA3FF","1.2",0.5+0.3*p);
+        dockedLbl.textContent="Accepted";
+        dockedLbl.setAttribute("fill","#4AA3FF");
+        setO(dockedLbl, 0.7);
+        dockedSub.textContent="customer payload encrypted";
+        dockedSub.setAttribute("fill","#4AA3FF");
+        setO(dockedSub, 0.5*p);
+        docked.setAttribute("fill","rgba(74,163,255,.08)");
+      }
+
+      // ── step 13: case solved — copy moves into episodic memory ──
+      if(n===13){
+        // interpolate position: docked (100,260) → episodic memory (38,62)
+        var dx=100+(38-100)*p;
+        var dy=260+(62-260)*p;
+        var dw=240+(170-240)*p;
+        var dh=38+(52-38)*p;
+        docked.setAttribute("x",dx); docked.setAttribute("y",dy);
+        docked.setAttribute("width",dw); docked.setAttribute("height",dh);
+        dockedLbl.setAttribute("x",dx+dw/2); dockedLbl.setAttribute("y",dy+dh*0.44);
+        dockedSub.setAttribute("x",dx+dw/2); dockedSub.setAttribute("y",dy+dh*0.75);
+        // fade as it merges
+        var merge=cl((p-0.6)/0.4,0,1);
+        setO(docked, 0.7*(1-merge*0.8));
+        setO(dockedLbl, 0.7*(1-merge));
+        setO(dockedSub, 0.5*(1-merge));
+        // episodic memory absorbs — glow green
+        var absorb=cl((p-0.4)/0.6,0,1);
+        setStroke(cords,"#5FD4A0",0.8+1.4*absorb,0.5+0.45*absorb);
+        // label
+        if(p>0.8){
+          var lIn=cl((p-0.8)/0.2,0,1);
+          setO(fbCordLbl, lIn*0.75);
+          if(fbCordBg) setO(fbCordBg, lIn*0.85);
+        }
+      } else if(n>13){
+        setO(docked,0); setO(dockedLbl,0); setO(dockedSub,0);
+        setO(fbCordLbl,0.65); if(fbCordBg) setO(fbCordBg,0.75);
+        setStroke(cords,"#5FD4A0","1.6",0.85);
+      }
+
+      // ── step 14: procedural knowledge regenerates ──
+      if(n===14){
+        setO(fbWiki, p*0.75);
+        setO(fbWikiLbl, p*0.7);
+        if(fbWikiBg) setO(fbWikiBg, p*0.85);
+        setStroke(wiki,"#5FD4A0",0.8+0.8*p);
+        setO(wiki, 0.5+0.4*p);
+      } else if(n>14){
+        setO(fbWiki,0.65); setO(fbWikiLbl,0.6);
+        setStroke(wiki,"#5FD4A0","1.4",0.85);
+      }
+
+      // ── step 15: Alise improved ──
+      if(n===15){
+        setStroke(model,"#5FD4A0","1.4",0.4+0.5*p);
+        setO(modelName, 0.7+0.25*p);
+        modelLbl.textContent="local model \u00b7 ready for next broadcast";
+        setO(modelLbl, 0.4+0.4*p);
+      }
+    }
+
+    // ── Next button handler ──
+    btnNext.addEventListener("click", function(){
+      if(step>=TOTAL){
+        // reset
+        step=0;
+        score=rndScore();
+        resetAll();
+        runStep(0);
+      } else {
+        runStep(step+1);
+      }
+    });
+
+    // ═══════════════════════════════════════════════════════
+    // resetAll / idle / stop
+    // ═══════════════════════════════════════════════════════
+
+    function resetAll(){
+      if(raf){cancelAnimationFrame(raf); raf=null;}
+      setO(pulse0,0); setO(pulse1,0);
+      setO(brief,0); setO(briefLbl,0); setO(briefSub,0);
+      brief.setAttribute("x",660); brief.setAttribute("y",168);
+      briefLbl.setAttribute("x",710); briefLbl.setAttribute("y",188);
+      briefSub.setAttribute("x",710); briefSub.setAttribute("y",202);
+      setO(docked,0); setO(dockedLbl,0); setO(dockedSub,0);
+      docked.setAttribute("x",100); docked.setAttribute("y",260);
+      docked.setAttribute("width",240); docked.setAttribute("height",38);
+      dockedLbl.setAttribute("x",220); dockedLbl.setAttribute("y",277);
+      dockedSub.setAttribute("x",220); dockedSub.setAttribute("y",291);
+      dockedLbl.textContent="Case brief";
+      dockedLbl.setAttribute("fill","#F0AB00");
+      dockedSub.textContent="being scored locally";
+      dockedSub.setAttribute("fill","#6F7F8D");
+      docked.setAttribute("fill","rgba(240,171,0,.06)");
+      setStroke(docked,"#F0AB00",".8");
+      setStroke(dev,"#F0AB00","1",0.5);
+      setO(cords,0.5); setStroke(cords,"#4AA3FF","0.8");
+      setO(wiki,0.5); setStroke(wiki,"#F0AB00","0.8");
+      setO(idx,0.4); setStroke(idx,"#33414F","0.7");
+      setO(model,0.4); setStroke(model,"#F0AB00","1"); setO(modelLbl,0.4);
+      modelLbl.textContent="local model \u00b7 episodic + semantic retrieval";
+      setO(modelScore,0); setO(modelName,0.6);
+      setO(conn1,0.15); setO(conn2,0.15); setO(conn3,0.12); setO(conn4,0.12);
+      setO(fbCord,0); setO(fbCordLbl,0); setO(fbWiki,0); setO(fbWikiLbl,0);
+      if(fbCordBg) setO(fbCordBg,0);
+      if(fbWikiBg) setO(fbWikiBg,0);
+      setO(cross,0); setO(scoreBox,0); setO(scoreVal,0); setO(scoreLbl,0);
+      setO(bound,0.5); setStroke(bound,"#4AA3FF","1");
+      setO(never,0.25); setStroke(never,"#C86B5A","1");
+      cap.textContent=STEPS[0];
+      stepLbl.textContent="0 / "+TOTAL;
+      btnNext.textContent="Next";
+    }
+
+    function idle(){
+      resetAll();
+      step=0;
+      score=rndScore();
+    }
+
+    window.__tbPlay=function(){ idle(); };
+    window.__tbIdle=idle;
+    window.__tbStop=function(){ if(raf){cancelAnimationFrame(raf); raf=null;} };
   })();
 
   // workforce pyramid simulation
