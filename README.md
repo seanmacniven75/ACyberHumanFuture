@@ -1,6 +1,6 @@
 # A Cyber-Human Future
 
-Presentation to the Services Consortium.
+Presentation to the Services Consortium. Make sure to UNMUTE the video when playing. 
 
 https://github.com/user-attachments/assets/1b6f429d-b86c-4b5a-806e-a96257087f04
 
